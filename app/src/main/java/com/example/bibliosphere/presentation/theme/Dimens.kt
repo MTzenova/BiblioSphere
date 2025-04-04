@@ -1,4 +1,4 @@
-package com.example.bibliosphere.ui.theme
+package com.example.bibliosphere.presentation.theme
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
