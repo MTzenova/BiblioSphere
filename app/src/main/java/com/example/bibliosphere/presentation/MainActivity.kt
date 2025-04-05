@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.ui.unit.sp
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.home.HomeScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -37,7 +38,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ){
-                    MiSegundoComposable()
+                    //MiSegundoComposable()
+                    HomeScreen()
                 }
             }
 

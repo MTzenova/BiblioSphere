@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.components.AutoResizedText
+import com.example.bibliosphere.presentation.components.CustomButton
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
@@ -44,7 +45,20 @@ fun HomeScreen(){
             ),
         )
         Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium)) //espacio entre elementos
-
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ){
+            CustomButton(
+                text = "Home",
+                textColor = MaterialTheme.colorScheme.surface,
+                buttonColor = MaterialTheme.colorScheme.primary,
+                onTap = {
+                   // TODO: Implement Logic
+                }
+            )
+        }
     }
 }
 
