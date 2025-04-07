@@ -18,7 +18,7 @@ import com.example.bibliosphere.presentation.components.CustomButton
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen(viewModel: HomeScreenViewModel = HomeScreenViewModel()){
     Column(
         modifier = Modifier
             .fillMaxSize()
