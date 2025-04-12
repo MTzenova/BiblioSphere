@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathHitTester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,6 +26,8 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.graphics.painter.Painter
+
 
 
 @Preview(showBackground = true,showSystemUi = true)
@@ -52,6 +53,18 @@ fun LoginScreen() {
             .fillMaxWidth()){
             Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
                 RowImage()
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Text(text = "Iniciar sesión",
+                        style = MaterialTheme.typography.headlineMedium,
+                        modifier = Modifier
+                            .padding(start = BiblioSphereTheme.dimens.paddingNormal,
+                                top = BiblioSphereTheme.dimens.paddingNormal)
+                    )
+                }
+
                 RowEmail(
                     email = email,
                     emailChange = {
@@ -78,10 +91,139 @@ fun LoginScreen() {
                     isValidEmail = isValidEmail,
                     isValidPassword = isValidPassword,
                 )
+
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
+
+                RowLoginWith()
+
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
+
+                RowNoAccount {
+                    Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 }
+
+
+//no cuenta
+@Composable
+fun RowNoAccount(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        TextButton(onClick = onClick) {
+            Text(
+                text = "¿Aún no tienes una cuenta? Regístrate",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
+//boton para botones de facebook y google
+@Composable
+fun LoginWithButton(
+    icon: Painter,
+    text: String,
+    textColor: Color,
+    onClick: () -> Unit,
+    isFacebook: Boolean = false, //para redimensionar el icono de facebook, que se quedaba pequeño
+    buttonColor: Color
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .padding(horizontal = 4.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = buttonColor
+        )
+    ) {
+        Icon(
+            painter = icon,
+            contentDescription = "$text icon",
+            tint = Color.Unspecified,
+            modifier = Modifier.size(if(isFacebook)40.dp else 24.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = text, color = textColor)
+    }
+}
+
+
+
+@Composable
+fun RowLoginWith() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(BiblioSphereTheme.dimens.paddingNormal),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Crear una fila con líneas a cada lado
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            HorizontalDivider(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),  // Ajusta el padding a tu gusto
+                thickness = 1.dp,
+                color = Color.Gray
+            )
+
+            Text(
+                text = "O iniciar sesión con",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp),  // Ajusta el padding a tu gusto
+                thickness = 1.dp,
+                color = Color.Gray
+            )
+        }
+
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
+
+        // Botón Google
+        LoginWithButton(
+            icon = painterResource(id = R.drawable.google_icon),
+            text = "Google",
+            textColor = Color.White,
+            onClick = { /* TODO: iniciar sesión con Google */ },
+            buttonColor = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
+
+        // Botón Facebook
+        LoginWithButton(
+            icon = painterResource(id = R.drawable.facebook_icon),
+            text = "Facebook",
+            textColor = Color.White,
+            onClick = { /* TODO: iniciar sesión con Facebook */ },
+            isFacebook = true,
+            buttonColor = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+
+
+
 
 //contraseña olvidada
 @Composable
@@ -94,7 +236,7 @@ fun RowForgottenPassword(onClick: () -> Unit) {
         TextButton(onClick = onClick) {
             Text(
                 text = "¿Olvidaste tu contraseña?",
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
         }
@@ -240,7 +382,7 @@ fun RowImage(){
         horizontalArrangement = Arrangement.Center
     ) {
         Image(
-            modifier = Modifier.width(100.dp),
+            modifier = Modifier.width(200.dp),
             painter = painterResource(id= logo),
             contentDescription = "Imagen login",
         )
