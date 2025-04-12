@@ -5,6 +5,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -45,45 +46,61 @@ fun LoginScreen() {
 
     //código visual
     Box(Modifier.fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)) {
+        .background(MaterialTheme.colorScheme.onSecondary)) {
         Column(Modifier.align(Alignment.Center)
             .padding(BiblioSphereTheme.dimens.paddingMedium)
             .fillMaxWidth()){
-            Card(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium),
-                shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeNormal),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = BiblioSphereTheme.dimens.spacerMedium)
-            ) {
-                Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
-                    RowImage()
-                    RowEmail(
-                        email = email,
-                        emailChange = {
-                            email = it
-                            isValidEmail = Patterns.EMAIL_ADDRESS.matcher(it).matches()
-                        },
-                        isValidEmail = isValidEmail
-                    )
-                    RowPassword(
-                        password = password,
-                        passwordChange = {
-                            password = it
-                            isValidPassword = password.length >= 6
-                        },
-                        passwordVisible = passwordVisible,
-                        passwordVisibleChange = {passwordVisible = !passwordVisible },
-                        isValidPassword = isValidPassword
-                    )
-                    RowButtonLogin(
-                        context = context,
-                        isValidEmail = isValidEmail,
-                        isValidPassword = isValidPassword
-                    )
+            Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
+                RowImage()
+                RowEmail(
+                    email = email,
+                    emailChange = {
+                        email = it
+                        isValidEmail = Patterns.EMAIL_ADDRESS.matcher(it).matches()
+                    },
+                    isValidEmail = isValidEmail
+                )
+                RowPassword(
+                    password = password,
+                    passwordChange = {
+                        password = it
+                        isValidPassword = password.length >= 6
+                    },
+                    passwordVisible = passwordVisible,
+                    passwordVisibleChange = {passwordVisible = !passwordVisible },
+                    isValidPassword = isValidPassword
+                )
+                RowForgottenPassword{
+                    Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
                 }
+                RowButtonLogin(
+                    context = context,
+                    isValidEmail = isValidEmail,
+                    isValidPassword = isValidPassword,
+                )
             }
         }
     }
 }
+
+//contraseña olvidada
+@Composable
+fun RowForgottenPassword(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        TextButton(onClick = onClick) {
+            Text(
+                text = "¿Olvidaste tu contraseña?",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
 
 //boton login
 @Composable
@@ -98,7 +115,8 @@ fun RowButtonLogin(
             .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center){
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .height(50.dp),
             onClick = {login(context)},
             enabled = isValidEmail && isValidPassword
         ){
@@ -130,7 +148,10 @@ fun RowPassword(
             onValueChange = passwordChange,
             maxLines = 1,
             singleLine = true,
+            modifier = Modifier
+                .fillMaxWidth(),
             label = {Text("Contraseña")},
+            shape = RoundedCornerShape(20.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
                 val image = if (passwordVisible) {
@@ -184,6 +205,9 @@ fun RowEmail(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             maxLines = 1,
             singleLine = true,
+            modifier = Modifier
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
             colors = if (isValidEmail) {
                 OutlinedTextFieldDefaults.colors(
                     focusedLabelColor = Color.Green,
@@ -202,11 +226,22 @@ fun RowEmail(
 //imagen logo
 @Composable
 fun RowImage(){
-    Row(Modifier.fillMaxWidth().padding(BiblioSphereTheme.dimens.paddingNormal),
-        horizontalArrangement = Arrangement.Center) {
+    val isDarkTheme = isSystemInDarkTheme()
+    //si está en modo oscuro o claro
+    val logo = if(isDarkTheme){
+        R.drawable.logo_biblioshpere_oscuro //logo para modo osucor
+    }else{
+        R.drawable.logo_bibliosphere //logo para modo claro
+    }
+
+    Row(Modifier
+        .fillMaxWidth()
+        .padding(BiblioSphereTheme.dimens.paddingNormal),
+        horizontalArrangement = Arrangement.Center
+    ) {
         Image(
             modifier = Modifier.width(100.dp),
-            painter = painterResource(id=R.drawable.logo_bibliosphere),
+            painter = painterResource(id= logo),
             contentDescription = "Imagen login",
         )
     }
