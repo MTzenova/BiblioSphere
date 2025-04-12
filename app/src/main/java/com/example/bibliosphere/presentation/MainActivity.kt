@@ -22,6 +22,7 @@ import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.ui.unit.sp
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.home.HomeScreen
+import com.example.bibliosphere.presentation.login.LoginScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -39,7 +40,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ){
                     //MiSegundoComposable()
-                    HomeScreen()
+                    //HomeScreen()
+                    LoginScreen()
                 }
             }
 
