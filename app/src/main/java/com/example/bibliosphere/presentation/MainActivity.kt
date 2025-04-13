@@ -21,35 +21,45 @@ import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.ui.unit.sp
 import com.example.bibliosphere.R
+import com.example.bibliosphere.core.navigation.NavigationWrapper
 import com.example.bibliosphere.presentation.home.HomeScreen
 import com.example.bibliosphere.presentation.login.LoginScreen
 import com.example.bibliosphere.presentation.login.LoginScreenViewModel
 
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val windowSize = calculateWindowSizeClass(activity = this)
-            BiblioSphereTheme(
-                windowSize = windowSize.widthSizeClass
-            ){
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ){
-                    //MiSegundoComposable()
-                    //HomeScreen()
-                    LoginScreen(viewModel = LoginScreenViewModel())
-                    LoginPreview()
-                }
+            BiblioSphereTheme{
+                NavigationWrapper()
             }
-
-
         }
     }
+//    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        enableEdgeToEdge()
+//        setContent {
+//            val windowSize = calculateWindowSizeClass(activity = this)
+//            BiblioSphereTheme(
+//                windowSize = windowSize.widthSizeClass
+//            ){
+//                Surface(
+//                    modifier = Modifier.fillMaxSize(),
+//                    color = MaterialTheme.colorScheme.background
+//                ){
+//                    //MiSegundoComposable()
+//                    //HomeScreen()
+//                    LoginScreen(viewModel = LoginScreenViewModel())
+//                    LoginPreview()
+//                }
+//            }
+//
+//
+//        }
+//    }
 }
 
 @Composable
