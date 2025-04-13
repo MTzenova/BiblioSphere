@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.home.HomeScreen
 import com.example.bibliosphere.presentation.login.LoginScreen
+import com.example.bibliosphere.presentation.login.LoginScreenViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -41,7 +42,8 @@ class MainActivity : ComponentActivity() {
                 ){
                     //MiSegundoComposable()
                     //HomeScreen()
-                    LoginScreen()
+                    LoginScreen(viewModel = LoginScreenViewModel())
+                    LoginPreview()
                 }
             }
 
@@ -88,4 +90,10 @@ fun MiSegundoComposable() {
 @Composable
 fun MiPrimerComposablePreview(){
     MiSegundoComposable()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginPreview(){
+    LoginScreen(viewModel = LoginScreenViewModel())
 }

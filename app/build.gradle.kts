@@ -39,13 +39,14 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.activity:activity-compose:1.8.1")
     implementation(platform("androidx.compose:compose-bom:2024.04.01"))
     //android material 3
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
     //ViewModel
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.7.8")
     //iconos
     implementation("androidx.compose.material:material-icons-extended")
 

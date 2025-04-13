@@ -24,33 +24,49 @@ import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.graphics.painter.Painter
+import kotlinx.coroutines.launch
 
 
-
-@Preview(showBackground = true,showSystemUi = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(viewModel: LoginScreenViewModel) {
+
+    Box(Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.onSecondary)) {
+        Login(Modifier.align(Alignment.Center), viewModel)
+    }
+
+
+}
+
+@Composable
+fun Login(modifier: Modifier, viewModel: LoginScreenViewModel){
+
     //definir variables
+    val email:String by viewModel.email.observeAsState(initial="")
+    val isValidEmail by viewModel.isValidEmail.observeAsState(false)
+    val password:String by viewModel.password.observeAsState(initial="")
+    val passwordVisible by viewModel.passwordVisible.observeAsState(initial=false)
+    val isValidPassword by viewModel.isValidPassword.observeAsState(false)
+    val loginEnable:Boolean by viewModel.loginEnable.observeAsState(initial = false)
+
+    val isLoading:Boolean by viewModel.isLoading.observeAsState(initial = false)
+    val coroutineScope = rememberCoroutineScope()
+
     val context = LocalContext.current
 
-    var email by remember { mutableStateOf("") }
-    var isValidEmail by remember { mutableStateOf(false) }
+    if(isLoading){
+        Box(Modifier.fillMaxSize()) {
+            CircularProgressIndicator(Modifier.align(Alignment.Center))
+        }
+    }else{
 
-    var password by remember { mutableStateOf("") }
-    var isValidPassword by remember { mutableStateOf(false) }
-
-    var passwordVisible by remember { mutableStateOf(false) }
-
-
-    //código visual
-    Box(Modifier.fillMaxSize()
-        .background(MaterialTheme.colorScheme.onSecondary)) {
-        Column(Modifier.align(Alignment.Center)
-            .padding(BiblioSphereTheme.dimens.paddingMedium)
-            .fillMaxWidth()){
+        //código visual
+        Column(modifier = modifier) {
             Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
                 RowImage()
                 Row(
@@ -67,30 +83,29 @@ fun LoginScreen() {
 
                 RowEmail(
                     email = email,
-                    emailChange = {
-                        email = it
-                        isValidEmail = Patterns.EMAIL_ADDRESS.matcher(it).matches()
-                    },
+                    emailChange = { viewModel.onLoginChanged(it, password) },
                     isValidEmail = isValidEmail
                 )
+
                 RowPassword(
                     password = password,
-                    passwordChange = {
-                        password = it
-                        isValidPassword = password.length >= 6
-                    },
                     passwordVisible = passwordVisible,
-                    passwordVisibleChange = {passwordVisible = !passwordVisible },
+                    passwordVisibleChange = { viewModel.togglePasswordVisibility() },
+                    passwordChange = { viewModel.onLoginChanged(email, it) },
                     isValidPassword = isValidPassword
                 )
+
+
                 RowForgottenPassword{
+
                     Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
                 }
-                RowButtonLogin(
-                    context = context,
-                    isValidEmail = isValidEmail,
-                    isValidPassword = isValidPassword,
-                )
+
+                RowButtonLogin(loginEnable){
+                    coroutineScope.launch {
+                        viewModel.onLoginSelected()
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
 
@@ -104,8 +119,9 @@ fun LoginScreen() {
             }
         }
     }
-}
 
+
+}
 
 //no cuenta
 @Composable
@@ -247,9 +263,7 @@ fun RowForgottenPassword(onClick: () -> Unit) {
 //boton login
 @Composable
 fun RowButtonLogin(
-    context: Context,
-    isValidEmail: Boolean,
-    isValidPassword: Boolean
+    loginEnable: Boolean, onLoginSelected: () -> Unit,
     ){
     Row(
         Modifier
@@ -257,10 +271,11 @@ fun RowButtonLogin(
             .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center){
         Button(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(50.dp),
-            onClick = {login(context)},
-            enabled = isValidEmail && isValidPassword
+            onClick = {onLoginSelected()},
+            enabled = loginEnable
         ){
             Text(text = "Iniciar Sesión")
         }
@@ -282,12 +297,13 @@ fun RowPassword(
     passwordVisibleChange:()->Unit,
     isValidPassword:Boolean
 ) {
-    Row(Modifier.fillMaxWidth()
+    Row(Modifier
+        .fillMaxWidth()
         .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center) {
         OutlinedTextField(
             value = password,
-            onValueChange = passwordChange,
+            onValueChange = { passwordChange(it) },
             maxLines = 1,
             singleLine = true,
             modifier = Modifier
@@ -337,12 +353,13 @@ fun RowEmail(
     emailChange: (String)->Unit,
     isValidEmail:Boolean
 ) {
-    Row(Modifier.fillMaxWidth()
+    Row(Modifier
+        .fillMaxWidth()
         .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center,) {
         OutlinedTextField(
             value = email,
-            onValueChange = emailChange,
+            onValueChange = { emailChange(it) },
             label = {Text("Email")},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             maxLines = 1,
