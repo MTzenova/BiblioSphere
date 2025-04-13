@@ -33,7 +33,7 @@ class LoginScreenViewModel : ViewModel() {
         _password.value = password
         _loginEnable.value = (isValidEmail(email) && isValidPassword(password))
         _isValidPassword.value = isValidPassword(password)
-        _isValidEmail.value = (isValidEmail(email))
+        _isValidEmail.value = isValidEmail(email)
     }
 
     private fun isValidEmail(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()

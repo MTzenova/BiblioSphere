@@ -28,6 +28,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.graphics.painter.Painter
+import com.example.bibliosphere.presentation.components.PrimaryButton
 import kotlinx.coroutines.launch
 
 
@@ -183,7 +184,6 @@ fun RowLoginWith() {
             .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Crear una fila con líneas a cada lado
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -192,7 +192,7 @@ fun RowLoginWith() {
             HorizontalDivider(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp),  // Ajusta el padding a tu gusto
+                    .padding(end = 8.dp),
                 thickness = 1.dp,
                 color = Color.Gray
             )
@@ -206,7 +206,7 @@ fun RowLoginWith() {
             HorizontalDivider(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 8.dp),  // Ajusta el padding a tu gusto
+                    .padding(start = 8.dp),
                 thickness = 1.dp,
                 color = Color.Gray
             )
@@ -263,29 +263,26 @@ fun RowForgottenPassword(onClick: () -> Unit) {
 //boton login
 @Composable
 fun RowButtonLogin(
-    loginEnable: Boolean, onLoginSelected: () -> Unit,
+    loginEnable: Boolean,
+    onLoginSelected: () -> Unit,
     ){
     Row(
         Modifier
             .fillMaxWidth()
             .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center){
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            onClick = {onLoginSelected()},
-            enabled = loginEnable
-        ){
-            Text(text = "Iniciar Sesión")
-        }
+//        Button(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(50.dp),
+//            onClick = {onLoginSelected()},
+//            enabled = loginEnable
+//        ){
+//            Text(text = "Iniciar Sesión")
+//        }
+        PrimaryButton("Iniciar sesión", onClick = onLoginSelected, enabled = loginEnable)
     }
 
-}
-
-//mensaje toast
-fun login(context: Context){
-    Toast.makeText(context, "Login de mentira", Toast.LENGTH_LONG).show()
 }
 
 //campo password
@@ -405,30 +402,3 @@ fun RowImage(){
         )
     }
 }
-
-
-//@Composable
-//fun Login(modifier: Modifier) {
-//    Column(modifier = modifier) {
-//        HeaderImage()
-//    }
-//}
-//
-//
-//@Composable
-//fun HeaderImage() {
-//    Image(painter= painterResource(id = R.drawable.logo_bibliosphere), contentDescription = "Header")
-//}
-
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun EmailField() {
-//    TextField(value = "", onValueChange = {},
-//        Modifier.fillMaxWidth(),
-//        placeholder = {Text("email@example.com")},
-//        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-//        singleLine = true, //para que no se amplie el componente
-//        maxLines = 1,
-//
-//    )
-//}
