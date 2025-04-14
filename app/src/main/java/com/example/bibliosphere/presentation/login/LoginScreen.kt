@@ -1,7 +1,6 @@
 package com.example.bibliosphere.presentation.login
 
-import android.content.Context
-import android.util.Patterns
+import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
@@ -35,20 +33,23 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(viewModel: LoginScreenViewModel,
-                navigateToHome: () -> Unit) {
-
+fun LoginScreen(
+    viewModel: LoginScreenViewModel,
+    authViewModel: AuthViewModel, // Recibimos el authViewModel
+    navigateToHome: () -> Unit
+) {
     Box(Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.onSecondary)) {
-        Login(Modifier.align(Alignment.Center),
+        Login(
+            Modifier.align(Alignment.Center),
             viewModel,
-            navigateToHome = navigateToHome, authViewModel = AuthViewModel()
+            authViewModel = authViewModel, // Aquí pasas el authViewModel
+            navigateToHome = navigateToHome
         )
     }
-
-
 }
+
 
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: () -> Unit, authViewModel: AuthViewModel) {
@@ -65,6 +66,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
     val coroutineScope = rememberCoroutineScope()
 
     val context = LocalContext.current
+    val activity = LocalContext.current as? Activity
 
     //auth
     val authState = authViewModel.authState.observeAsState()
@@ -131,7 +133,24 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
 
                 Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
 
-                RowLoginWith()
+                RowLoginWith(
+                    onGoogleClick = {
+                        coroutineScope.launch {
+                            try {
+                                if (activity != null) {
+                                    authViewModel.signInWithGoogle(activity)
+                                }else {
+                                    Toast.makeText(context, "No se pudo obtener la actividad", Toast.LENGTH_SHORT).show()
+                                }
+                            } catch (e: Exception) {
+                                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    },
+                    onFacebookClick = {
+                        Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
 
@@ -198,7 +217,7 @@ fun LoginWithButton(
 
 
 @Composable
-fun RowLoginWith() {
+fun RowLoginWith(onGoogleClick: () -> Unit, onFacebookClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -240,7 +259,7 @@ fun RowLoginWith() {
             icon = painterResource(id = R.drawable.google_icon),
             text = "Google",
             textColor = Color.White,
-            onClick = { /* TODO: iniciar sesión con Google */ },
+            onClick = onGoogleClick,
             buttonColor = MaterialTheme.colorScheme.primary
         )
 
@@ -251,7 +270,7 @@ fun RowLoginWith() {
             icon = painterResource(id = R.drawable.facebook_icon),
             text = "Facebook",
             textColor = Color.White,
-            onClick = { /* TODO: iniciar sesión con Facebook */ },
+            onClick = onFacebookClick,
             isFacebook = true,
             buttonColor = MaterialTheme.colorScheme.primary
         )

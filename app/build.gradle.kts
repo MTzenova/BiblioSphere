@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.bibliosphere"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.bibliosphere"
@@ -57,6 +57,20 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    //google
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    //implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    //implementation("androidx.credentials:credentials:1.5.0")
+
+    // Para Credential Manager
+    implementation ("androidx.credentials:credentials:1.2.0")
+    implementation ("androidx.credentials:credentials-play-services-auth:1.2.0")
+
+    // Para Google Identity
+    implementation ("com.google.android.libraries.identity.googleid:googleid:1.0.1")
+    //hilt
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

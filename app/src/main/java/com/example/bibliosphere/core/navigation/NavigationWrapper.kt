@@ -18,7 +18,11 @@ fun NavigationWrapper() {
     NavHost(navController = navController, startDestination = Login) {
         composable<Login> {
             val viewModel: LoginScreenViewModel = viewModel()
-            LoginScreen(viewModel = viewModel) { navController.navigate(Home)}
+            LoginScreen(
+                viewModel = viewModel,
+                authViewModel = authViewModel,  // Pasas authViewModel a LoginScreen
+                navigateToHome = { navController.navigate(Home) } // Navegación a Home
+            )
         }
         composable<Home> {
             HomeScreen(authViewModel = authViewModel) { navController.navigate(Login)}

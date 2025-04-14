@@ -108,8 +108,3 @@ fun MiPrimerComposablePreview(){
     MiSegundoComposable()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun LoginPreview(){
-    LoginScreen(viewModel = LoginScreenViewModel(), navigateToHome={} )
-}

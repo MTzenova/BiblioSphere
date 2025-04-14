@@ -76,14 +76,3 @@ fun HomeScreen(viewModel: HomeScreenViewModel = HomeScreenViewModel(), authViewM
         }
     }
 }
-
-@Preview(
-    name = "HomeScreenPreview",
-    showBackground = true,
-)
-@Composable
-fun HomeScreenPreview(){
-    BiblioSphereTheme {
-        HomeScreen(authViewModel = AuthViewModel()){}
-    }
-}
