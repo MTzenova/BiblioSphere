@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     kotlin("plugin.serialization") version "2.0.0"
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -54,6 +55,9 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.2")
     //serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    implementation("com.google.firebase:firebase-auth")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")

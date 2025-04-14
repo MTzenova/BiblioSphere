@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1014965920233",
+    "project_id": "bibliosphere-c77e7",
+    "storage_bucket": "bibliosphere-c77e7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014965920233:android:7a2ebe159c0852bfb02b78",
+        "android_client_info": {
+          "package_name": "com.example.bibliosphere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHyr5dtvomZZ12A7apK_y5Aba1sNCDmCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

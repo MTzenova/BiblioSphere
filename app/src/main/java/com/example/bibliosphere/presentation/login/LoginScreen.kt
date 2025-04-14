@@ -28,6 +28,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.graphics.painter.Painter
+import com.example.bibliosphere.presentation.AuthState
+import com.example.bibliosphere.presentation.AuthViewModel
 import com.example.bibliosphere.presentation.components.PrimaryButton
 import kotlinx.coroutines.launch
 
@@ -41,14 +43,15 @@ fun LoginScreen(viewModel: LoginScreenViewModel,
         .background(MaterialTheme.colorScheme.onSecondary)) {
         Login(Modifier.align(Alignment.Center),
             viewModel,
-            navigateToHome = navigateToHome)
+            navigateToHome = navigateToHome, authViewModel = AuthViewModel()
+        )
     }
 
 
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: () -> Unit) {
+fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: () -> Unit, authViewModel: AuthViewModel) {
 
     //definir variables
     val email:String by viewModel.email.observeAsState(initial="")
@@ -62,6 +65,18 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
     val coroutineScope = rememberCoroutineScope()
 
     val context = LocalContext.current
+
+    //auth
+    val authState = authViewModel.authState.observeAsState()
+
+    //funcioanlidad de iniciar sesión y llevarnos a home
+    LaunchedEffect(authState.value) {
+        when (authState.value) {
+            is AuthState.Authenticated -> navigateToHome()
+            is AuthState.Error -> Toast.makeText(context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            else -> Unit
+        }
+    }
 
     if(isLoading){
         Box(Modifier.fillMaxSize()) {
@@ -107,8 +122,10 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
 
                 RowButtonLogin(loginEnable){
                     coroutineScope.launch {
-                        viewModel.onLoginSelected()
-                        navigateToHome()
+//                        viewModel.onLoginSelected()
+//                        navigateToHome()
+                        //aqui iniciamos sesión
+                        authViewModel.login(email, password)//después de iniciar sesión, vamos a home
                     }
                 }
 

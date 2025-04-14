@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.bibliosphere.R
 import com.example.bibliosphere.core.navigation.NavigationWrapper
 import com.example.bibliosphere.presentation.home.HomeScreen
@@ -28,10 +30,14 @@ import com.example.bibliosphere.presentation.login.LoginScreenViewModel
 
 class MainActivity : ComponentActivity() {
 
+    //private lateinit var navHostController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            //navHostController = rememberNavController()
+
             BiblioSphereTheme{
                 NavigationWrapper()
             }
