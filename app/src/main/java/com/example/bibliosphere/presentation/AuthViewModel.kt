@@ -59,7 +59,7 @@ class AuthViewModel: ViewModel() {
             }
     }
 
-    fun signout(email: String, password: String){
+    fun signout(){
         auth.signOut()
         _authState.value = AuthState.Unauthenticated
     }

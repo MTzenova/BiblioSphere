@@ -6,6 +6,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -13,12 +15,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.AuthState
+import com.example.bibliosphere.presentation.AuthViewModel
 import com.example.bibliosphere.presentation.components.AutoResizedText
 import com.example.bibliosphere.presentation.components.CustomButton
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
-fun HomeScreen(viewModel: HomeScreenViewModel = HomeScreenViewModel()){
+fun HomeScreen(viewModel: HomeScreenViewModel = HomeScreenViewModel(), authViewModel: AuthViewModel,
+               navigateToLogin: () -> Unit){
+    //pruebas de signout
+    val authState = authViewModel.authState.observeAsState()
+    LaunchedEffect(authState.value) {
+        when(authState.value) {
+            is AuthState.Unauthenticated -> navigateToLogin()
+            else -> Unit
+        }
+    }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,11 +66,11 @@ fun HomeScreen(viewModel: HomeScreenViewModel = HomeScreenViewModel()){
             verticalArrangement = Arrangement.Center,
         ){
             CustomButton(
-                text = "Home",
+                text = "Cerrar sesión",
                 textColor = MaterialTheme.colorScheme.surface,
                 buttonColor = MaterialTheme.colorScheme.primary,
                 onTap = {
-
+                    authViewModel.signout()
                 }
             )
         }
@@ -69,6 +84,6 @@ fun HomeScreen(viewModel: HomeScreenViewModel = HomeScreenViewModel()){
 @Composable
 fun HomeScreenPreview(){
     BiblioSphereTheme {
-        HomeScreen()
+        HomeScreen(authViewModel = AuthViewModel()){}
     }
 }
