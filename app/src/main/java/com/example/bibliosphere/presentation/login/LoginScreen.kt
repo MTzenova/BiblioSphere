@@ -33,19 +33,22 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(viewModel: LoginScreenViewModel) {
+fun LoginScreen(viewModel: LoginScreenViewModel,
+                navigateToHome: () -> Unit) {
 
     Box(Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.onSecondary)) {
-        Login(Modifier.align(Alignment.Center), viewModel)
+        Login(Modifier.align(Alignment.Center),
+            viewModel,
+            navigateToHome = navigateToHome)
     }
 
 
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginScreenViewModel){
+fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: () -> Unit) {
 
     //definir variables
     val email:String by viewModel.email.observeAsState(initial="")
@@ -105,6 +108,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel){
                 RowButtonLogin(loginEnable){
                     coroutineScope.launch {
                         viewModel.onLoginSelected()
+                        navigateToHome()
                     }
                 }
 

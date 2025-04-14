@@ -5,3 +5,6 @@ import kotlinx.serialization.Serializable
 //se definen todas las vistas
 @Serializable
 object Login
+
+@Serializable
+object Home

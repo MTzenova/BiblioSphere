@@ -105,5 +105,5 @@ fun MiPrimerComposablePreview(){
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview(){
-    LoginScreen(viewModel = LoginScreenViewModel())
+    LoginScreen(viewModel = LoginScreenViewModel(), navigateToHome={} )
 }

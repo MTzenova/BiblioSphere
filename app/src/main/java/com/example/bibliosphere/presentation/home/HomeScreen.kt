@@ -55,7 +55,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel = HomeScreenViewModel()){
                 textColor = MaterialTheme.colorScheme.surface,
                 buttonColor = MaterialTheme.colorScheme.primary,
                 onTap = {
-                   // TODO: Implement Logic
+
                 }
             )
         }
