@@ -70,7 +70,11 @@ dependencies {
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.0.1")
     //hilt
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    //facebook
+    implementation ("com.facebook.android:facebook-android-sdk:[4,5)")
+    
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
