@@ -2,9 +2,4 @@
     <string name="app_name">BiblioSphere</string>
     <string name="web_client_id">1014965920233-aev08ptsiaamhpr6q75te2vl75ken914.apps.googleusercontent.com</string>
 
-    <string name="facebook_app_id">1347326023221778</string>
-    <string name="fb_login_protocol_scheme">fb1347326023221778</string>
-    <string name="facebook_client_token">1d8eeee73cc048e4af05e04595c9aa5a</string>
-
-
 </resources>
