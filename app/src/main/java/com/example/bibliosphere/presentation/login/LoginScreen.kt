@@ -146,9 +146,6 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                                 Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
-                    },
-                    onFacebookClick = {
-                        Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
                     }
                 )
 
@@ -189,7 +186,6 @@ fun LoginWithButton(
     text: String,
     textColor: Color,
     onClick: () -> Unit,
-    isFacebook: Boolean = false, //para redimensionar el icono de facebook, que se quedaba pequeño
     buttonColor: Color
 ) {
     Button(
@@ -207,7 +203,7 @@ fun LoginWithButton(
             painter = icon,
             contentDescription = "$text icon",
             tint = Color.Unspecified,
-            modifier = Modifier.size(if(isFacebook)40.dp else 24.dp)
+            modifier = Modifier.size(BiblioSphereTheme.dimens.iconSizeSmall)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = text, color = textColor)
@@ -217,7 +213,7 @@ fun LoginWithButton(
 
 
 @Composable
-fun RowLoginWith(onGoogleClick: () -> Unit, onFacebookClick: () -> Unit) {
+fun RowLoginWith(onGoogleClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -260,18 +256,6 @@ fun RowLoginWith(onGoogleClick: () -> Unit, onFacebookClick: () -> Unit) {
             text = "Google",
             textColor = Color.White,
             onClick = onGoogleClick,
-            buttonColor = MaterialTheme.colorScheme.primary
-        )
-
-        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
-
-        // Botón Facebook
-        LoginWithButton(
-            icon = painterResource(id = R.drawable.facebook_icon),
-            text = "Facebook",
-            textColor = Color.White,
-            onClick = onFacebookClick,
-            isFacebook = true,
             buttonColor = MaterialTheme.colorScheme.primary
         )
     }
