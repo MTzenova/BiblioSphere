@@ -68,16 +68,12 @@ class AuthViewModel: ViewModel()  {
     }
 
 
-// Añade esta función a tu AuthViewModel
-
     suspend fun signInWithGoogle(context: Activity) {
         try {
             _authState.value = AuthState.Loading
 
-            // Crear el credentialManager
             val credentialManager = CredentialManager.create(context)
 
-            // Configurar la solicitud para Google Sign-In
             val googleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
                 .setServerClientId(context.getString(R.string.web_client_id))
@@ -89,7 +85,6 @@ class AuthViewModel: ViewModel()  {
                 .addCredentialOption(googleIdOption)
                 .build()
 
-            // Obtener la credencial
             val result = credentialManager.getCredential(context, request)
             val credential = result.credential
 
@@ -97,13 +92,10 @@ class AuthViewModel: ViewModel()  {
                 credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
 
                 try {
-                    // Parsear la credencial de Google
                     val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
 
-                    // Crear credencial para Firebase
                     val firebaseCredential = GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
 
-                    // Autenticar con Firebase
                     auth.signInWithCredential(firebaseCredential)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {

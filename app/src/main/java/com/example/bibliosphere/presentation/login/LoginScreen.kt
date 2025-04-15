@@ -22,15 +22,16 @@ import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.bibliosphere.presentation.AuthState
 import com.example.bibliosphere.presentation.AuthViewModel
 import com.example.bibliosphere.presentation.components.PrimaryButton
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun LoginScreen(
@@ -90,15 +91,17 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
         Column(modifier = modifier) {
             Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
                 RowImage()
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ){
-                    Text(text = "Iniciar sesión",
-                        style = MaterialTheme.typography.headlineMedium,
+                    Text(text = "Iniciar sesión:",
+                        style = MaterialTheme.typography.headlineSmall,
                         modifier = Modifier
                             .padding(start = BiblioSphereTheme.dimens.paddingNormal,
-                                top = BiblioSphereTheme.dimens.paddingNormal)
+                                top = BiblioSphereTheme.dimens.paddingNormal),
+                        color = colorScheme.primary
                     )
                 }
 
@@ -149,7 +152,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                     }
                 )
 
-                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
 
                 RowNoAccount {
                     Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
@@ -179,7 +182,7 @@ fun RowNoAccount(onClick: () -> Unit) {
     }
 }
 
-//boton para botones de facebook y google
+//boton para google
 @Composable
 fun LoginWithButton(
     icon: Painter,
@@ -194,7 +197,7 @@ fun LoginWithButton(
             .fillMaxWidth()
             .height(48.dp)
             .padding(horizontal = 4.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(26.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor
         )
@@ -220,11 +223,13 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
             .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
+
             HorizontalDivider(
                 modifier = Modifier
                     .weight(1f)
@@ -234,9 +239,10 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
             )
 
             Text(
-                text = "O iniciar sesión con",
+                text = "O inicia sesión con",
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(horizontal = 8.dp)
+                modifier = Modifier.padding(horizontal = 8.dp),
+                color = colorScheme.primary
             )
 
             HorizontalDivider(
@@ -248,7 +254,7 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
             )
         }
 
-        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerLarge))
 
         // Botón Google
         LoginWithButton(
@@ -256,7 +262,7 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
             text = "Google",
             textColor = Color.White,
             onClick = onGoogleClick,
-            buttonColor = MaterialTheme.colorScheme.primary
+            buttonColor = colorScheme.primary
         )
     }
 }
@@ -304,7 +310,7 @@ fun RowButtonLogin(
 //        ){
 //            Text(text = "Iniciar Sesión")
 //        }
-        PrimaryButton("Iniciar sesión", onClick = onLoginSelected, enabled = loginEnable)
+        PrimaryButton("Entrar", onClick = onLoginSelected, enabled = loginEnable)
     }
 
 }
@@ -376,7 +382,7 @@ fun RowEmail(
 ) {
     Row(Modifier
         .fillMaxWidth()
-        .padding(BiblioSphereTheme.dimens.paddingNormal),
+        .padding(bottom = BiblioSphereTheme.dimens.paddingNormal, start = BiblioSphereTheme.dimens.paddingNormal, end = BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center,) {
         OutlinedTextField(
             value = email,
@@ -425,4 +431,14 @@ fun RowImage(){
             contentDescription = "Imagen login",
         )
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenPreview() {
+
+    LoginScreen(
+        viewModel = LoginScreenViewModel(),
+        authViewModel = AuthViewModel(),
+        navigateToHome = {}
+    )
 }

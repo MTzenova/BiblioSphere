@@ -16,10 +16,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.bibliosphere.R
@@ -43,29 +45,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-//    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//        setContent {
-//            val windowSize = calculateWindowSizeClass(activity = this)
-//            BiblioSphereTheme(
-//                windowSize = windowSize.widthSizeClass
-//            ){
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ){
-//                    //MiSegundoComposable()
-//                    //HomeScreen()
-//                    LoginScreen(viewModel = LoginScreenViewModel())
-//                    LoginPreview()
-//                }
-//            }
-//
-//
-//        }
-//    }
 }
 
 @Composable
@@ -107,4 +86,3 @@ fun MiSegundoComposable() {
 fun MiPrimerComposablePreview(){
     MiSegundoComposable()
 }
-
