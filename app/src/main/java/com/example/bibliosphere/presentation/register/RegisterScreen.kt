@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun RegisterScreen(viewModel: RegisterScreenViewModel) {
@@ -26,10 +27,13 @@ fun RegisterScreen(viewModel: RegisterScreenViewModel) {
 @Composable
 fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel) {
 
+
+
+
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RegisterScreenPreview(){
-
+    RegisterScreen(viewModel = viewModel())
 }

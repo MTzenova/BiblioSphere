@@ -1,0 +1,65 @@
+package com.example.bibliosphere.presentation.components
+
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun PasswordTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    isPasswordVisible: Boolean,
+    onVisibilityToggle: () -> Unit,
+    isValidPassword: Boolean,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        singleLine = true,
+        maxLines = 1,
+        modifier = modifier,
+        label = { Text("Contraseña") },
+        shape = RoundedCornerShape(20.dp),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        trailingIcon = {
+            val icon = if (isPasswordVisible) {
+                Icons.Filled.VisibilityOff
+            } else{
+                Icons.Filled.Visibility
+            }
+            IconButton(onClick = onVisibilityToggle) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "Mostrar contraseña"
+                )
+            }
+        },
+        visualTransformation = if (isPasswordVisible) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
+        },
+        colors = if (isValidPassword) {
+            OutlinedTextFieldDefaults.colors(
+                focusedLabelColor = Color.Green,
+                focusedBorderColor = Color.Green
+            )
+        } else {
+            OutlinedTextFieldDefaults.colors(
+                focusedLabelColor = Color.Red,
+                focusedBorderColor = Color.Red
+            )
+        }
+    )
+}
