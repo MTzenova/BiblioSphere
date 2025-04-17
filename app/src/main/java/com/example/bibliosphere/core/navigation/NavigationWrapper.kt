@@ -9,6 +9,8 @@ import com.example.bibliosphere.presentation.AuthViewModel
 import com.example.bibliosphere.presentation.home.HomeScreen
 import com.example.bibliosphere.presentation.login.LoginScreen
 import com.example.bibliosphere.presentation.login.LoginScreenViewModel
+import com.example.bibliosphere.presentation.register.RegisterScreen
+import com.example.bibliosphere.presentation.register.RegisterScreenViewModel
 
 @Composable
 fun NavigationWrapper() {
@@ -20,12 +22,21 @@ fun NavigationWrapper() {
             val viewModel: LoginScreenViewModel = viewModel()
             LoginScreen(
                 viewModel = viewModel,
-                authViewModel = authViewModel,  // Pasas authViewModel a LoginScreen
-                navigateToHome = { navController.navigate(Home) } // Navegación a Home
+                authViewModel = authViewModel,
+                navigateToHome = { navController.navigate(Home) }, //navegación a Home
+                navigateToRegister = { navController.navigate(Register) }
             )
         }
         composable<Home> {
             HomeScreen(authViewModel = authViewModel) { navController.navigate(Login)}
+        }
+        composable<Register> {
+            val viewModel: RegisterScreenViewModel = viewModel()
+            RegisterScreen(
+                viewModel = viewModel,
+                navigateToHome = { navController.navigate(Home) },
+                navigateToLogin = { navController.navigate(Login) },
+            )
         }
     }
 }

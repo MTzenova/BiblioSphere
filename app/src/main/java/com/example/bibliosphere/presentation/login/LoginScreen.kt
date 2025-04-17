@@ -2,9 +2,7 @@ package com.example.bibliosphere.presentation.login
 
 import android.app.Activity
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,17 +19,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.bibliosphere.presentation.AuthState
 import com.example.bibliosphere.presentation.AuthViewModel
-import com.example.bibliosphere.presentation.components.EmailTextField
-import com.example.bibliosphere.presentation.components.IconPrimaryButton
-import com.example.bibliosphere.presentation.components.PasswordTextField
-import com.example.bibliosphere.presentation.components.PrimaryButton
+import com.example.bibliosphere.presentation.components.*
 import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     viewModel: LoginScreenViewModel,
     authViewModel: AuthViewModel, // Recibimos el authViewModel
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    navigateToRegister: () -> Unit
 ) {
     Box(Modifier
         .fillMaxSize()
@@ -40,14 +36,15 @@ fun LoginScreen(
             Modifier.align(Alignment.Center),
             viewModel,
             authViewModel = authViewModel, // Aquí pasas el authViewModel
-            navigateToHome = navigateToHome
+            navigateToHome = navigateToHome,
+            navigateToRegister = navigateToRegister
         )
     }
 }
 
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: () -> Unit, authViewModel: AuthViewModel) {
+fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: () -> Unit, authViewModel: AuthViewModel, navigateToRegister: () -> Unit) {
 
     //definir variables
     val email:String by viewModel.email.observeAsState(initial="")
@@ -84,7 +81,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
         //código visual
         Column(modifier = modifier) {
             Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
-                RowImage()
+                AppIcon(width = 180.dp)
                 Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -116,7 +113,9 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(bottom = BiblioSphereTheme.dimens.paddingNormal, start = BiblioSphereTheme.dimens.paddingNormal, end = BiblioSphereTheme.dimens.paddingNormal),
+                        .padding(bottom = BiblioSphereTheme.dimens.paddingNormal,
+                            start = BiblioSphereTheme.dimens.paddingNormal,
+                            end = BiblioSphereTheme.dimens.paddingNormal),
                     horizontalArrangement = Arrangement.Center
                 ){
                     EmailTextField(
@@ -140,7 +139,8 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                         onVisibilityToggle = { viewModel.togglePasswordVisibility() },
                         isValidPassword = isValidPassword,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        text = "Contraseña"
 
                     )
 
@@ -182,7 +182,8 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                 Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
 
                 RowNoAccount {
-                    Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
+                    navigateToRegister()
+                    //Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -441,29 +442,30 @@ fun RowButtonLogin(
 //    }
 //}
 
-//imagen logo
-@Composable
-fun RowImage(){
-    val isDarkTheme = isSystemInDarkTheme()
-    //si está en modo oscuro o claro
-    val logo = if(isDarkTheme){
-        R.drawable.logo_biblioshpere_oscuro //logo para modo osucor
-    }else{
-        R.drawable.logo_bibliosphere //logo para modo claro
-    }
-
-    Row(Modifier
-        .fillMaxWidth()
-        .padding(BiblioSphereTheme.dimens.paddingNormal),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Image(
-            modifier = Modifier.width(200.dp),
-            painter = painterResource(id= logo),
-            contentDescription = "Imagen login",
-        )
-    }
-}
+////imagen logo
+//@Composable
+//fun RowImage(){
+//
+////    val isDarkTheme = isSystemInDarkTheme()
+////    //si está en modo oscuro o claro
+////    val logo = if(isDarkTheme){
+////        R.drawable.logo_biblioshpere_oscuro //logo para modo osucor
+////    }else{
+////        R.drawable.logo_bibliosphere //logo para modo claro
+////    }
+//
+////    Row(Modifier
+////        .fillMaxWidth()
+////        .padding(BiblioSphereTheme.dimens.paddingNormal),
+////        horizontalArrangement = Arrangement.Center
+////    ) {
+////        Image(
+////            modifier = Modifier.width(200.dp),
+////            painter = painterResource(id= logo),
+////            contentDescription = "Imagen login",
+////        )
+////    }
+//}
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
@@ -471,6 +473,7 @@ fun LoginScreenPreview() {
     LoginScreen(
         viewModel = LoginScreenViewModel(),
         authViewModel = AuthViewModel(),
-        navigateToHome = {}
+        navigateToHome = {},
+        navigateToRegister = {}
     )
 }

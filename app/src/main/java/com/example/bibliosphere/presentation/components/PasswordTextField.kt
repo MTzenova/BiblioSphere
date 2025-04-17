@@ -21,7 +21,8 @@ fun PasswordTextField(
     isPasswordVisible: Boolean,
     onVisibilityToggle: () -> Unit,
     isValidPassword: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    text:String
 ) {
     OutlinedTextField(
         value = value,
@@ -29,7 +30,7 @@ fun PasswordTextField(
         singleLine = true,
         maxLines = 1,
         modifier = modifier,
-        label = { Text("Contraseña") },
+        label = { Text(text) },
         shape = RoundedCornerShape(20.dp),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {

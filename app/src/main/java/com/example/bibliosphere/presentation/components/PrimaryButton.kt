@@ -25,6 +25,7 @@ fun PrimaryButton(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
+        shape = RoundedCornerShape(50.dp),
     ) {
         Text(text = text)
     }
