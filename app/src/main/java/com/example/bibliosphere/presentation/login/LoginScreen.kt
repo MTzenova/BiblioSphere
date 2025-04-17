@@ -296,7 +296,7 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
             text = "Google",
             onClick = onGoogleClick,
             textColor = Color.White,
-            buttonColor = colorScheme.primary
+            buttonColor = colorScheme.primary,
         )
     }
 }

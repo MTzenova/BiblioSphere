@@ -1,8 +1,6 @@
 package com.example.bibliosphere.presentation.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -38,9 +36,10 @@ fun IconPrimaryButton(
         Icon(
             painter = icon,
             contentDescription = "$text icon",
-            tint = textColor,
+            tint = Color.Unspecified,
             modifier = Modifier.size(BiblioSphereTheme.dimens.iconSizeSmall)
         )
-        Text(text = text)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = text, color = textColor)
     }
 }
