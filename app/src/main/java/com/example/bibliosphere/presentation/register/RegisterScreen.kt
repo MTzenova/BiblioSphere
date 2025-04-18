@@ -1,6 +1,7 @@
 package com.example.bibliosphere.presentation.register
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,24 +9,28 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.bibliosphere.core.navigation.Login
+import com.example.bibliosphere.presentation.AuthState
+import com.example.bibliosphere.presentation.AuthViewModel
 import com.example.bibliosphere.presentation.components.*
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
 fun RegisterScreen(
     viewModel: RegisterScreenViewModel,
+    authViewModel: AuthViewModel,
     navigateToHome: () -> Unit,
     navigateToLogin: () -> Unit
 ) {
@@ -39,6 +44,7 @@ fun RegisterScreen(
             Modifier.align(Alignment.Center),
             viewModel,
             navigateToHome = navigateToHome,
+            authViewModel,
             navigateToLogin = navigateToLogin
         )
     }
@@ -46,7 +52,7 @@ fun RegisterScreen(
 }
 
 @Composable
-fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToHome: () -> Unit, navigateToLogin: () -> Unit) {
+fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToHome: () -> Unit, authViewModel: AuthViewModel, navigateToLogin: () -> Unit) {
 
     //definir variables
     val userName:String by viewModel.userName.observeAsState(initial="")
@@ -66,7 +72,16 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
     val activity = LocalContext.current as? Activity
     val context = LocalContext.current
 
+    //auth
+    val authState = authViewModel.authState.observeAsState()
 
+    LaunchedEffect(authState.value){
+        when(authState.value) {
+            is AuthState.Authenticated -> navigateToHome()
+            is AuthState.Error -> Toast.makeText(context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            else -> Unit
+        }
+    }
 
     Column(modifier = modifier) {
         Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
@@ -145,13 +160,14 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
                 )
             }
 
-            Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
+            Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerLarge))
 
             RowButtonRegister(registerEnable){
-                navigateToHome()
+                authViewModel.createAccountWithEmail(email,password)
+                //navigateToHome()
             }
 
-            Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerLarge))
+            Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
 
             RowAccount {
                 navigateToLogin()
@@ -231,5 +247,5 @@ fun UserName(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RegisterScreenPreview(){
-    RegisterScreen(viewModel = viewModel(), navigateToHome = {}, navigateToLogin = {})
+    RegisterScreen(viewModel = viewModel(), authViewModel = AuthViewModel(),navigateToHome = {}, navigateToLogin = {})
 }

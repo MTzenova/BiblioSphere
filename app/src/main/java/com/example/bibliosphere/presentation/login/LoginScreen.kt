@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     viewModel: LoginScreenViewModel,
-    authViewModel: AuthViewModel, // Recibimos el authViewModel
+    authViewModel: AuthViewModel,
     navigateToHome: () -> Unit,
     navigateToRegister: () -> Unit
 ) {
@@ -35,7 +35,7 @@ fun LoginScreen(
         Login(
             Modifier.align(Alignment.Center),
             viewModel,
-            authViewModel = authViewModel, // Aquí pasas el authViewModel
+            authViewModel = authViewModel,
             navigateToHome = navigateToHome,
             navigateToRegister = navigateToRegister
         )

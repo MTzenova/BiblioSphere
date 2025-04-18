@@ -34,6 +34,7 @@ fun NavigationWrapper() {
             val viewModel: RegisterScreenViewModel = viewModel()
             RegisterScreen(
                 viewModel = viewModel,
+                authViewModel = authViewModel,
                 navigateToHome = { navController.navigate(Home) },
                 navigateToLogin = { navController.navigate(Login) },
             )
