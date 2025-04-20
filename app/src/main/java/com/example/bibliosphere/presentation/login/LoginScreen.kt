@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
@@ -293,25 +294,24 @@ fun ForgottenPasswordDialog(
     dialogTitle: String,
 ){
     var email by remember { mutableStateOf("") }
-
+    val isValidEmail = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     AlertDialog(
         title = { Text(text = dialogTitle, style = MaterialTheme.typography.bodyLarge) },
         text = {
             Column{
-                Text("Introduce tu correo electrónico:")
-                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
-                OutlinedTextField(
+                EmailTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = {Text("Email")},
-                    placeholder = { Text("ejemplo@correo.com") },
-                    singleLine = true,
+                    isValidEmail = isValidEmail,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         },
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            TextButton(onClick = { onResetPassword(email) }){
+            TextButton(onClick = { onResetPassword(email) },
+                enabled = isValidEmail
+            ){
                 Text("Enviar")
             }
         },

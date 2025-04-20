@@ -28,6 +28,7 @@ fun EmailTextField(
         singleLine = true,
         modifier = modifier,
         shape = RoundedCornerShape(20.dp),
+        placeholder = { Text("ejemplo@correo.com") },
         colors = if (isValidEmail) {
             OutlinedTextFieldDefaults.colors(
                 focusedLabelColor = Color.Green,
