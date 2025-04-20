@@ -1,6 +1,9 @@
 package com.example.bibliosphere.presentation
 
 import android.app.Activity
+import android.content.ContentValues.TAG
+import android.util.Log
+import android.widget.Toast
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -60,6 +63,20 @@ class AuthViewModel: ViewModel()  {
                 }
             }
 
+    }
+
+    fun resetPassword(email: String){
+        _authState.value = AuthState.Loading
+        auth.useAppLanguage()
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful){
+                    Log.d(TAG, "Email enviado.")
+                    _authState.value = AuthState.PasswordResetEmailSent
+                }else{
+                    _authState.value = AuthState.Error(task.exception?.message?:"")
+                }
+            }
     }
 
     fun signout(){
@@ -137,6 +154,7 @@ sealed class AuthState{
     object Authenticated : AuthState()
     object Unauthenticated : AuthState()
     object Loading : AuthState()
+    object PasswordResetEmailSent : AuthState()
     data class Error(val message: String) : AuthState()
 }
 

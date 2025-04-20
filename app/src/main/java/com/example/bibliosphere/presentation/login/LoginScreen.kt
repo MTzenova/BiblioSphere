@@ -1,9 +1,12 @@
 package com.example.bibliosphere.presentation.login
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,6 +19,7 @@ import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.bibliosphere.presentation.AuthState
 import com.example.bibliosphere.presentation.AuthViewModel
@@ -63,6 +67,9 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
     //auth
     val authState = authViewModel.authState.observeAsState()
 
+    //para el alert dialog
+    val showDialog = remember { mutableStateOf(false) }
+
     //funcioanlidad de iniciar sesión y llevarnos a home
     LaunchedEffect(authState.value) {
         when (authState.value) {
@@ -96,26 +103,14 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                     )
                 }
 
-//                RowEmail(
-//                    email = email,
-//                    emailChange = { viewModel.onLoginChanged(it, password) },
-//                    isValidEmail = isValidEmail
-//                )
-
-//                RowPassword(
-//                    password = password,
-//                    passwordVisible = passwordVisible,
-//                    passwordVisibleChange = { viewModel.togglePasswordVisibility() },
-//                    passwordChange = { viewModel.onLoginChanged(email, it) },
-//                    isValidPassword = isValidPassword
-//                )
-
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(bottom = BiblioSphereTheme.dimens.paddingNormal,
+                        .padding(
+                            bottom = BiblioSphereTheme.dimens.paddingNormal,
                             start = BiblioSphereTheme.dimens.paddingNormal,
-                            end = BiblioSphereTheme.dimens.paddingNormal),
+                            end = BiblioSphereTheme.dimens.paddingNormal
+                        ),
                     horizontalArrangement = Arrangement.Center
                 ){
                     EmailTextField(
@@ -148,8 +143,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
 
 
                 RowForgottenPassword{
-
-                    Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
+                    showDialog.value = true
                 }
 
                 RowButtonLogin(loginEnable){
@@ -189,6 +183,19 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
         }
     }
 
+    //alert dialog de olvidar contraseña
+    if(showDialog.value){
+        val titleText = "No te preocupes, te enviaremos un enlace de recuperación"
+        ForgottenPasswordDialog(
+            onDismissRequest = { showDialog.value = false },
+            onResetPassword = {emailToSend ->
+                authViewModel.resetPassword(emailToSend)
+                showDialog.value = false
+                Toast.makeText(context,"Correo enviado, revisa tu bandeja de entrada", Toast.LENGTH_SHORT).show()
+            },
+            dialogTitle = titleText
+        )
+    }
 
 }
 
@@ -209,39 +216,6 @@ fun RowNoAccount(onClick: () -> Unit) {
         }
     }
 }
-
-//boton para google
-//@Composable
-//fun LoginWithButton(
-//    icon: Painter,
-//    text: String,
-//    textColor: Color,
-//    onClick: () -> Unit,
-//    buttonColor: Color
-//) {
-//    Button(
-//        onClick = onClick,
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(48.dp)
-//            .padding(horizontal = 4.dp),
-//        shape = RoundedCornerShape(26.dp),
-//        colors = ButtonDefaults.buttonColors(
-//            containerColor = buttonColor
-//        )
-//    ) {
-//        Icon(
-//            painter = icon,
-//            contentDescription = "$text icon",
-//            tint = Color.Unspecified,
-//            modifier = Modifier.size(BiblioSphereTheme.dimens.iconSizeSmall)
-//        )
-//        Spacer(modifier = Modifier.width(8.dp))
-//        Text(text = text, color = textColor)
-//    }
-//}
-
-
 
 @Composable
 fun RowLoginWith(onGoogleClick: () -> Unit) {
@@ -284,14 +258,6 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
 
         Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerLarge))
 
-        // Botón Google
-//        LoginWithButton(
-//            icon = painterResource(id = R.drawable.google_icon),
-//            text = "Google",
-//            textColor = Color.White,
-//            onClick = onGoogleClick,
-//            buttonColor = colorScheme.primary
-//        )
         IconPrimaryButton(
             icon =  painterResource(id = R.drawable.google_icon),
             text = "Google",
@@ -320,6 +286,43 @@ fun RowForgottenPassword(onClick: () -> Unit) {
     }
 }
 
+@Composable
+fun ForgottenPasswordDialog(
+    onDismissRequest: () -> Unit,
+    onResetPassword: (String) -> Unit,
+    dialogTitle: String,
+){
+    var email by remember { mutableStateOf("") }
+
+    AlertDialog(
+        title = { Text(text = dialogTitle, style = MaterialTheme.typography.bodyLarge) },
+        text = {
+            Column{
+                Text("Introduce tu correo electrónico:")
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = {Text("Email")},
+                    placeholder = { Text("ejemplo@correo.com") },
+                    singleLine = true,
+                )
+            }
+        },
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = { onResetPassword(email) }){
+                Text("Enviar")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest){
+                Text("Cancelar")
+            }
+        }
+    )
+}
+
 
 //boton login
 @Composable
@@ -332,15 +335,7 @@ fun RowButtonLogin(
             .fillMaxWidth()
             .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center){
-//        Button(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(50.dp),
-//            onClick = {onLoginSelected()},
-//            enabled = loginEnable
-//        ){
-//            Text(text = "Iniciar Sesión")
-//        }
+
         PrimaryButton("Entrar",
             onClick = onLoginSelected,
             enabled = loginEnable)
@@ -348,124 +343,6 @@ fun RowButtonLogin(
 
 }
 
-////campo password
-//@Composable
-//fun RowPassword(
-//    password: String,
-//    passwordChange:(String)->Unit,
-//    passwordVisible:Boolean,
-//    passwordVisibleChange:()->Unit,
-//    isValidPassword:Boolean
-//) {
-//    Row(Modifier
-//        .fillMaxWidth()
-//        .padding(BiblioSphereTheme.dimens.paddingNormal),
-//        horizontalArrangement = Arrangement.Center) {
-//        OutlinedTextField(
-//            value = password,
-//            onValueChange = { passwordChange(it) },
-//            maxLines = 1,
-//            singleLine = true,
-//            modifier = Modifier
-//                .fillMaxWidth(),
-//            label = {Text("Contraseña")},
-//            shape = RoundedCornerShape(20.dp),
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-//            trailingIcon = {
-//                val image = if (passwordVisible) {
-//                    Icons.Filled.VisibilityOff
-//                } else {
-//                    Icons.Filled.Visibility
-//                }
-//                IconButton(
-//                    onClick = passwordVisibleChange
-//                ) {
-//                    Icon(
-//                        imageVector = image,
-//                        contentDescription = "Mostrar contraseña"
-//                    )
-//                }
-//            },
-//            visualTransformation = if (passwordVisible){
-//                VisualTransformation.None
-//            }else{
-//                PasswordVisualTransformation()
-//            },
-//            colors = if (isValidPassword) {
-//                OutlinedTextFieldDefaults.colors(
-//                    focusedLabelColor = Color.Green,
-//                    focusedBorderColor = Color.Green
-//                )
-//            } else {
-//                OutlinedTextFieldDefaults.colors(
-//                    focusedLabelColor = Color.Red,
-//                    focusedBorderColor = Color.Red
-//                )
-//            }
-//        )
-//    }
-//}
-
-//campo email
-//@Composable
-//fun RowEmail(
-//    email: String,
-//    emailChange: (String)->Unit,
-//    isValidEmail:Boolean
-//) {
-//    Row(Modifier
-//        .fillMaxWidth()
-//        .padding(bottom = BiblioSphereTheme.dimens.paddingNormal, start = BiblioSphereTheme.dimens.paddingNormal, end = BiblioSphereTheme.dimens.paddingNormal),
-//        horizontalArrangement = Arrangement.Center,) {
-//        OutlinedTextField(
-//            value = email,
-//            onValueChange = { emailChange(it) },
-//            label = {Text("Email")},
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-//            maxLines = 1,
-//            singleLine = true,
-//            modifier = Modifier
-//                .fillMaxWidth(),
-//            shape = RoundedCornerShape(20.dp),
-//            colors = if (isValidEmail) {
-//                OutlinedTextFieldDefaults.colors(
-//                    focusedLabelColor = Color.Green,
-//                    focusedBorderColor = Color.Green
-//                )
-//            } else {
-//                OutlinedTextFieldDefaults.colors(
-//                    focusedLabelColor = Color.Red,
-//                    focusedBorderColor = Color.Red
-//                )
-//            }
-//        )
-//    }
-//}
-
-////imagen logo
-//@Composable
-//fun RowImage(){
-//
-////    val isDarkTheme = isSystemInDarkTheme()
-////    //si está en modo oscuro o claro
-////    val logo = if(isDarkTheme){
-////        R.drawable.logo_biblioshpere_oscuro //logo para modo osucor
-////    }else{
-////        R.drawable.logo_bibliosphere //logo para modo claro
-////    }
-//
-////    Row(Modifier
-////        .fillMaxWidth()
-////        .padding(BiblioSphereTheme.dimens.paddingNormal),
-////        horizontalArrangement = Arrangement.Center
-////    ) {
-////        Image(
-////            modifier = Modifier.width(200.dp),
-////            painter = painterResource(id= logo),
-////            contentDescription = "Imagen login",
-////        )
-////    }
-//}
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
