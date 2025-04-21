@@ -72,7 +72,8 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
-
+    //splash screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
