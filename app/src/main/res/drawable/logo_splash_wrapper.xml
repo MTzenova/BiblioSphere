@@ -1,0 +1,7 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+       android:drawable="@drawable/logo_biblioshpere_oscuro"
+       android:inset="30dp"
+       android:insetBottom="30dp"
+       android:insetLeft="35dp"
+       android:insetRight="35dp"
+/>
