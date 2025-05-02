@@ -1,13 +1,9 @@
 package com.example.bibliosphere.presentation.login
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,10 +16,9 @@ import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.bibliosphere.presentation.AuthState
-import com.example.bibliosphere.presentation.AuthViewModel
+import com.example.bibliosphere.presentation.firebase.AuthState
+import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.components.*
 import kotlinx.coroutines.launch
 

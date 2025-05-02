@@ -1,9 +1,8 @@
-package com.example.bibliosphere.presentation
+package com.example.bibliosphere.presentation.firebase
 
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.widget.Toast
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -45,7 +44,7 @@ class AuthViewModel: ViewModel()  {
             if(task.isSuccessful){
                 _authState.value = AuthState.Authenticated
             }else{
-                _authState.value = AuthState.Error(task.exception?.message?:"Parece que algo fue mal")
+                _authState.value = AuthState.Error(task.exception?.message ?: "Parece que algo fue mal")
             }
         }
 
@@ -59,7 +58,7 @@ class AuthViewModel: ViewModel()  {
                 if(task.isSuccessful){
                     _authState.value = AuthState.Authenticated
                 }else{
-                    _authState.value = AuthState.Error(task.exception?.message?:"Parece que algo fue mal")
+                    _authState.value = AuthState.Error(task.exception?.message ?: "Parece que algo fue mal")
                 }
             }
 
@@ -74,7 +73,7 @@ class AuthViewModel: ViewModel()  {
                     Log.d(TAG, "Email enviado.")
                     _authState.value = AuthState.PasswordResetEmailSent
                 }else{
-                    _authState.value = AuthState.Error(task.exception?.message?:"")
+                    _authState.value = AuthState.Error(task.exception?.message ?: "")
                 }
             }
     }
@@ -118,7 +117,8 @@ class AuthViewModel: ViewModel()  {
                             if (task.isSuccessful) {
                                 _authState.value = AuthState.Authenticated
                             } else {
-                                _authState.value = AuthState.Error(task.exception?.message ?: "Error al autenticar con Google")
+                                _authState.value =
+                                    AuthState.Error(task.exception?.message ?: "Error al autenticar con Google")
                             }
                         }
                 } catch (e: GoogleIdTokenParsingException) {
