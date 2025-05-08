@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.bibliosphere.core.navigation.NavigationWrapper
 
 class MainActivity : ComponentActivity() {
@@ -16,8 +18,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         enableEdgeToEdge()
+
         setContent {
             //navHostController = rememberNavController()
+
+            val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
 
             BiblioSphereTheme{
                 NavigationWrapper()
