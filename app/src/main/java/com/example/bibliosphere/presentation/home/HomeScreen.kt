@@ -19,24 +19,23 @@ import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeScreenViewModel = HomeScreenViewModel(), authViewModel: AuthViewModel,
-    navigateToLogin: () -> Unit,
+    viewModel: HomeScreenViewModel = HomeScreenViewModel(),
     paddingValues: PaddingValues
 ){
     //pruebas de signout
-    val authState = authViewModel.authState.observeAsState()
-    LaunchedEffect(authState.value) {
-        when(authState.value) {
-            is AuthState.Unauthenticated -> navigateToLogin()
-            else -> Unit
-        }
-    }
+//    val authState = authViewModel.authState.observeAsState()
+//    LaunchedEffect(authState.value) {
+//        when(authState.value) {
+//            is AuthState.Unauthenticated -> navigateToLogin()
+//            else -> Unit
+//        }
+//    }
 
     ScreenContent(
         paddingValues = paddingValues,
     )
 
-//    Column(
+ //    Column(
 //        modifier = Modifier
 //            .fillMaxSize()
 //            .padding(BiblioSphereTheme.dimens.paddingMedium)

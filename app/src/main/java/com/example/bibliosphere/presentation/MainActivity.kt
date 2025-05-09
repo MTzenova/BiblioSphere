@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             //navHostController = rememberNavController()
 
-            val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+            //val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
 
             BiblioSphereTheme{
                 NavigationWrapper()
