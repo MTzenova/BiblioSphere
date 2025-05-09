@@ -3,6 +3,7 @@ package com.example.bibliosphere.core.navigation
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
@@ -37,6 +38,7 @@ fun TopBar(
         },
         modifier = modifier
             .padding(horizontal = BiblioSphereTheme.dimens.paddingMedium)
+            .statusBarsPadding()
             .clip(RoundedCornerShape(100.dp)),
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(

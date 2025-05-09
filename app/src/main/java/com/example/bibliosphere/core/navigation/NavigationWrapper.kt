@@ -1,16 +1,18 @@
 package com.example.bibliosphere.core.navigation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Notifications
@@ -26,6 +28,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -92,35 +95,14 @@ fun NavigationWrapper() {
             drawerState = drawerState,
         )
     }else{
-        Scaffold{ paddingValues ->
-            //aquí el modal
-            ModalNavigationDrawer(
-                drawerState = drawerState,
-                drawerContent = {
-                    ModalDrawerSheet {
-                        items.forEachIndexed { index, item ->
-                            NavigationDrawerItem(
-                                label = {Text(item.title)},
-                                icon = {Icon(item.icon, contentDescription = null)},
-                                selected = currentRoute == item.title.lowercase(),
-                                onClick = {
-                                    scope.launch {
-                                        drawerState.close()
-                                        if(item.title.lowercase() == "salir"){
-                                            authViewModel.signout()
-                                        }else{
-                                            navController.navigate(item.title.lowercase()){
-                                                launchSingleTop = true
-                                            }
-                                        }
-                                    }
-                                }
-                            )
-                        }
-                    }
-                }
-            ) {
-
+        DetailedDrawer(
+            navController = navController,
+            authViewModel = authViewModel,
+            currentRoute = currentRoute,
+            drawerState = drawerState,
+            scope = scope,
+            items = items,
+            content = { paddingValues ->
                 Screen(
                     modifier = Modifier.padding(paddingValues),
                     navController = navController,
@@ -130,12 +112,99 @@ fun NavigationWrapper() {
                     drawerState = drawerState,
                 )
             }
-        }
-    }
+        )
 
+//        Scaffold{ paddingValues ->
+//            //aquí el modal
+//            ModalNavigationDrawer(
+//                drawerState = drawerState,
+//                drawerContent = {
+//                    ModalDrawerSheet {
+//                        items.forEachIndexed { index, item ->
+//                            NavigationDrawerItem(
+//                                label = {Text(item.title)},
+//                                icon = {Icon(item.icon, contentDescription = null)},
+//                                selected = currentRoute == item.title.lowercase(),
+//                                onClick = {
+//                                    scope.launch {
+//                                        drawerState.close()
+//                                        if(item.title.lowercase() == "salir"){
+//                                            authViewModel.signout()
+//                                        }else{
+//                                            navController.navigate(item.title.lowercase()){
+//                                                launchSingleTop = true
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            )
+//                        }
+//                    }
+//                }
+//            ) {
+//
+//                Screen(
+//                    modifier = Modifier.padding(paddingValues),
+//                    navController = navController,
+//                    authViewModel = authViewModel,
+//                    currentRoute = currentRoute,
+//                    scope = scope,
+//                    drawerState = drawerState,
+//                )
+//            }
+//       }
+    }
 
 }
 
+@Composable
+fun DetailedDrawer(
+    content: @Composable (PaddingValues) -> Unit,
+    navController: NavHostController,
+    authViewModel: AuthViewModel,
+    currentRoute: String?,
+    scope: CoroutineScope,
+    drawerState: DrawerState,
+    items: List<DrawerItems>
+) {
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Spacer(Modifier.height(12.dp))
+                    Text("BiblioSphere", style = MaterialTheme.typography.titleLarge)
+                    HorizontalDivider()
+                    items.forEach { item ->
+                        NavigationDrawerItem(
+                            label = { Text(item.title) },
+                            icon = { Icon(item.icon, contentDescription = null) },
+                            selected = currentRoute == item.title.lowercase(),
+                            onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                    if (item.title.lowercase() == "salir") {
+                                        authViewModel.signout()
+                                    } else {
+                                        navController.navigate(item.title.lowercase()) {
+                                            launchSingleTop = true
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    ) {
+        content(PaddingValues(0.dp))
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen(

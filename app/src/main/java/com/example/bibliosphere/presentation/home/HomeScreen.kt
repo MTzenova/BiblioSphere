@@ -12,6 +12,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
@@ -22,60 +23,11 @@ fun HomeScreen(
     viewModel: HomeScreenViewModel = HomeScreenViewModel(),
     paddingValues: PaddingValues
 ){
-    //pruebas de signout
-//    val authState = authViewModel.authState.observeAsState()
-//    LaunchedEffect(authState.value) {
-//        when(authState.value) {
-//            is AuthState.Unauthenticated -> navigateToLogin()
-//            else -> Unit
-//        }
-//    }
 
     ScreenContent(
         paddingValues = paddingValues,
     )
 
- //    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(BiblioSphereTheme.dimens.paddingMedium)
-//            .verticalScroll(rememberScrollState()),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//    ) {
-//        Box(
-//            modifier = Modifier.fillMaxWidth(),
-//            contentAlignment = Alignment.TopEnd
-//        ){
-//            Icon(//esto lo podemos usar para el menú lateral
-//                modifier = Modifier.size(BiblioSphereTheme.dimens.iconSizeNormal),
-//                painter = painterResource(id = R.drawable.logo_bibliosphere), //cambiar esto por icono de menú
-//                contentDescription = "Menu",
-//                tint = MaterialTheme.colorScheme.primary,
-//            )
-//        }
-//        AutoResizedText(
-//            text = "BiblioSphere",
-//            textStyle = MaterialTheme.typography.displayMedium.copy(
-//                color = MaterialTheme.colorScheme.primary,
-//                textAlign = TextAlign.Center
-//            ),
-//        )
-//        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium)) //espacio entre elementos
-//        Column(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            verticalArrangement = Arrangement.Center,
-//        ){
-//            CustomButton(
-//                text = "Cerrar sesión",
-//                textColor = MaterialTheme.colorScheme.surface,
-//                buttonColor = MaterialTheme.colorScheme.primary,
-//                onTap = {
-//                    authViewModel.signout()
-//                }
-//            )
-//        }
-//    }
 }
 
 @Composable
@@ -84,7 +36,7 @@ fun ScreenContent(paddingValues: PaddingValues){
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(
-            top = paddingValues.calculateTopPadding()
+            top = paddingValues.calculateBottomPadding() + 16.dp
         )
     ){
         items(10) { index ->
@@ -101,3 +53,8 @@ fun ScreenContent(paddingValues: PaddingValues){
     }
 }
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewHomeScreen() {
+    ScreenContent(paddingValues = PaddingValues(16.dp))
+}
