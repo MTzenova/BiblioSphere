@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
-    kotlin("plugin.serialization") version "2.0.0"
+    //kotlin("plugin.serialization") version "2.0.0"
     id("com.google.gms.google-services")
 }
 
@@ -57,6 +57,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    implementation("com.google.firebase:firebase-auth")
     //google
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     //implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
@@ -74,7 +75,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
     //splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("com.google.firebase:firebase-auth")
+    //retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
