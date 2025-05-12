@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BookDetail(
+data class BookDto(
     @SerialName("items")
     val items: List<Item>? = listOf(),
     @SerialName("kind")

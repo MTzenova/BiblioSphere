@@ -4,6 +4,9 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     //kotlin("plugin.serialization") version "2.0.0"
     id("com.google.gms.google-services")
+
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -27,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -56,7 +59,6 @@ dependencies {
     //serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
     implementation("com.google.firebase:firebase-auth")
     //google
     implementation("com.google.android.gms:play-services-auth:20.7.0")
@@ -70,7 +72,9 @@ dependencies {
     // Para Google Identity
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.0.1")
     //hilt
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
     //splash screen
