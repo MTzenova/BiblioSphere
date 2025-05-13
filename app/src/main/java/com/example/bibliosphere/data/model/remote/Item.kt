@@ -1,25 +1,23 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class Item(
-    @SerialName("accessInfo")
+    @SerializedName("accessInfo")
     val accessInfo: AccessInfo? = AccessInfo(),
-    @SerialName("etag")
+    @SerializedName("etag")
     val etag: String? = "",
-    @SerialName("id")
+    @SerializedName("id")
     val id: String? = "",
-    @SerialName("kind")
+    @SerializedName("kind")
     val kind: String? = "",
-    @SerialName("saleInfo")
+    @SerializedName("saleInfo")
     val saleInfo: SaleInfo? = SaleInfo(),
-    @SerialName("searchInfo")
+    @SerializedName("searchInfo")
     val searchInfo: SearchInfo? = SearchInfo(),
-    @SerialName("selfLink")
+    @SerializedName("selfLink")
     val selfLink: String? = "",
-    @SerialName("volumeInfo")
+    @SerializedName("volumeInfo")
     val volumeInfo: VolumeInfo? = VolumeInfo()
 )

@@ -74,6 +74,8 @@ dependencies {
     //hilt
     implementation("com.google.dagger:hilt-android:2.56.2")
     ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+    //gson
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))

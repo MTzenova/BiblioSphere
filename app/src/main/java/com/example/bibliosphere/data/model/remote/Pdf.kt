@@ -1,13 +1,11 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class Pdf(
-    @SerialName("acsTokenLink")
+    @SerializedName("acsTokenLink")
     val acsTokenLink: String? = null,
-    @SerialName("isAvailable")
+    @SerializedName("isAvailable")
     val isAvailable: Boolean? = null
 )

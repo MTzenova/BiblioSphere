@@ -1,4 +1,4 @@
-package com.example.bibliosphere.data
+package com.example.bibliosphere.data.network
 
 import com.example.bibliosphere.data.model.remote.BookDto
 import retrofit2.http.GET

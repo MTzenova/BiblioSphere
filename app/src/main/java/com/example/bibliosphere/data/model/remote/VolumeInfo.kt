@@ -1,53 +1,51 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class VolumeInfo(
-    @SerialName("allowAnonLogging")
+    @SerializedName("allowAnonLogging")
     val allowAnonLogging: Boolean? = null,
-    @SerialName("authors")
+    @SerializedName("authors")
     val authors: List<String?>? = null,
-    @SerialName("averageRating")
-    val averageRating: Double? = null,
-    @SerialName("canonicalVolumeLink")
+    @SerializedName("averageRating")
+    val averageRating: Int? = null,
+    @SerializedName("canonicalVolumeLink")
     val canonicalVolumeLink: String? = null,
-    @SerialName("categories")
+    @SerializedName("categories")
     val categories: List<String?>? = null,
-    @SerialName("contentVersion")
+    @SerializedName("contentVersion")
     val contentVersion: String? = null,
-    @SerialName("description")
+    @SerializedName("description")
     val description: String? = null,
-    @SerialName("imageLinks")
+    @SerializedName("imageLinks")
     val imageLinks: ImageLinks? = null,
-    @SerialName("industryIdentifiers")
+    @SerializedName("industryIdentifiers")
     val industryIdentifiers: List<IndustryIdentifier?>? = null,
-    @SerialName("infoLink")
+    @SerializedName("infoLink")
     val infoLink: String? = null,
-    @SerialName("language")
+    @SerializedName("language")
     val language: String? = null,
-    @SerialName("maturityRating")
+    @SerializedName("maturityRating")
     val maturityRating: String? = null,
-    @SerialName("pageCount")
+    @SerializedName("pageCount")
     val pageCount: Int? = null,
-    @SerialName("panelizationSummary")
+    @SerializedName("panelizationSummary")
     val panelizationSummary: PanelizationSummary? = null,
-    @SerialName("previewLink")
+    @SerializedName("previewLink")
     val previewLink: String? = null,
-    @SerialName("printType")
+    @SerializedName("printType")
     val printType: String? = null,
-    @SerialName("publishedDate")
+    @SerializedName("publishedDate")
     val publishedDate: String? = null,
-    @SerialName("publisher")
+    @SerializedName("publisher")
     val publisher: String? = null,
-    @SerialName("ratingsCount")
+    @SerializedName("ratingsCount")
     val ratingsCount: Int? = null,
-    @SerialName("readingModes")
+    @SerializedName("readingModes")
     val readingModes: ReadingModes? = null,
-    @SerialName("subtitle")
+    @SerializedName("subtitle")
     val subtitle: String? = null,
-    @SerialName("title")
+    @SerializedName("title")
     val title: String? = null
 )

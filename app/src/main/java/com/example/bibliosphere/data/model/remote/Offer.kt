@@ -1,17 +1,15 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class Offer(
-    @SerialName("finskyOfferType")
+    @SerializedName("finskyOfferType")
     val finskyOfferType: Int? = 0,
-    @SerialName("giftable")
+    @SerializedName("giftable")
     val giftable: Boolean? = false,
-    @SerialName("listPrice")
+    @SerializedName("listPrice")
     val listPrice: ListPriceX? = ListPriceX(),
-    @SerialName("retailPrice")
+    @SerializedName("retailPrice")
     val retailPrice: RetailPrice? = RetailPrice()
 )

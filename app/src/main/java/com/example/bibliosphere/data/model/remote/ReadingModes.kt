@@ -1,13 +1,11 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class ReadingModes(
-    @SerialName("image")
+    @SerializedName("image")
     val image: Boolean? = null,
-    @SerialName("text")
+    @SerializedName("text")
     val text: Boolean? = null
 )

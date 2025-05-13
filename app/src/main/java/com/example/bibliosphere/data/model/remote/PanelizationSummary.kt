@@ -1,13 +1,11 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class PanelizationSummary(
-    @SerialName("containsEpubBubbles")
+    @SerializedName("containsEpubBubbles")
     val containsEpubBubbles: Boolean? = null,
-    @SerialName("containsImageBubbles")
+    @SerializedName("containsImageBubbles")
     val containsImageBubbles: Boolean? = null
 )

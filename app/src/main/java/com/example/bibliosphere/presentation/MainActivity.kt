@@ -14,7 +14,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bibliosphere.core.navigation.NavigationWrapper
 import com.example.bibliosphere.presentation.home.HomeScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     //private lateinit var navHostController: NavHostController

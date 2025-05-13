@@ -1,23 +1,21 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class SaleInfo(
-    @SerialName("buyLink")
+    @SerializedName("buyLink")
     val buyLink: String? = "",
-    @SerialName("country")
+    @SerializedName("country")
     val country: String? = "",
-    @SerialName("isEbook")
+    @SerializedName("isEbook")
     val isEbook: Boolean? = false,
-    @SerialName("listPrice")
+    @SerializedName("listPrice")
     val listPrice: ListPrice? = ListPrice(),
-    @SerialName("offers")
+    @SerializedName("offers")
     val offers: List<Offer>? = listOf(),
-    @SerialName("retailPrice")
+    @SerializedName("retailPrice")
     val retailPrice: RetailPriceX? = RetailPriceX(),
-    @SerialName("saleability")
+    @SerializedName("saleability")
     val saleability: String? = ""
 )

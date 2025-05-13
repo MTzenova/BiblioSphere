@@ -1,13 +1,11 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class ImageLinks(
-    @SerialName("smallThumbnail")
+    @SerializedName("smallThumbnail")
     val smallThumbnail: String? = null,
-    @SerialName("thumbnail")
+    @SerializedName("thumbnail")
     val thumbnail: String? = null
 )

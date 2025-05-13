@@ -1,29 +1,27 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class AccessInfo(
-    @SerialName("accessViewStatus")
+    @SerializedName("accessViewStatus")
     val accessViewStatus: String? = null,
-    @SerialName("country")
+    @SerializedName("country")
     val country: String? = null,
-    @SerialName("embeddable")
+    @SerializedName("embeddable")
     val embeddable: Boolean? = null,
-    @SerialName("epub")
+    @SerializedName("epub")
     val epub: Epub? = null,
-    @SerialName("pdf")
+    @SerializedName("pdf")
     val pdf: Pdf? = null,
-    @SerialName("publicDomain")
+    @SerializedName("publicDomain")
     val publicDomain: Boolean? = null,
-    @SerialName("quoteSharingAllowed")
+    @SerializedName("quoteSharingAllowed")
     val quoteSharingAllowed: Boolean? = null,
-    @SerialName("textToSpeechPermission")
+    @SerializedName("textToSpeechPermission")
     val textToSpeechPermission: String? = null,
-    @SerialName("viewability")
+    @SerializedName("viewability")
     val viewability: String? = null,
-    @SerialName("webReaderLink")
+    @SerializedName("webReaderLink")
     val webReaderLink: String? = null
 )

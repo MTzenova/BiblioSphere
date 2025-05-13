@@ -1,13 +1,11 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class IndustryIdentifier(
-    @SerialName("identifier")
+    @SerializedName("identifier")
     val identifier: String? = null,
-    @SerialName("type")
+    @SerializedName("type")
     val type: String? = null
 )

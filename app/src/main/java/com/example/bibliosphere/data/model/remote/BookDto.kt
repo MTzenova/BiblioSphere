@@ -1,15 +1,13 @@
 package com.example.bibliosphere.data.model.remote
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class BookDto(
-    @SerialName("items")
+    @SerializedName("items")
     val items: List<Item>? = listOf(),
-    @SerialName("kind")
+    @SerializedName("kind")
     val kind: String? = "",
-    @SerialName("totalItems")
+    @SerializedName("totalItems")
     val totalItems: Int? = 0
 )
