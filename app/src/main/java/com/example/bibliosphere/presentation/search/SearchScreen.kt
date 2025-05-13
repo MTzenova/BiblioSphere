@@ -1,10 +1,14 @@
 package com.example.bibliosphere.presentation.search
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -13,11 +17,15 @@ import com.example.bibliosphere.data.model.remote.Item
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.bibliosphere.data.network.RetrofitModule
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,7 +66,10 @@ fun SearchScreen() {
         } else if (error != null) {
             Text("Error: $error", color = Color.Red)
         } else {
-            LazyColumn {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
                 items(books) { book ->
                     BookItem(book)
                 }
@@ -71,14 +82,23 @@ fun SearchScreen() {
 fun BookItem(book: Item) {
     val title = book.volumeInfo?.title ?: "Sin título"
     val authors = book.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido"
-    val imageUrl = book.volumeInfo?.imageLinks?.thumbnail
+    val imageUrl = book.volumeInfo?.imageLinks?.thumbnail?.replace("http", "https")
 
-    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .background(MaterialTheme.colorScheme.inversePrimary)
+            .padding(16.dp)
+    ) {
         imageUrl?.let {
+            Log.d("SearchScreen", "Imagen: $imageUrl")
+
             AsyncImage(
-                model = it,
+                model = imageUrl,
                 contentDescription = null,
-                modifier = Modifier.size(80.dp)
+                modifier = Modifier.size(80.dp),
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -87,4 +107,5 @@ fun BookItem(book: Item) {
             Text(authors)
         }
     }
+    Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingMedium))
 }
