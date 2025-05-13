@@ -2,11 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
-    //kotlin("plugin.serialization") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
     id("com.google.gms.google-services")
-
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -71,11 +68,13 @@ dependencies {
 
     // Para Google Identity
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.0.1")
-    //hilt
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
+//    //hilt
+//    implementation("com.google.dagger:hilt-android:2.56.2")
+//    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
     //gson
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    //coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))

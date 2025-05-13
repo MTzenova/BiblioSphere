@@ -1,21 +1,13 @@
 package com.example.bibliosphere.core.navigation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,12 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,11 +31,10 @@ import com.example.bibliosphere.presentation.login.LoginScreen
 import com.example.bibliosphere.presentation.login.LoginScreenViewModel
 import com.example.bibliosphere.presentation.register.RegisterScreen
 import com.example.bibliosphere.presentation.register.RegisterScreenViewModel
-import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
+import com.example.bibliosphere.presentation.search.SearchScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationWrapper() {
 
@@ -189,7 +177,11 @@ fun DetailedDrawer(
                                     drawerState.close()
                                     if (item.title.lowercase() == "salir") {
                                         authViewModel.signout()
-                                    } else {
+                                    }
+                                    else if(item.title.lowercase() == "ajustes"){
+                                        navController.navigate(Search)
+                                    }
+                                    else {
                                         navController.navigate(item.title.lowercase()) {
                                             launchSingleTop = true
                                         }
@@ -264,6 +256,9 @@ fun Screen(
                     navigateToHome = { navController.navigate(Home) },
                     navigateToLogin = { navController.navigate(Login) },
                 )
+            }
+            composable<Search> {
+                SearchScreen()
             }
         }
 

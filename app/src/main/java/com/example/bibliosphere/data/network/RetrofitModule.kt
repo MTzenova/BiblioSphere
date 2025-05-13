@@ -1,22 +1,21 @@
 package com.example.bibliosphere.data.network
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-    @Provides
-    @Singleton
-    fun provideRetrofit(): GoogleBooksApiService{
-        return Retrofit.Builder()
-            .baseUrl("https://www.googleapis.com/books/v1/")
+    private const val BASE_URL = "https://www.googleapis.com/books/v1/"
+    private const val API_KEY = "AIzaSyBF7rERYx2M8miJEyYZlxDFjSywpLhnHmU"
+
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(ApiKeyInterceptor(API_KEY))
+        .build()
+
+    val api:GoogleBooksApiService by lazy{
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GoogleBooksApiService::class.java)

@@ -8,7 +8,7 @@ interface GoogleBooksApiService {
     @GET("volumes") //para realizar búsqueda de volúmenes, el endpoint
     suspend fun searchBooks(
         @Query("q") query: String,
-        @Query("key") apikey: String,
-        @Query("maxResults") maxResults: Int = 40,
+        //       @Query("key") apikey: String,
+//        @Query("maxResults") maxResults: Int = 40,
     ): BookDto
 }
