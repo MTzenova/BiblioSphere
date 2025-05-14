@@ -9,11 +9,8 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
@@ -32,6 +29,7 @@ import com.example.bibliosphere.presentation.login.LoginScreenViewModel
 import com.example.bibliosphere.presentation.register.RegisterScreen
 import com.example.bibliosphere.presentation.register.RegisterScreenViewModel
 import com.example.bibliosphere.presentation.search.SearchScreen
+import com.example.bibliosphere.presentation.search.SearchScreenViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -60,6 +58,7 @@ fun NavigationWrapper() {
 
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+
 
     val items = listOf(
         DrawerItems("Perfil", Icons.Default.AccountBox),
@@ -207,7 +206,8 @@ fun Screen(
     scope: CoroutineScope,
     drawerState: DrawerState,
 ) {
-
+    val searchViewModel: SearchScreenViewModel = viewModel()
+    val query by searchViewModel.query.collectAsState()
     val showBars = currentRoute != Login::class.qualifiedName && currentRoute != Register::class.qualifiedName
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         state = rememberTopAppBarState()
@@ -219,7 +219,16 @@ fun Screen(
         //esta parte no se ve en login ni en register
         topBar = {
             if (showBars) {
-                TopBar(scrollBehavior = scrollBehavior, currentRoute = currentRoute, scope = scope, drawerState = drawerState)
+                TopBar(
+                    scrollBehavior = scrollBehavior,
+                    currentRoute = currentRoute,
+                    drawerState = drawerState,
+                    scope = scope,
+                    isSearchScreen = currentRoute == Search::class.qualifiedName,
+                    searchQuery = query,
+                    onSearchQueryChange = { searchViewModel.onQueryChange(it)},
+                    onSearch = { searchViewModel.searchBooks() }
+                )
             }
         },
         //aqui el bottomBar con el if
@@ -258,7 +267,8 @@ fun Screen(
                 )
             }
             composable<Search> {
-                SearchScreen()
+                val viewModel: SearchScreenViewModel = viewModel()
+                SearchScreen(viewModel = viewModel)
             }
         }
 

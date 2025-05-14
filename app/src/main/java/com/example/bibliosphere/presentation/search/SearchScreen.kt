@@ -6,78 +6,129 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.bibliosphere.data.model.remote.Item
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.bibliosphere.core.navigation.TopBar
 import com.example.bibliosphere.data.network.RetrofitModule
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 @Composable
-fun SearchScreen() {
-    var books by remember { mutableStateOf<List<Item>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf<String?>(null) }
+fun SearchScreen(viewModel: SearchScreenViewModel) {
+    val query by viewModel.query.collectAsState()
+    val books by viewModel.books.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Button(onClick = {
-            isLoading = true
-            error = null
 
-            // Llamada a la API en una corrutina
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val response = RetrofitModule.api.searchBooks("harry potter")
-                    withContext(Dispatchers.Main) {
-                        books = response.items ?: emptyList()
-                        isLoading = false
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        error = e.message
-                        isLoading = false
-                    }
-                }
-            }
-        }) {
-            Text("Buscar libros")
+        // Campo de búsqueda
+        OutlinedTextField(
+            value = query,
+            onValueChange = { viewModel.onQueryChange(it) },
+            label = { Text("Buscar libro") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Botón de búsqueda
+        Button(
+            onClick = { viewModel.searchBooks() },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Buscar")
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.padding(16.dp))
-        } else if (error != null) {
-            Text("Error: $error", color = Color.Red)
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                items(books) { book ->
-                    BookItem(book)
-                }
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+        }
+
+        error?.let {
+            Text(text = "Error: $it", color = MaterialTheme.colorScheme.error)
+        }
+
+        LazyColumn {
+            items(books) { item ->
+                BookItem(item)
             }
         }
     }
 }
 
+
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun SearchScreen(drawerState: DrawerState, scope: CoroutineScope) {
+//    var query by remember { mutableStateOf("") }
+//    var books by remember { mutableStateOf<List<Item>>(emptyList()) }
+//    var isLoading by remember { mutableStateOf(false) }
+//    var error by remember { mutableStateOf<String?>(null) }
+//
+//    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+//
+//    Scaffold(
+//        topBar = {
+//            TopBar(
+//                scrollBehavior = scrollBehavior,
+//                currentRoute = "search",
+//                drawerState = drawerState,
+//                scope = scope,
+//                isSearchScreen = true,
+//                searchQuery = query,
+//                onSearchQueryChange = { query = it },
+//                onSearch = {
+//                    isLoading = true
+//                    error = null
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        try {
+//                            val response = RetrofitModule.api.searchBooks(query)
+//                            withContext(Dispatchers.Main) {
+//                                books = response.items ?: emptyList()
+//                                isLoading = false
+//                            }
+//                        } catch (e: Exception) {
+//                            withContext(Dispatchers.Main) {
+//                                error = e.message
+//                                isLoading = false
+//                            }
+//                        }
+//                    }
+//                }
+//            )
+//        },
+//        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+//    ) { innerPadding ->
+//        Column(
+//            modifier = Modifier
+//                .padding(innerPadding)
+//                .fillMaxSize()
+//                .padding(16.dp)
+//        ) {
+//            when {
+//                isLoading -> CircularProgressIndicator()
+//                error != null -> Text("Error: $error", color = Color.Red)
+//                else -> LazyColumn {
+//                    items(books) { book -> BookItem(book) }
+//                }
+//            }
+//        }
+//    }
+//}
 @Composable
 fun BookItem(book: Item) {
     val title = book.volumeInfo?.title ?: "Sin título"

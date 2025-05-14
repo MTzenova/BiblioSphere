@@ -1,11 +1,9 @@
 package com.example.bibliosphere.core.navigation
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material3.*
@@ -25,21 +23,41 @@ fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     currentRoute: String?,
     drawerState: DrawerState,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    isSearchScreen: Boolean = false,
+    searchQuery: String = "",
+    onSearchQueryChange: (String) -> Unit = {},
+    onSearch: () -> Unit = {}
 ) {
 
     TopAppBar(
         title = {
-            Text(
-                text = getScreenTitle(currentRoute),
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                fontSize = 17.sp
-            )
+            if (isSearchScreen) {
+                TextField(
+                    value = searchQuery,
+                    onValueChange = onSearchQueryChange,
+                    placeholder = { Text("Buscar libro...") },
+                    singleLine = true,
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 8.dp),
+                    trailingIcon = {
+                        IconButton(onClick = onSearch) {
+                            Icon(Icons.Default.Search, contentDescription = "Buscar")
+                        }
+                    }
+                )
+            } else {
+                Text(
+                    text = getScreenTitle(currentRoute),
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                    fontSize = 17.sp
+                )
+            }
         },
         modifier = modifier
-            .padding(horizontal = BiblioSphereTheme.dimens.paddingMedium)
-            .statusBarsPadding()
-            .clip(RoundedCornerShape(100.dp)),
+            .statusBarsPadding(),
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
