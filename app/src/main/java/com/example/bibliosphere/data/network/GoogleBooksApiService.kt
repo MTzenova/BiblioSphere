@@ -1,7 +1,10 @@
 package com.example.bibliosphere.data.network
 
+import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.data.model.remote.BookDto
+import com.example.bibliosphere.data.model.remote.Item
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GoogleBooksApiService {
@@ -11,4 +14,9 @@ interface GoogleBooksApiService {
         //       @Query("key") apikey: String,
         @Query("maxResults") maxResults: Int = 40,
     ): BookDto
+
+    @GET("volumes/{id}")
+    suspend fun getBookDetail(
+        @Path("id") id: String
+    ): Item
 }

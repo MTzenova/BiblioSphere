@@ -24,37 +24,14 @@ fun TopBar(
     currentRoute: String?,
     drawerState: DrawerState,
     scope: CoroutineScope,
-    isSearchScreen: Boolean = false,
-    searchQuery: String = "",
-    onSearchQueryChange: (String) -> Unit = {},
-    onSearch: () -> Unit = {}
 ) {
-
     TopAppBar(
         title = {
-            if (isSearchScreen) {
-                TextField(
-                    value = searchQuery,
-                    onValueChange = onSearchQueryChange,
-                    placeholder = { Text("Buscar libro...") },
-                    singleLine = true,
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 8.dp),
-                    trailingIcon = {
-                        IconButton(onClick = onSearch) {
-                            Icon(Icons.Default.Search, contentDescription = "Buscar")
-                        }
-                    }
-                )
-            } else {
-                Text(
-                    text = getScreenTitle(currentRoute),
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                    fontSize = 17.sp
-                )
-            }
+            Text(
+                text = getScreenTitle(currentRoute),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                fontSize = 17.sp
+            )
         },
         modifier = modifier
             .statusBarsPadding(),

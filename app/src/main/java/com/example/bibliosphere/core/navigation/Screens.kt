@@ -15,11 +15,18 @@ object Register
 @Serializable
 object Search
 
+@Serializable
+object BookDetail{
+    const val route = "bookDetail"
+    fun bookRoute(idBook:String) = "bookDetail/$idBook"
+}
+
 //función para obtener el título según la pantalla
 fun getScreenTitle(route: String?): String = when (route) {
     Home::class.qualifiedName -> "Inicio"
     Register::class.qualifiedName -> "Registro"
     Login::class.qualifiedName -> "Login"
-    Search::class.qualifiedName -> "Search"
+    Search::class.qualifiedName -> "Search books"
+    BookDetail::class.qualifiedName -> "Book details"
     else -> "BiblioSphere"
 }

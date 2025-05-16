@@ -21,6 +21,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bibliosphere.data.model.DrawerItems
+import com.example.bibliosphere.presentation.bookDetail.BookDetailScreen
+import com.example.bibliosphere.presentation.bookDetail.BookDetailScreenViewModel
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.home.HomeScreen
@@ -100,46 +102,6 @@ fun NavigationWrapper() {
                 )
             }
         )
-
-//        Scaffold{ paddingValues ->
-//            //aquí el modal
-//            ModalNavigationDrawer(
-//                drawerState = drawerState,
-//                drawerContent = {
-//                    ModalDrawerSheet {
-//                        items.forEachIndexed { index, item ->
-//                            NavigationDrawerItem(
-//                                label = {Text(item.title)},
-//                                icon = {Icon(item.icon, contentDescription = null)},
-//                                selected = currentRoute == item.title.lowercase(),
-//                                onClick = {
-//                                    scope.launch {
-//                                        drawerState.close()
-//                                        if(item.title.lowercase() == "salir"){
-//                                            authViewModel.signout()
-//                                        }else{
-//                                            navController.navigate(item.title.lowercase()){
-//                                                launchSingleTop = true
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            )
-//                        }
-//                    }
-//                }
-//            ) {
-//
-//                Screen(
-//                    modifier = Modifier.padding(paddingValues),
-//                    navController = navController,
-//                    authViewModel = authViewModel,
-//                    currentRoute = currentRoute,
-//                    scope = scope,
-//                    drawerState = drawerState,
-//                )
-//            }
-//       }
     }
 
 }
@@ -224,10 +186,6 @@ fun Screen(
                     currentRoute = currentRoute,
                     drawerState = drawerState,
                     scope = scope,
-                    isSearchScreen = currentRoute == Search::class.qualifiedName,
-                    searchQuery = query,
-                    onSearchQueryChange = { searchViewModel.onQueryChange(it)},
-                    onSearch = { searchViewModel.searchBooks() }
                 )
             }
         },
@@ -268,7 +226,12 @@ fun Screen(
             }
             composable<Search> {
                 val viewModel: SearchScreenViewModel = viewModel()
-                SearchScreen(viewModel = viewModel)
+                SearchScreen(viewModel = viewModel, navController)
+            }
+            composable("${BookDetail.route}/{bookId}") { backStackEntry ->
+                val viewModel: BookDetailScreenViewModel = viewModel()
+                val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
+                BookDetailScreen(bookId = bookId, viewModel = viewModel)
             }
         }
 
