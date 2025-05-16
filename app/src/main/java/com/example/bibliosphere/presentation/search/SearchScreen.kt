@@ -12,19 +12,14 @@ import androidx.compose.ui.Modifier
 import com.example.bibliosphere.data.model.remote.Item
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.bibliosphere.core.navigation.TopBar
-import com.example.bibliosphere.data.network.RetrofitModule
+import com.example.bibliosphere.data.model.remote.ImageLinks
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.bibliosphere.presentation.components.ItemBookList
+
+
 @Composable
 fun SearchScreen(viewModel: SearchScreenViewModel) {
     val query by viewModel.query.collectAsState()
@@ -32,7 +27,7 @@ fun SearchScreen(viewModel: SearchScreenViewModel) {
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(modifier = Modifier.fillMaxWidth()) {
 
         // Campo de búsqueda
         OutlinedTextField(
@@ -52,7 +47,7 @@ fun SearchScreen(viewModel: SearchScreenViewModel) {
             Text("Buscar")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
@@ -64,99 +59,44 @@ fun SearchScreen(viewModel: SearchScreenViewModel) {
 
         LazyColumn {
             items(books) { item ->
-                BookItem(item)
+                ItemBookList(
+                    author = item.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
+                    title = item.volumeInfo?.title ?: "Sin título",
+                    image = item.volumeInfo?.imageLinks ?: ImageLinks(thumbnail = "")
+                )
             }
         }
     }
 }
 
-
-//@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
-//fun SearchScreen(drawerState: DrawerState, scope: CoroutineScope) {
-//    var query by remember { mutableStateOf("") }
-//    var books by remember { mutableStateOf<List<Item>>(emptyList()) }
-//    var isLoading by remember { mutableStateOf(false) }
-//    var error by remember { mutableStateOf<String?>(null) }
+//fun BookItem(book: Item) {
+//    val title = book.volumeInfo?.title ?: "Sin título"
+//    val authors = book.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido"
+//    val imageUrl = book.volumeInfo?.imageLinks?.thumbnail?.replace("http", "https")
 //
-//    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+//    Row(
+//        modifier = Modifier
+//            .padding(horizontal = 16.dp)
+//            .fillMaxWidth()
+//            .clip(RoundedCornerShape(20.dp))
+//            .background(MaterialTheme.colorScheme.inversePrimary)
+//            .padding(16.dp)
+//    ) {
+//        imageUrl?.let {
+//            Log.d("SearchScreen", "Imagen: $imageUrl")
 //
-//    Scaffold(
-//        topBar = {
-//            TopBar(
-//                scrollBehavior = scrollBehavior,
-//                currentRoute = "search",
-//                drawerState = drawerState,
-//                scope = scope,
-//                isSearchScreen = true,
-//                searchQuery = query,
-//                onSearchQueryChange = { query = it },
-//                onSearch = {
-//                    isLoading = true
-//                    error = null
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        try {
-//                            val response = RetrofitModule.api.searchBooks(query)
-//                            withContext(Dispatchers.Main) {
-//                                books = response.items ?: emptyList()
-//                                isLoading = false
-//                            }
-//                        } catch (e: Exception) {
-//                            withContext(Dispatchers.Main) {
-//                                error = e.message
-//                                isLoading = false
-//                            }
-//                        }
-//                    }
-//                }
+//            AsyncImage(
+//                model = imageUrl,
+//                contentDescription = null,
+//                modifier = Modifier.size(80.dp),
 //            )
-//        },
-//        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-//    ) { innerPadding ->
-//        Column(
-//            modifier = Modifier
-//                .padding(innerPadding)
-//                .fillMaxSize()
-//                .padding(16.dp)
-//        ) {
-//            when {
-//                isLoading -> CircularProgressIndicator()
-//                error != null -> Text("Error: $error", color = Color.Red)
-//                else -> LazyColumn {
-//                    items(books) { book -> BookItem(book) }
-//                }
-//            }
+//        }
+//        Spacer(modifier = Modifier.width(8.dp))
+//        Column {
+//            Text(title, fontWeight = FontWeight.Bold)
+//            Text(authors)
 //        }
 //    }
+//    Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingMedium))
 //}
-@Composable
-fun BookItem(book: Item) {
-    val title = book.volumeInfo?.title ?: "Sin título"
-    val authors = book.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido"
-    val imageUrl = book.volumeInfo?.imageLinks?.thumbnail?.replace("http", "https")
-
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
-            .background(MaterialTheme.colorScheme.inversePrimary)
-            .padding(16.dp)
-    ) {
-        imageUrl?.let {
-            Log.d("SearchScreen", "Imagen: $imageUrl")
-
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = null,
-                modifier = Modifier.size(80.dp),
-            )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        Column {
-            Text(title, fontWeight = FontWeight.Bold)
-            Text(authors)
-        }
-    }
-    Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingMedium))
-}
