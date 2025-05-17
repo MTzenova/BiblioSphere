@@ -2,12 +2,15 @@ package com.example.bibliosphere.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -15,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.ui.tooling.preview.Preview
+
 
 
 @Composable
@@ -42,7 +46,6 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
             onValueChange(it)
         },
         placeholder = { Text(text = label, color = colorScheme.onSurface) },
-
         //label = { LabelView(title = label) },
         textStyle = MaterialTheme.typography.bodyMedium,
         colors = textFieldColors(
@@ -59,6 +62,24 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
             focusedPlaceholderColor = colorScheme.onSurfaceVariant,
             unfocusedPlaceholderColor = colorScheme.onSurfaceVariant,
         ),
+        shape = RoundedCornerShape(30.dp),
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search",
+                tint = colorScheme.onSurface,
+            )
+        },
+        trailingIcon = {
+            IconButton(
+                onClick = {
+                    onImeAction()
+                    keyboardController?.hide()
+                }
+            ) {
+                Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
+            }
+        },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(
             onDone = {
