@@ -31,18 +31,6 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
             onImeAction = {viewModel.searchBooks()}
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Botón de búsqueda
-//        Button(
-//            onClick = { viewModel.searchBooks() },
-//            modifier = Modifier.align(Alignment.End)
-//        ) {
-//            Text("Buscar")
-//        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }

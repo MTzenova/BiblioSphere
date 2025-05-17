@@ -28,13 +28,12 @@ fun BookDetailCard(
             .padding(horizontal = 20.dp, vertical = 40.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.primary)
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(16.dp)),
+            .background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.TopCenter
     ){
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 60.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
+            .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
             //imagen
@@ -43,8 +42,8 @@ fun BookDetailCard(
                 contentDescription = "Book of $author",
                 modifier = Modifier
                     .size(width = 140.dp, height = 200.dp)
-                    .offset(y = (-30).dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    //.offset(y = (-30).dp)
+                    //.clip(RoundedCornerShape(20.dp))
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -65,16 +64,23 @@ fun BookDetailCard(
             Spacer(modifier = Modifier.height(8.dp))
             ChipView(type = type)
         }
-
-
     }
 }
 
 @Composable
-fun BookDescription(
-    description: String
-){
-
+fun BookDescription(description: String) {
+//    AndroidView(
+//        factory = { context ->
+//            TextView(context).apply {
+//                text = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+//            }
+//        },
+//        modifier = Modifier.padding(16.dp),
+//    )
+    ExpandingText(
+        description = description,
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+    )
 }
 
 @Preview(showBackground = true, showSystemUi = true)
