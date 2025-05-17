@@ -57,7 +57,8 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
                         item.id?.let { id ->
                             navController.navigate(BookDetail.bookRoute(id))
                         }
-                    }
+                    },
+                    type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría"
                 )
             }
         }

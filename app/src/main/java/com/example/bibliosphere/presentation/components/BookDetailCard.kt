@@ -21,6 +21,7 @@ fun BookDetailCard(
     author: String,
     title: String,
     image: String,
+    type: String,
 ) {
     Box(
         modifier = Modifier
@@ -62,7 +63,7 @@ fun BookDetailCard(
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
-            ChipView()
+            ChipView(type = type)
         }
 
 
@@ -82,6 +83,7 @@ fun BookDetailCardPreview() {
     BookDetailCard(
         "J.K. Rowlings",
         "Harry Potter y el cáliz de fuego",
-        "https://upload.wikimedia.org/wikipedia/en/a/a9/Harry_Potter_and_the_Goblet_of_Fire.jpg"
+        "https://upload.wikimedia.org/wikipedia/en/a/a9/Harry_Potter_and_the_Goblet_of_Fire.jpg",
+        type = "Fantasia",
     )
 }

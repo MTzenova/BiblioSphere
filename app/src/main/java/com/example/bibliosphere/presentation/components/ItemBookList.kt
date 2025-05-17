@@ -23,7 +23,8 @@ fun ItemBookList(
     author:String,
     title:String,
     image: ImageLinks,
-    onClick:()->Unit
+    onClick:()->Unit,
+    type:String,
 ) {
     Card(modifier = Modifier.padding(16.dp).clickable { onClick()}) {
 
@@ -43,7 +44,7 @@ fun ItemBookList(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = title, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                ChipView()
+                ChipView(type = type)
 
             }
         }
@@ -51,7 +52,7 @@ fun ItemBookList(
 }
 
 @Composable
-fun ChipView(){
+fun ChipView(type:String){
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(12.dp))
@@ -59,12 +60,12 @@ fun ChipView(){
             .padding(start = 12.dp, end = 12.dp, top = 5.dp, bottom = 5.dp),
         contentAlignment = Alignment.Center
     ){
-        Text(text = "Type", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimary)
+        Text(text = type, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ItemBookListPreview() {
-    ItemBookList(author = "J.K.Rowling", title = "Harry Potter", image = ImageLinks(thumbnail = "https://upload.wikimedia.org/wikipedia/en/a/a9/Harry_Potter_and_the_Goblet_of_Fire.jpg"),onClick = {})
+    ItemBookList(author = "J.K.Rowling", title = "Harry Potter", image = ImageLinks(thumbnail = "https://upload.wikimedia.org/wikipedia/en/a/a9/Harry_Potter_and_the_Goblet_of_Fire.jpg"),onClick = {},type="Fantasy")
 }

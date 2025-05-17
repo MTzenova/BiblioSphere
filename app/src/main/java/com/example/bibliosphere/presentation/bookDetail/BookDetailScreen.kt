@@ -27,7 +27,8 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
             BookDetailCard(
                 author = it.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
                 title = it.volumeInfo?.title?:"Titulo desconocido",
-                image = it.volumeInfo?.imageLinks?.thumbnail?:""
+                image = it.volumeInfo?.imageLinks?.thumbnail?:"",
+                type = it.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
             )
         }
     }
