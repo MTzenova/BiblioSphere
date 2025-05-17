@@ -26,7 +26,7 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
         bookDetail?.let {
             BookDetailCard(
                 author = it.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
-                title = it.volumeInfo?.title?:"Unknown",
+                title = it.volumeInfo?.title?:"Titulo desconocido",
                 image = it.volumeInfo?.imageLinks?.thumbnail?:""
             )
         }

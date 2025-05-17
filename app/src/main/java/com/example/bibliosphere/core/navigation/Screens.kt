@@ -27,6 +27,6 @@ fun getScreenTitle(route: String?): String = when (route) {
     Register::class.qualifiedName -> "Registro"
     Login::class.qualifiedName -> "Login"
     Search::class.qualifiedName -> "Search books"
-    BookDetail::class.qualifiedName -> "Book details"
+    BookDetail::class.qualifiedName -> "Book detail"
     else -> "BiblioSphere"
 }
