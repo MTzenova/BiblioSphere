@@ -7,10 +7,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.data.model.remote.ImageLinks
 import com.example.bibliosphere.presentation.components.ItemBookList
@@ -29,18 +27,19 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
         TextInputField(
             label = "Buscar libro",
             value = query,
-            onValueChange = { viewModel.onQueryChange(it) }
+            onValueChange = { viewModel.onQueryChange(it) },
+            onImeAction = {viewModel.searchBooks()}
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         // Botón de búsqueda
-        Button(
-            onClick = { viewModel.searchBooks() },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text("Buscar")
-        }
+//        Button(
+//            onClick = { viewModel.searchBooks() },
+//            modifier = Modifier.align(Alignment.End)
+//        ) {
+//            Text("Buscar")
+//        }
 
         Spacer(modifier = Modifier.height(10.dp))
 

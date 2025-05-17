@@ -69,6 +69,13 @@ fun BookDetailCard(
     }
 }
 
+@Composable
+fun BookDescription(
+    description: String
+){
+
+}
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun BookDetailCardPreview() {

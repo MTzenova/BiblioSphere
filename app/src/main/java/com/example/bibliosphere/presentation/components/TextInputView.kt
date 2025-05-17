@@ -29,7 +29,7 @@ fun LabelView(title: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit) {
+fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit, onImeAction: () -> Unit) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -63,6 +63,7 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
         keyboardActions = KeyboardActions(
             onDone = {
                 keyboardController?.hide()
+                onImeAction()
             }
         )
     )
@@ -72,7 +73,7 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TextInputFieldPreview() {
-    TextInputField("Hola", value = "Hola", onValueChange = {})
+    TextInputField("Hola", value = "Hola", onValueChange = {}, onImeAction = {})
 }
 
 //@Composable
