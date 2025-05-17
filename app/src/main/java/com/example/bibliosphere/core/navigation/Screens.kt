@@ -21,6 +21,9 @@ object BookDetail{
     fun bookRoute(idBook:String) = "bookDetail/$idBook"
 }
 
+@Serializable
+object Library
+
 //función para obtener el título según la pantalla
 fun getScreenTitle(route: String?): String = when (route) {
     Home::class.qualifiedName -> "Inicio"
@@ -28,5 +31,6 @@ fun getScreenTitle(route: String?): String = when (route) {
     Login::class.qualifiedName -> "Login"
     Search::class.qualifiedName -> "Search books"
     BookDetail::class.qualifiedName -> "Book detail"
+    Library::class.qualifiedName -> "Library"
     else -> "BiblioSphere"
 }

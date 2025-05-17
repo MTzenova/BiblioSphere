@@ -26,6 +26,7 @@ import com.example.bibliosphere.presentation.bookDetail.BookDetailScreenViewMode
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.home.HomeScreen
+import com.example.bibliosphere.presentation.library.myLibrary.MyLibraryScreen
 import com.example.bibliosphere.presentation.login.LoginScreen
 import com.example.bibliosphere.presentation.login.LoginScreenViewModel
 import com.example.bibliosphere.presentation.register.RegisterScreen
@@ -158,6 +159,7 @@ fun DetailedDrawer(
         content(PaddingValues(0.dp))
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen(
@@ -168,13 +170,11 @@ fun Screen(
     scope: CoroutineScope,
     drawerState: DrawerState,
 ) {
-    val searchViewModel: SearchScreenViewModel = viewModel()
-    val query by searchViewModel.query.collectAsState()
     val showBars = currentRoute != Login::class.qualifiedName && currentRoute != Register::class.qualifiedName
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         state = rememberTopAppBarState()
     )
-
+    var selectedIndex by remember { mutableStateOf(0)}
     Scaffold(
         modifier = modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection), //sirve para ocultar el topbar al scrollear
@@ -190,11 +190,27 @@ fun Screen(
             }
         },
         //aqui el bottomBar con el if
-//        bottomBar = {
-//            if (showBars) {
-//                BottomBar(navController = navController, currentRoute = currentRoute)
-//            }
-//        }
+        bottomBar = {
+
+            if (showBars) {
+                BottomBar(
+                    navItemList = NavItemList.navItemList,
+                    selectedIndex = selectedIndex,
+                    onItemSelected = { index ->
+                        when (index) {
+                            //0 -> navController.popBackStack()
+                            1 -> navController.navigate(Home)
+                            2 -> navController.navigate(Library)
+                            3 -> navController.navigate(Search)
+                        }
+                        if(index!= 0){
+                            selectedIndex = index
+                        }
+                    },
+                    navController = navController,
+                )
+            }
+        }
     ) { paddingValues ->
         NavHost(
             navController = navController,
@@ -232,6 +248,9 @@ fun Screen(
                 val viewModel: BookDetailScreenViewModel = viewModel()
                 val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
                 BookDetailScreen(bookId = bookId, viewModel = viewModel)
+            }
+            composable<Library>{
+                MyLibraryScreen()
             }
         }
 

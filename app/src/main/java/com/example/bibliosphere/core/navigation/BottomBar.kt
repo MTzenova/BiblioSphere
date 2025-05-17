@@ -1,101 +1,59 @@
 package com.example.bibliosphere.core.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmarks
-import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Bookmarks
-import androidx.compose.material.icons.outlined.Explore
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.*
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.bibliosphere.data.model.DrawerItems
+
 
 @Composable
 fun BottomBar(
-    navController: NavController,
-    currentRoute: String?,
-    modifier: Modifier = Modifier
-){
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
-        modifier = modifier
-    ) {
-        bottomNavItems.forEach { item ->
-            val selected = currentRoute == item.route
+    navItemList: List<DrawerItems>,
+    selectedIndex: Int,
+    onItemSelected: (Int) -> Unit,
+    navController: NavHostController,
+) {
+    NavigationBar {
+        navItemList.forEachIndexed { index, navItem ->
+            val isBack = index == 0
+            val enabled = if (isBack) {
+                navController.previousBackStackEntry != null
+            } else true
+            val selectedItem = if (isBack) false else selectedIndex == index
 
             NavigationBarItem(
-                icon = {
-                    Icon(
-                        imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
-                        contentDescription = item.title
-                    )
-                },
-                label = { Text(text = item.title) },
-                selected = selected,
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = MaterialTheme.colorScheme.secondaryContainer
-                ),
+                enabled = enabled,
+                selected = selectedItem,
                 onClick = {
-                    if (currentRoute != item.route) {
-                        navController.navigate(item.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            // Avoid multiple copies of the same destination
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
+                    if (isBack && enabled) {
+                        navController.popBackStack()
+                    } else if (!isBack) {
+                        onItemSelected(index)
                     }
-                }
+                },
+                icon = {
+                    Icon(imageVector = navItem.icon, contentDescription = "Icon")
+                },
+                label = {
+                    Text(text = navItem.title)
+                },
             )
         }
     }
 }
-/**
- * Bottom navigation item data class
- */
-data class BottomNavItem(
-    val route: String,
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
-)
 
-/**
- * List of bottom navigation items
- */
-val bottomNavItems = listOf(
-    BottomNavItem(
-        route = Home.toString(),
-        title = "Inicio",
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home
-    ),
-    BottomNavItem(
-        route = Home.toString(), // Create this route when needed
-        title = "Buscar",
-        selectedIcon = Icons.Filled.Search,
-        unselectedIcon = Icons.Outlined.Search
-    ),
-    BottomNavItem(
-        route = Home.toString(), // Create this route when needed
-        title = "Explorar",
-        selectedIcon = Icons.Filled.Explore,
-        unselectedIcon = Icons.Outlined.Explore
-    ),
-    BottomNavItem(
-        route = Home.toString(), // Create this route when needed
-        title = "Guardados",
-        selectedIcon = Icons.Filled.Bookmarks,
-        unselectedIcon = Icons.Outlined.Bookmarks
+object NavItemList{
+    val navItemList = listOf(
+        DrawerItems("Atrás", Icons.AutoMirrored.Filled.ArrowBack),
+        DrawerItems("Inicio",Icons.Default.Home),
+        DrawerItems("Biblioteca",Icons.Default.Book),
+        DrawerItems("Buscar",Icons.Default.Search),
     )
-)
+}

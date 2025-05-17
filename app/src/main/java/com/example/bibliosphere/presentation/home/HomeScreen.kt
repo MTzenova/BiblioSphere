@@ -38,7 +38,7 @@ fun ScreenContent(paddingValues: PaddingValues){
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(
-            top = paddingValues.calculateBottomPadding() + 16.dp
+            top = paddingValues.calculateTopPadding()
         )
     ){
         items(nItems) { index ->
