@@ -9,14 +9,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
+import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
+
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 
@@ -52,6 +54,8 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
             focusedTextColor = colorScheme.onSurface,
             unfocusedTextColor = colorScheme.onSurface,
             disabledTextColor = colorScheme.onSurface.copy(alpha = 0.38f),
+            focusedContainerColor = Color.Transparent, //no me lo pone transparente
+            unfocusedContainerColor = Color.Transparent,
             cursorColor = colorScheme.primary,
             focusedIndicatorColor = colorScheme.primary,
             unfocusedIndicatorColor = colorScheme.outline,

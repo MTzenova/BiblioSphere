@@ -17,6 +17,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import java.security.MessageDigest
 import java.util.*
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 
 class AuthViewModel: ViewModel()  {
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
@@ -50,13 +58,53 @@ class AuthViewModel: ViewModel()  {
 
     }
 
-    fun createAccountWithEmail(email: String, password: String) {
+    fun String.toTimestampOrNull(pattern: String = "MM/dd/yyyy"): Timestamp? {
+        if (this.isBlank()) return null
+        return try {
+            val sdf = SimpleDateFormat(pattern, Locale.US)
+            val date = sdf.parse(this)
+            date?.let { Timestamp(it) }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun createAccountWithEmail(email: String, password: String, userName: String, birthDate: String) {
 
         _authState.value = AuthState.Loading
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {task->
+
+                val userId = auth.currentUser?.uid
+                val birthDateTimestamp = birthDate.toTimestampOrNull() //convertir fecha para firestore
+
                 if(task.isSuccessful){
                     _authState.value = AuthState.Authenticated
+
+                    if(userId != null){
+                        val users = hashMapOf(
+                            "userName" to userName,
+                            "birthDate" to birthDateTimestamp,
+                            "email" to email,
+                        )
+                        val profile = UserProfileChangeRequest.Builder().setDisplayName(userName).build()
+                        
+                        auth.currentUser?.updateProfile(profile)
+                            ?.addOnFailureListener { e ->
+                                Log.e("Auth", "No se pudo actualizar displayName", e)
+                            }
+                        val db = FirebaseFirestore.getInstance()
+                        db.collection("users").document(userId)
+                            .set(users)
+                            .addOnSuccessListener {
+                                println("Usuario guardado correctamente en la bbdd.")
+                            }
+                            .addOnFailureListener {
+                                println("ERROR al intentar guardar el usuario en la bbdd.")
+                                _authState.value = AuthState.Error(it.message.toString())
+                            }
+                    }
+
                 }else{
                     _authState.value = AuthState.Error(task.exception?.message ?: "Parece que algo fue mal")
                 }

@@ -228,7 +228,7 @@ fun Screen(
             }
             composable<Home> {
                 HomeScreen(
-                    paddingValues = paddingValues
+                    //paddingValues = paddingValues
                 )
             }
             composable<Register> {

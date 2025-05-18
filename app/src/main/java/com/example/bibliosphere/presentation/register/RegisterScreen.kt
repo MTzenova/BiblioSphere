@@ -100,10 +100,13 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
             }
 
             Row(
-                Modifier.fillMaxWidth()
-                    .padding(bottom = BiblioSphereTheme.dimens.paddingNormal,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        bottom = BiblioSphereTheme.dimens.paddingNormal,
                         start = BiblioSphereTheme.dimens.paddingNormal,
-                        end = BiblioSphereTheme.dimens.paddingNormal),
+                        end = BiblioSphereTheme.dimens.paddingNormal
+                    ),
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 UserName(
@@ -162,7 +165,7 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
             Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerLarge))
 
             RowButtonRegister(registerEnable){
-                authViewModel.createAccountWithEmail(email,password)
+                authViewModel.createAccountWithEmail(email,password, userName, birthDate)
                 //navigateToHome()
             }
 
@@ -219,9 +222,14 @@ fun UserName(
     isValidUserName: Boolean,
     modifier: Modifier = Modifier
 ){
+    val maxChars = 20
     OutlinedTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = { newValue ->
+            if (newValue.length <= maxChars) {
+                onValueChange(newValue)
+            }
+                                        },
         label = {Text("Nombre de usuario")},
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         maxLines = 1,

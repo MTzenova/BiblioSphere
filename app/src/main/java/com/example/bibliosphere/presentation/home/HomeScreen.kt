@@ -22,24 +22,24 @@ import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenViewModel = HomeScreenViewModel(),
-    paddingValues: PaddingValues
+    //paddingValues: PaddingValues
 ){
 
     ScreenContent(
-        paddingValues = paddingValues,
+        //paddingValues = paddingValues,
     )
 
 }
 
 @Composable
-fun ScreenContent(paddingValues: PaddingValues){
+fun ScreenContent(/*paddingValues: PaddingValues*/){
     val nItems = 4
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(
-            top = paddingValues.calculateTopPadding()
-        )
+//        contentPadding = PaddingValues(
+//            top = paddingValues.calculateBottomPadding()
+//        )
     ){
         items(nItems) { index ->
             Box(
@@ -142,5 +142,5 @@ fun ScreenContent(paddingValues: PaddingValues){
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewHomeScreen() {
-    ScreenContent(paddingValues = PaddingValues(16.dp))
+    ScreenContent(/*paddingValues = PaddingValues(16.dp)*/)
 }

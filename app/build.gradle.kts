@@ -43,9 +43,10 @@ dependencies {
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")
-    implementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    implementation(platform("androidx.compose:compose-bom:2025.05.00"))
     //android material 3
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
+    implementation("androidx.compose.material3:material3:1.3.2")
     //ViewModel
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
     implementation ("androidx.compose.runtime:runtime-livedata:1.7.8")
@@ -57,6 +58,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     //firebase
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
     //google
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     //implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
