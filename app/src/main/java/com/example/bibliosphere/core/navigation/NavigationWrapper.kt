@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bibliosphere.data.model.DrawerItems
 import com.example.bibliosphere.presentation.bookDetail.BookDetailScreen
 import com.example.bibliosphere.presentation.bookDetail.BookDetailScreenViewModel
+import com.example.bibliosphere.presentation.drawerScreens.userProfile.ProfileScreen
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.home.HomeScreen
@@ -152,6 +153,9 @@ fun DetailedDrawer(
                                     else if(item.title.lowercase() == "ajustes"){
                                         navController.navigate(Search)
                                     }
+                                    else if(item.title.lowercase() == "perfil"){
+                                        navController.navigate(Profile)
+                                    }
                                     else {
                                         navController.navigate(item.title.lowercase()) {
                                             launchSingleTop = true
@@ -260,6 +264,9 @@ fun Screen(
             }
             composable<Library>{
                 MyLibraryScreen()
+            }
+            composable<Profile>{
+                ProfileScreen()
             }
         }
 
