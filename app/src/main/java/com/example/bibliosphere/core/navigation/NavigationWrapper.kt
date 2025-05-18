@@ -65,7 +65,7 @@ fun NavigationWrapper() {
 
     val items = listOf(
         DrawerItems("Perfil", Icons.Default.AccountBox),
-        DrawerItems("Ajustes", Icons.Filled.Settings), //aqui podriamos ir a activar/desactivar notificaciones, idioma...
+        DrawerItems("Ajustes", Icons.Filled.Settings),
         DrawerItems("Acerca de", Icons.Filled.Info),
         DrawerItems("Salir", Icons.AutoMirrored.Filled.Logout),
 
@@ -117,6 +117,7 @@ fun DetailedDrawer(
     drawerState: DrawerState,
     items: List<DrawerItems>
 ) {
+    val userName by authViewModel.userName.observeAsState("")
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -129,6 +130,14 @@ fun DetailedDrawer(
                     Spacer(Modifier.height(12.dp))
                     Text("BiblioSphere", style = MaterialTheme.typography.titleLarge)
                     HorizontalDivider()
+                    if (userName.isNotEmpty()) {
+                        Text(
+                            text = userName,
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier
+                                .padding(top = 4.dp, bottom = 12.dp)
+                        )
+                    }
                     items.forEach { item ->
                         NavigationDrawerItem(
                             label = { Text(item.title) },

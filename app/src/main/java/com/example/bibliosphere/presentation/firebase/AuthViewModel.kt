@@ -20,8 +20,6 @@ import java.util.*
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -32,8 +30,15 @@ class AuthViewModel: ViewModel()  {
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState
 
+    private val _userName = MutableLiveData<String>()
+    val userName: LiveData<String> = _userName
+
     init{
         checkAuthStatus()
+        auth.addAuthStateListener { authState ->
+            val user = authState.currentUser
+            _userName.value = user?.displayName
+        }
     }
 
     fun checkAuthStatus(){
