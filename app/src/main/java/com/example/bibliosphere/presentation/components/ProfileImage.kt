@@ -4,6 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.runtime.*
@@ -21,6 +24,7 @@ fun ProfileImage(
 ) {
 
     val imageList = listOf(
+        R.drawable.logo_sin_letras,
         R.drawable.profile_alien,
         R.drawable.profile_astronaut,
         R.drawable.profile_chilli,
@@ -30,13 +34,27 @@ fun ProfileImage(
         R.drawable.profile_koala2,
         R.drawable.profile_lemon,
         R.drawable.profile_mosnter,
-        R.drawable.profile_yeti
+        R.drawable.profile_yeti,
+        R.drawable.profile_astro_robot,
+        R.drawable.profile_burguer_cat,
+        R.drawable.profile_cat_eating,
+        R.drawable.profile_cat_sunglases,
+        R.drawable.profile_cow_superhero,
+        R.drawable.profile_dino_blue,
+        R.drawable.profile_donut_cat,
+        R.drawable.profile_fox_sunglases,
+        R.drawable.profile_orange_cat,
+        R.drawable.profile_penguin_balloons,
     )
 
-    LazyRow(
-        modifier = Modifier.fillMaxWidth(),
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp)
+        modifier = Modifier.fillMaxWidth(),
+
+
     ) {
         items(imageList) { resId ->
             ImageSelector(

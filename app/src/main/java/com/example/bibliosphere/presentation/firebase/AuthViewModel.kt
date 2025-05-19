@@ -82,6 +82,7 @@ class AuthViewModel: ViewModel()  {
 
                 val userId = auth.currentUser?.uid
                 val birthDateTimestamp = birthDate.toTimestampOrNull() //convertir fecha para firestore
+                val image = 0 //para añadir una imagen por defecto al crear el usuario
 
                 if(task.isSuccessful){
                     _authState.value = AuthState.Authenticated
@@ -91,6 +92,7 @@ class AuthViewModel: ViewModel()  {
                             "userName" to userName,
                             "birthDate" to birthDateTimestamp,
                             "email" to email,
+                            "image" to image
                         )
                         val profile = UserProfileChangeRequest.Builder().setDisplayName(userName).build()
                         
