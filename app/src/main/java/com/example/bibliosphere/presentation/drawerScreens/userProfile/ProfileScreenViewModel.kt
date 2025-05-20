@@ -12,7 +12,7 @@ class ProfileScreenViewModel: ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
-    private val _imageResId = MutableStateFlow(R.drawable.profile_alien)
+    private val _imageResId = MutableStateFlow(R.drawable.profile_alien) //cargar de firestore
     val imageResId: StateFlow<Int> = _imageResId
 
     //para cambiar la imagen de perfil, solo para seleccionar

@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -35,14 +36,12 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp)
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 40.dp)
+                .padding(20.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.primary),
@@ -93,20 +92,21 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
             }
 
         }
-        Column( modifier = Modifier.align(Alignment.Start).padding(start = 20.dp)) {
+        Column( modifier = Modifier.align(Alignment.Start).padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 0.dp)) {
             Text("Datos del perfil:")
         }
         Box( //caja para los datos del perfil
             modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 40.dp)
+                .padding(20.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.primary),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.TopStart,
         ){
             UserDataProfile(
                 userName = "Shayleen",
                 email = "monica_97_ct@hotmail.com",
+                password = "*********",
                 birthDate = "18/03/1997",
                 enableNotifications = true
             )
@@ -140,6 +140,7 @@ fun UserDataProfile(
     userName: String,
     email: String,
     birthDate: String,
+    password: String,
     enableNotifications: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -147,11 +148,13 @@ fun UserDataProfile(
     var name by remember { mutableStateOf(userName) }
     var mail by remember { mutableStateOf(email) }
     var birth by remember { mutableStateOf(birthDate) }
+    var password by remember { mutableStateOf(password)}
+
     //cargar de firebase
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         TextFieldDataUser(
             value = name,
@@ -170,6 +173,14 @@ fun UserDataProfile(
         )
 
         TextFieldDataUser(
+            value = password,
+            onValueChange = { password = it },
+            label = "Contraseña",
+            leadingIcon = Icons.Filled.Key,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        TextFieldDataUser(
             value = birth,
             onValueChange = { birth = it },
             label = "Fecha de nacimiento",
@@ -182,5 +193,5 @@ fun UserDataProfile(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ProfileScreenPreview() {
-    UserDataProfile("Shayleen","monica_97_ct@hotmail.com","18/03/1997", true)
+    UserDataProfile("Shayleen","monica_97_ct@hotmail.com","**********","18/03/1997", true)
 }

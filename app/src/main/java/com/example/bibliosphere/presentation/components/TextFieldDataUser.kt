@@ -1,5 +1,6 @@
 package com.example.bibliosphere.presentation.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -11,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -29,17 +31,21 @@ fun TextFieldDataUser(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
         singleLine = singleLine,
         leadingIcon = {
             leadingIcon?.let { icon ->
-                Icon(icon, contentDescription = null)
+                Icon(icon, contentDescription = "Icon", tint = MaterialTheme.colorScheme.onPrimary)
             }
         },
-        label = { Text(label) },
+        label = { Text(label, color = MaterialTheme.colorScheme.onPrimary) },
         shape = RoundedCornerShape(20.dp),
+        textStyle = LocalTextStyle.current.copy(
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onPrimary
+        ),
         colors = OutlinedTextFieldDefaults.colors(
             focusedLabelColor = MaterialTheme.colorScheme.secondary,
             focusedTextColor = MaterialTheme.colorScheme.onPrimary,
@@ -48,7 +54,7 @@ fun TextFieldDataUser(
             cursorColor = MaterialTheme.colorScheme.secondary,
             errorCursorColor = MaterialTheme.colorScheme.error,
             errorTextColor = MaterialTheme.colorScheme.error,
-        )
+        ),
     )
 }
 
