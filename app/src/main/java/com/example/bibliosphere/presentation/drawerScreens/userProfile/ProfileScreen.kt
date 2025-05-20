@@ -108,9 +108,39 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                 email = "monica_97_ct@hotmail.com",
                 password = "*********",
                 birthDate = "18/03/1997",
-                enableNotifications = true
+                enableNotifications = true,
+                editable = false,
             )
         }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            PrimaryButton(
+                text = "Guardar",
+                onClick = { /* guardar en firebase */ },
+                modifier = Modifier.weight(1f),
+                buttonColor = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.onBackground,
+                    contentColor = MaterialTheme.colorScheme.background
+                ),
+            )
+
+            PrimaryButton(
+                text = "Cancelar",
+                onClick = { /* cancelar y desactivar modo edicion */ },
+                modifier = Modifier.weight(1f),
+                buttonColor = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.onBackground,
+                    contentColor = MaterialTheme.colorScheme.background
+                ),
+            )
+        }
+
+
     }
 
 
@@ -142,13 +172,15 @@ fun UserDataProfile(
     birthDate: String,
     password: String,
     enableNotifications: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    editable: Boolean,
 ) {
 
     var name by remember { mutableStateOf(userName) }
     var mail by remember { mutableStateOf(email) }
     var birth by remember { mutableStateOf(birthDate) }
     var password by remember { mutableStateOf(password)}
+
 
     //cargar de firebase
     Column(modifier = Modifier
@@ -161,7 +193,8 @@ fun UserDataProfile(
             onValueChange = { name = it },
             label = "Nombre de usuario",
             leadingIcon = Icons.Filled.Person,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            editable = editable,
         )
 
         TextFieldDataUser(
@@ -169,7 +202,8 @@ fun UserDataProfile(
             onValueChange = { mail = it },
             label = "Correo electrónico",
             leadingIcon = Icons.Filled.Email,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            editable = editable,
         )
 
         TextFieldDataUser(
@@ -177,7 +211,8 @@ fun UserDataProfile(
             onValueChange = { password = it },
             label = "Contraseña",
             leadingIcon = Icons.Filled.Key,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            editable = editable,
         )
 
         TextFieldDataUser(
@@ -185,7 +220,8 @@ fun UserDataProfile(
             onValueChange = { birth = it },
             label = "Fecha de nacimiento",
             leadingIcon = Icons.Filled.DateRange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            editable = editable,
         )
     }
 }
@@ -193,5 +229,5 @@ fun UserDataProfile(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ProfileScreenPreview() {
-    UserDataProfile("Shayleen","monica_97_ct@hotmail.com","**********","18/03/1997", true)
+    UserDataProfile("Shayleen","monica_97_ct@hotmail.com","**********","18/03/1997", true, editable = true )
 }

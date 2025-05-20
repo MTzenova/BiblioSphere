@@ -24,7 +24,8 @@ fun TextFieldDataUser(
     onValueChange: (String) -> Unit,
     singleLine: Boolean = true,
     leadingIcon: ImageVector? = null,
-    label: String
+    label: String,
+    editable: Boolean,
 
     ) {
 
@@ -54,7 +55,11 @@ fun TextFieldDataUser(
             cursorColor = MaterialTheme.colorScheme.secondary,
             errorCursorColor = MaterialTheme.colorScheme.error,
             errorTextColor = MaterialTheme.colorScheme.error,
+            focusedContainerColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedContainerColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedBorderColor = MaterialTheme.colorScheme.background,
         ),
+        enabled = editable
     )
 }
 
@@ -68,6 +73,7 @@ private fun TextFieldDataUserPreview() {
         onValueChange = { text.value = it },
         label = "Nombre",
         leadingIcon = Icons.Default.Person,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
+        editable = false
     )
 }
