@@ -1,11 +1,13 @@
 package com.example.bibliosphere.presentation.drawerScreens.userProfile
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +20,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bibliosphere.presentation.components.PrimaryButton
 import com.example.bibliosphere.presentation.components.ProfileImage
+import com.example.bibliosphere.presentation.components.TextFieldDataUser
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,60 +30,89 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember {mutableStateOf(false)}
     val imageResId by viewModel.imageResId.collectAsState()
+    val scrollState = rememberScrollState()
 
-    Box(
+    Column(
         modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 40.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.primary),
-        contentAlignment = Alignment.Center
-    ){
-        Column(modifier = Modifier
-            .width(IntrinsicSize.Min)
-            .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+            .fillMaxSize()
+            .padding(20.dp)
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 40.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.primary),
+            contentAlignment = Alignment.Center
+        ){
+            Column(modifier = Modifier
+                .width(IntrinsicSize.Min)
+                .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-            //imagen
+                //imagen
 
-            Card(
-                modifier = Modifier
-                    .size(140.dp)
-                    .clickable { showBottomSheet = true },
-                shape = CircleShape,
+                Card(
+                    modifier = Modifier
+                        .size(140.dp)
+                        .clickable { showBottomSheet = true },
+                    shape = CircleShape,
 
-            ){
-                val painter = rememberAsyncImagePainter( //hago esto para que las imagenes no pesen tanto
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(imageResId)
-                        .size(252)
-                        .build()
+                    ){
+                    val painter = rememberAsyncImagePainter( //hago esto para que las imagenes no pesen tanto
+                        ImageRequest.Builder(LocalContext.current)
+                            .data(imageResId)
+                            .size(252)
+                            .build()
+                    )
+
+                    Image(
+                        painter = painter,
+                        contentDescription = "Profile Image",
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+                //botón editar
+
+                PrimaryButton(
+                    text = "Editar perfil",
+                    onClick = { /* activar modo edición */},
+                    modifier = Modifier.fillMaxWidth(),
+                    buttonColor = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                        contentColor   = MaterialTheme.colorScheme.onBackground
+                    ),
                 )
 
-                Image(
-                    painter = painter,
-                    contentDescription = "Profile Image",
-                    modifier = Modifier.fillMaxSize(),
-                )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-            //contenido
-
-            PrimaryButton(
-                text = "Editar perfil",
-                onClick = { /* activar modo edición */},
-                modifier = Modifier.fillMaxWidth(),
-                buttonColor = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    contentColor   = MaterialTheme.colorScheme.onBackground
-                ),
+        }
+        Column( modifier = Modifier.align(Alignment.Start).padding(start = 20.dp)) {
+            Text("Datos del perfil:")
+        }
+        Box( //caja para los datos del perfil
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 40.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.primary),
+            contentAlignment = Alignment.Center
+        ){
+            UserDataProfile(
+                userName = "Shayleen",
+                email = "monica_97_ct@hotmail.com",
+                birthDate = "18/03/1997",
+                enableNotifications = true
             )
         }
-
-
     }
+
 
     //para mostrar/ocultar hoja inferior
     if (showBottomSheet) {
@@ -111,34 +143,44 @@ fun UserDataProfile(
     enableNotifications: Boolean,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .background(MaterialTheme.colorScheme.primary),
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                "Datos de usuario",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            //nombre usuario
-            Row(
-                modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 4.dp, end = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
 
-            }
-        }
+    var name by remember { mutableStateOf(userName) }
+    var mail by remember { mutableStateOf(email) }
+    var birth by remember { mutableStateOf(birthDate) }
+    //cargar de firebase
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        TextFieldDataUser(
+            value = name,
+            onValueChange = { name = it },
+            label = "Nombre de usuario",
+            leadingIcon = Icons.Filled.Person,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        TextFieldDataUser(
+            value = mail,
+            onValueChange = { mail = it },
+            label = "Correo electrónico",
+            leadingIcon = Icons.Filled.Email,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        TextFieldDataUser(
+            value = birth,
+            onValueChange = { birth = it },
+            label = "Fecha de nacimiento",
+            leadingIcon = Icons.Filled.DateRange,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen()
+    UserDataProfile("Shayleen","monica_97_ct@hotmail.com","18/03/1997", true)
 }
