@@ -11,9 +11,30 @@ class ProfileScreenViewModel: ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser!!.uid
+    val auth = FirebaseAuth.getInstance()
+    private val currentUser = auth.currentUser
 
-    private val _imageResId = MutableStateFlow(R.drawable.profile_alien) //cargar de firestore
+    private val _imageResId = MutableStateFlow(R.drawable.logo_sin_letras) //cargar de firestore
     val imageResId: StateFlow<Int> = _imageResId
+
+    private val _userName = MutableStateFlow("")
+    val userName: StateFlow<String> = _userName
+
+    private val _userEmail = MutableStateFlow("")
+    val userEmail: StateFlow<String> = _userEmail
+
+    private val _userPassword = MutableStateFlow("")
+    val userPassword: StateFlow<String> = _userPassword
+
+    private val _userBirthday = MutableStateFlow("")
+    val userBirthday: StateFlow<String> = _userBirthday
+
+
+    init{
+        if(currentUser != null){
+            getUserData(userId)
+        }
+    }
 
     //para cambiar la imagen de perfil, solo para seleccionar
     fun setImageResId(resId: Int) {
@@ -24,6 +45,22 @@ class ProfileScreenViewModel: ViewModel() {
     fun updateImageResId(resId: Int) {
         //meter lo de firestore aqui
         db.collection("users").document(userId).update("image", resId) //actualizamos la imagen
+    }
+
+    fun getUserData(userId: String) {
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+            if (document.exists()) {
+                _userName.value = document.getString("userName")?: ""
+                _userEmail.value = document.getString("email")?: ""
+                _userBirthday.value = document.getTimestamp("birthDate").toString()?: ""
+                _imageResId.value = (document.getLong("image")?.toInt()) ?: R.drawable.logo_sin_letras
+            }
+
+        }.addOnFailureListener { exception ->
+            exception.printStackTrace()
+            }
+
     }
 
 }

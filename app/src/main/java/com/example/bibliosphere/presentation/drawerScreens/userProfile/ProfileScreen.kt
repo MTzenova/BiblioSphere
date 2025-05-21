@@ -28,14 +28,24 @@ import com.example.bibliosphere.presentation.components.TextFieldDataUser
 @Composable
 fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenViewModel()}) {
 
-    val sheetState = rememberModalBottomSheetState()
+    val userName by viewModel.userName.collectAsState()
+    val email by viewModel.userEmail.collectAsState()
+    val birthDate by viewModel.userBirthday.collectAsState()
     val imageResId by viewModel.imageResId.collectAsState()
+
+    var name by remember { mutableStateOf(userName) }
+    var mail by remember { mutableStateOf(email) }
+    var birth by remember { mutableStateOf(birthDate) }
+    var password by remember { mutableStateOf("*********") }
+
+    val sheetState = rememberModalBottomSheetState()
     val scrollState = rememberScrollState()
 
     var showBottomSheet by remember {mutableStateOf(false)}
-    var showButtons by remember {mutableStateOf(false)}
+    //var showButtons by remember {mutableStateOf(false)}
     var editable by remember {mutableStateOf(false)}
     var profileEditable by remember {mutableStateOf(false)}
+
 
 
     Column(
@@ -86,18 +96,25 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
 
                 PrimaryButton(
                     text = "Editar perfil",
-                    onClick = { profileEditable = true }, //activar modo edición
+                    onClick = {
+                        profileEditable = true
+                        name = userName
+                        mail = email
+                        birth = birthDate
+                    }, //activar modo edición
                     modifier = Modifier.fillMaxWidth(),
                     buttonColor = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.background,
-                        contentColor   = MaterialTheme.colorScheme.onBackground
+                        contentColor = MaterialTheme.colorScheme.onBackground
                     ),
                 )
 
             }
 
         }
-        Column( modifier = Modifier.align(Alignment.Start).padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 0.dp)) {
+        Column( modifier = Modifier
+            .align(Alignment.Start)
+            .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 0.dp)) {
             Text("Datos del perfil:")
         }
         Box( //caja para los datos del perfil
@@ -108,13 +125,18 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                 .background(MaterialTheme.colorScheme.primary),
             contentAlignment = Alignment.TopStart,
         ){
+
             UserDataProfile(
-                userName = "Shayleen",
-                email = "monica_97_ct@hotmail.com",
+                userName = userName,
+                email = email,
                 password = "*********",
-                birthDate = "18/03/1997",
+                birthDate = birthDate,
                 enableNotifications = true,
                 editable = editable,
+                onNameChange = { name = it },
+                onEmailChange = { mail = it },
+                onBirthDateChange = { birth = it },
+                onPasswordChange = { password = it }
             )
         }
         if(profileEditable){
@@ -127,7 +149,10 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
             ) {
                 PrimaryButton(
                     text = "Guardar",
-                    onClick = { /* guardar en firebase */ profileEditable = false},
+                    onClick = {
+                        viewModel.updateImageResId(imageResId)
+                        profileEditable = false
+                    },
                     modifier = Modifier.weight(1f),
                     buttonColor = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.onBackground,
@@ -185,14 +210,11 @@ fun UserDataProfile(
     enableNotifications: Boolean,
     modifier: Modifier = Modifier,
     editable: Boolean,
+    onNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onBirthDateChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
 ) {
-
-    var name by remember { mutableStateOf(userName) }
-    var mail by remember { mutableStateOf(email) }
-    var birth by remember { mutableStateOf(birthDate) }
-    var password by remember { mutableStateOf(password)}
-
-
     //cargar de firebase
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -200,8 +222,8 @@ fun UserDataProfile(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         TextFieldDataUser(
-            value = name,
-            onValueChange = { name = it },
+            value = userName,
+            onValueChange = onNameChange,
             label = "Nombre de usuario",
             leadingIcon = Icons.Filled.Person,
             modifier = Modifier.fillMaxWidth(),
@@ -209,8 +231,8 @@ fun UserDataProfile(
         )
 
         TextFieldDataUser(
-            value = mail,
-            onValueChange = { mail = it },
+            value = email,
+            onValueChange =  onEmailChange,
             label = "Correo electrónico",
             leadingIcon = Icons.Filled.Email,
             modifier = Modifier.fillMaxWidth(),
@@ -219,7 +241,7 @@ fun UserDataProfile(
 
         TextFieldDataUser(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = onPasswordChange,
             label = "Contraseña",
             leadingIcon = Icons.Filled.Key,
             modifier = Modifier.fillMaxWidth(),
@@ -227,18 +249,12 @@ fun UserDataProfile(
         )
 
         TextFieldDataUser(
-            value = birth,
-            onValueChange = { birth = it },
+            value = birthDate,
+            onValueChange =  onBirthDateChange,
             label = "Fecha de nacimiento",
             leadingIcon = Icons.Filled.DateRange,
             modifier = Modifier.fillMaxWidth(),
             editable = editable,
         )
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun ProfileScreenPreview() {
-    UserDataProfile("Shayleen","monica_97_ct@hotmail.com","**********","18/03/1997", true, editable = true )
 }
