@@ -29,9 +29,14 @@ import com.example.bibliosphere.presentation.components.TextFieldDataUser
 fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenViewModel()}) {
 
     val sheetState = rememberModalBottomSheetState()
-    var showBottomSheet by remember {mutableStateOf(false)}
     val imageResId by viewModel.imageResId.collectAsState()
     val scrollState = rememberScrollState()
+
+    var showBottomSheet by remember {mutableStateOf(false)}
+    var showButtons by remember {mutableStateOf(false)}
+    var editable by remember {mutableStateOf(false)}
+    var profileEditable by remember {mutableStateOf(false)}
+
 
     Column(
         modifier = Modifier
@@ -58,7 +63,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                 Card(
                     modifier = Modifier
                         .size(140.dp)
-                        .clickable { showBottomSheet = true },
+                        .clickable(enabled = editable) { showBottomSheet = true }, //solo se puede ahcer click si es true
                     shape = CircleShape,
 
                     ){
@@ -81,7 +86,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
 
                 PrimaryButton(
                     text = "Editar perfil",
-                    onClick = { /* activar modo edición */},
+                    onClick = { profileEditable = true }, //activar modo edición
                     modifier = Modifier.fillMaxWidth(),
                     buttonColor = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.background,
@@ -109,36 +114,42 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                 password = "*********",
                 birthDate = "18/03/1997",
                 enableNotifications = true,
-                editable = false,
+                editable = editable,
             )
         }
+        if(profileEditable){
+            editable = true //activamos modo edición. Los text field ahora ya no están solo en modo lectura
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                PrimaryButton(
+                    text = "Guardar",
+                    onClick = { /* guardar en firebase */ profileEditable = false},
+                    modifier = Modifier.weight(1f),
+                    buttonColor = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.onBackground,
+                        contentColor = MaterialTheme.colorScheme.background
+                    ),
+                )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            PrimaryButton(
-                text = "Guardar",
-                onClick = { /* guardar en firebase */ },
-                modifier = Modifier.weight(1f),
-                buttonColor = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.onBackground,
-                    contentColor = MaterialTheme.colorScheme.background
-                ),
-            )
-
-            PrimaryButton(
-                text = "Cancelar",
-                onClick = { /* cancelar y desactivar modo edicion */ },
-                modifier = Modifier.weight(1f),
-                buttonColor = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.onBackground,
-                    contentColor = MaterialTheme.colorScheme.background
-                ),
-            )
+                PrimaryButton(
+                    text = "Cancelar",
+                    onClick = { /* cancelar y desactivar modo edicion */ profileEditable = false },
+                    modifier = Modifier.weight(1f),
+                    buttonColor = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.onBackground,
+                        contentColor = MaterialTheme.colorScheme.background
+                    ),
+                )
+            }
         }
+        else{
+            editable = false
+        }
+
 
 
     }
