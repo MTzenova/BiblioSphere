@@ -79,7 +79,8 @@ fun DatePickerFieldToModal(
     modifier: Modifier = Modifier,
     birthDate: String,
     onBirthDateChange: (String) -> Unit,
-    isValidDate: Boolean
+    isValidDate: Boolean,
+    enabled: Boolean = true
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
@@ -88,6 +89,8 @@ fun DatePickerFieldToModal(
         value = birthDate,
         onValueChange = { },
         label = { Text("Fecha de nacimiento") },
+        readOnly = true,
+        enabled = enabled,
         placeholder = { Text("MM/DD/YYYY") },
         shape = RoundedCornerShape(20.dp),
         trailingIcon = {
@@ -103,7 +106,7 @@ fun DatePickerFieldToModal(
                     // in the Main pass.
                     awaitFirstDown(pass = PointerEventPass.Initial)
                     val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)
-                    if (upEvent != null) {
+                    if (enabled && upEvent != null) {
                         showModal = true
                     }
                 }

@@ -2,6 +2,7 @@ package com.example.bibliosphere.presentation.drawerScreens.userProfile
 
 import androidx.lifecycle.ViewModel
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.components.convertMillisToDate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,9 +52,13 @@ class ProfileScreenViewModel: ViewModel() {
         db.collection("users").document(userId).get()
             .addOnSuccessListener { document ->
             if (document.exists()) {
+                val timeStamp = document.getTimestamp("birthDate")
+                val birthDateString = timeStamp?.toDate()?.time?.let { convertMillisToDate(it) } ?: ""
+
+                _userBirthday.value = birthDateString
                 _userName.value = document.getString("userName")?: ""
                 _userEmail.value = document.getString("email")?: ""
-                _userBirthday.value = document.getTimestamp("birthDate").toString()?: ""
+               // _userBirthday.value = document.getTimestamp("birthDate").toString()?: ""
                 _imageResId.value = (document.getLong("image")?.toInt()) ?: R.drawable.logo_sin_letras
             }
 
@@ -61,6 +66,11 @@ class ProfileScreenViewModel: ViewModel() {
             exception.printStackTrace()
             }
 
+    }
+
+    fun updateProfileData(userName: String, userBirthday:String){
+        db.collection("users").document(userId).update("userName", userName)
+        db.collection("users").document(userId).update("birthDate", userBirthday)
     }
 
 }

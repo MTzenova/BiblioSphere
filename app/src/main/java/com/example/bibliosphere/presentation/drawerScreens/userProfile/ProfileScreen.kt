@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.bibliosphere.presentation.components.DatePickerFieldToModal
 import com.example.bibliosphere.presentation.components.PrimaryButton
 import com.example.bibliosphere.presentation.components.ProfileImage
 import com.example.bibliosphere.presentation.components.TextFieldDataUser
@@ -129,7 +130,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
             UserDataProfile(
                 userName = userName,
                 email = email,
-                password = "*********",
+                password = password,
                 birthDate = birthDate,
                 enableNotifications = true,
                 editable = editable,
@@ -151,6 +152,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                     text = "Guardar",
                     onClick = {
                         viewModel.updateImageResId(imageResId)
+                        viewModel.updateProfileData(userName = name, userBirthday = birth)
                         profileEditable = false
                     },
                     modifier = Modifier.weight(1f),
@@ -162,7 +164,13 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
 
                 PrimaryButton(
                     text = "Cancelar",
-                    onClick = { /* cancelar y desactivar modo edicion */ profileEditable = false },
+                    onClick = {
+                        profileEditable = false
+                        name = userName
+                        mail = email
+                        birth = birthDate
+                    },
+                    /* cancelar y desactivar modo edicion */
                     modifier = Modifier.weight(1f),
                     buttonColor = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.onBackground,
@@ -174,9 +182,6 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
         else{
             editable = false
         }
-
-
-
     }
 
 
@@ -230,31 +235,31 @@ fun UserDataProfile(
             editable = editable,
         )
 
+        DatePickerFieldToModal(
+            birthDate = birthDate,
+            onBirthDateChange = onBirthDateChange,
+            isValidDate = true,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = editable,
+        )
+
+
         TextFieldDataUser(
             value = email,
-            onValueChange =  onEmailChange,
+            onValueChange =  {},
             label = "Correo electrónico",
             leadingIcon = Icons.Filled.Email,
             modifier = Modifier.fillMaxWidth(),
-            editable = editable,
+            editable = false,
         )
 
         TextFieldDataUser(
             value = password,
-            onValueChange = onPasswordChange,
+            onValueChange = {},
             label = "Contraseña",
             leadingIcon = Icons.Filled.Key,
             modifier = Modifier.fillMaxWidth(),
-            editable = editable,
-        )
-
-        TextFieldDataUser(
-            value = birthDate,
-            onValueChange =  onBirthDateChange,
-            label = "Fecha de nacimiento",
-            leadingIcon = Icons.Filled.DateRange,
-            modifier = Modifier.fillMaxWidth(),
-            editable = editable,
+            editable = false,
         )
     }
 }
