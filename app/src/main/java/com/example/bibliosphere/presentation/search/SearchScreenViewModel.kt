@@ -2,10 +2,13 @@ package com.example.bibliosphere.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bibliosphere.data.model.BookUI
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
+import com.example.bibliosphere.presentation.components.bookState.BookState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchScreenViewModel : ViewModel() {
@@ -20,6 +23,8 @@ class SearchScreenViewModel : ViewModel() {
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
+
+
 
     fun onQueryChange(newQuery: String) {
         _query.value = newQuery
@@ -40,6 +45,23 @@ class SearchScreenViewModel : ViewModel() {
             } finally {
                 _isLoading.value = false
             }
+        }
+    }
+
+    private val _booksState = MutableStateFlow<List<BookUI>>(emptyList())
+    val booksState: StateFlow<List<BookUI>> = _booksState
+
+    fun updateBookState(newStates: Set<BookState>, bookId: String) {
+        _booksState.update { list ->
+            list.map{ book ->
+                if( book.id == bookId){
+                    book.copy(states = newStates)
+                }else{
+                    book
+                }
+
+            }
+
         }
     }
 }

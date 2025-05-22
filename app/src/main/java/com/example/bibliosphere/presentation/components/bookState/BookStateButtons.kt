@@ -1,16 +1,16 @@
-package com.example.bibliosphere.presentation.components
+package com.example.bibliosphere.presentation.components.bookState
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.runtime.*
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 
 //estados
 enum class BookState {
@@ -43,6 +43,7 @@ fun BookStateButtons(
                     BookState.PENDIENTE
                 ))
             }
+            updatedStates.add(state)
         }
 
         currentStates = updatedStates
@@ -109,7 +110,7 @@ fun BookStateButtons(
 
 
 
-@Preview
+@Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun BookStateButtonsPreview() {
     BookStateButtons(

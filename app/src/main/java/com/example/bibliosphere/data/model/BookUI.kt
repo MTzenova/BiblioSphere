@@ -1,5 +1,7 @@
 package com.example.bibliosphere.data.model
 
+import com.example.bibliosphere.presentation.components.bookState.BookState
+
 data class BookUI(
     val id: String,
     val title: String,
@@ -10,5 +12,6 @@ data class BookUI(
     val publishedDate: String = "",
     val pageCount: Int = 0,
     val categories: String = "",
-    val previewLink: String = ""
+    val previewLink: String = "",
+    val states: Set<BookState> = emptySet()
 )

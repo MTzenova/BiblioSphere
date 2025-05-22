@@ -15,12 +15,13 @@ import com.example.bibliosphere.data.model.remote.ImageLinks
 import com.example.bibliosphere.presentation.components.ItemBookList
 import com.example.bibliosphere.presentation.components.TextInputField
 
-
 @Composable
 fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController) {
     val query by viewModel.query.collectAsState()
     val books by viewModel.books.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+
+    val booksState by viewModel.booksState.collectAsState()
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -38,6 +39,9 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
 
         LazyColumn {
             items(books) { item ->
+                val bookId = item.id ?: ""
+                val bookState = booksState.find { it.id == bookId }?.states?: emptySet()
+
                 ItemBookList(
                     author = item.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
                     title = item.volumeInfo?.title ?: "Sin título",
@@ -47,7 +51,11 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
                             navController.navigate(BookDetail.bookRoute(id))
                         }
                     },
-                    type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría"
+                    type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
+                    initialStates = bookState,
+                    onStatesChanged = { newState ->
+                        viewModel.updateBookState(newState,bookId)
+                    }
                 )
             }
         }
