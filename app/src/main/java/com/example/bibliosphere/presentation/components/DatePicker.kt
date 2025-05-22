@@ -105,7 +105,7 @@ fun DatePickerFieldToModal(
             }
         },
         trailingIcon = {
-            if(!isProfile!!){
+            if(isProfile != true){
                 Icon(Icons.Default.DateRange, contentDescription = "Select date")
             }
         },
