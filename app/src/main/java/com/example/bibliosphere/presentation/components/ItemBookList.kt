@@ -25,6 +25,8 @@ fun ItemBookList(
     image: ImageLinks,
     onClick:()->Unit,
     type:String,
+    initialStates: Set<BookState> = emptySet(),
+    onStatesChanged: (Set<BookState>) -> Unit = {}
 ) {
     Card(modifier = Modifier.padding(16.dp).clickable { onClick()}) {
 
@@ -46,6 +48,8 @@ fun ItemBookList(
                 Spacer(modifier = Modifier.height(8.dp))
                 ChipView(type = type)
 
+                //añadir botones
+                BookStateButtons(initialStates, onStatesChanged)
             }
         }
     }
