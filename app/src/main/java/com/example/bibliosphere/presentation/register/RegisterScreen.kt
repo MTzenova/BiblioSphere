@@ -158,7 +158,8 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
                 DatePickerFieldToModal(
                     birthDate = birthDate,
                     onBirthDateChange = {viewModel.onRegisterChanged(userName,email,password,it)},
-                    isValidDate = isValidBirthDate
+                    isValidDate = isValidBirthDate,
+                    enabled = true
                 )
             }
 

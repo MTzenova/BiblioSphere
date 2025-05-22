@@ -14,8 +14,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import java.util.*
@@ -80,7 +82,9 @@ fun DatePickerFieldToModal(
     birthDate: String,
     onBirthDateChange: (String) -> Unit,
     isValidDate: Boolean,
-    enabled: Boolean = true
+    enabled: Boolean,
+    isProfile:Boolean? = null,
+    leadingIcon: ImageVector? = null,
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
@@ -88,14 +92,27 @@ fun DatePickerFieldToModal(
     OutlinedTextField(
         value = birthDate,
         onValueChange = { },
-        label = { Text("Fecha de nacimiento") },
+        label = { Text("Fecha de nacimiento", color = MaterialTheme.colorScheme.onPrimary) },
         readOnly = true,
         enabled = enabled,
         placeholder = { Text("MM/DD/YYYY") },
         shape = RoundedCornerShape(20.dp),
-        trailingIcon = {
-            Icon(Icons.Default.DateRange, contentDescription = "Select date")
+        leadingIcon = {
+            if (isProfile==true) {
+                leadingIcon?.let { icon ->
+                    Icon(icon, contentDescription = "Icon", tint = MaterialTheme.colorScheme.onPrimary)
+                }
+            }
         },
+        trailingIcon = {
+            if(!isProfile!!){
+                Icon(Icons.Default.DateRange, contentDescription = "Select date")
+            }
+        },
+        textStyle = LocalTextStyle.current.copy(
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.onPrimary
+        ),
         isError = !isValidDate && birthDate.isNotEmpty(),
         modifier = modifier
             .fillMaxWidth()
@@ -106,7 +123,7 @@ fun DatePickerFieldToModal(
                     // in the Main pass.
                     awaitFirstDown(pass = PointerEventPass.Initial)
                     val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)
-                    if (enabled && upEvent != null) {
+                    if (upEvent != null) {
                         showModal = true
                     }
                 }
@@ -122,7 +139,7 @@ fun DatePickerFieldToModal(
         )
     }
 
-    if (showModal) {
+    if (showModal && enabled) { //para editar/leer
         DatePickerModal(
             onDateSelected = { date ->
                 selectedDate = date

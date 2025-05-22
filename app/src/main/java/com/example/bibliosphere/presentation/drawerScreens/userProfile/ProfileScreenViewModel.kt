@@ -3,10 +3,14 @@ package com.example.bibliosphere.presentation.drawerScreens.userProfile
 import androidx.lifecycle.ViewModel
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.components.convertMillisToDate
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProfileScreenViewModel: ViewModel() {
 
@@ -70,7 +74,13 @@ class ProfileScreenViewModel: ViewModel() {
 
     fun updateProfileData(userName: String, userBirthday:String){
         db.collection("users").document(userId).update("userName", userName)
-        db.collection("users").document(userId).update("birthDate", userBirthday)
+
+        val simpleDateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+        val date = simpleDateFormat.parse(userBirthday)
+        val userBirthdayTs = Timestamp(date!!)
+        db.collection("users").document(userId).update("birthDate", userBirthdayTs)
+
+        getUserData(userId)
     }
 
 }

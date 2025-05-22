@@ -47,8 +47,6 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
     var editable by remember {mutableStateOf(false)}
     var profileEditable by remember {mutableStateOf(false)}
 
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -129,9 +127,11 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
 
             UserDataProfile(
                 userName = userName,
+                name = name,
                 email = email,
                 password = password,
                 birthDate = birthDate,
+                birth = birth,
                 enableNotifications = true,
                 editable = editable,
                 onNameChange = { name = it },
@@ -209,8 +209,10 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
 @Composable
 fun UserDataProfile(
     userName: String,
+    name:String,
     email: String,
     birthDate: String,
+    birth:String,
     password: String,
     enableNotifications: Boolean,
     modifier: Modifier = Modifier,
@@ -227,7 +229,7 @@ fun UserDataProfile(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         TextFieldDataUser(
-            value = userName,
+            value = if(editable) name else userName,
             onValueChange = onNameChange,
             label = "Nombre de usuario",
             leadingIcon = Icons.Filled.Person,
@@ -236,11 +238,13 @@ fun UserDataProfile(
         )
 
         DatePickerFieldToModal(
-            birthDate = birthDate,
+            birthDate = if(editable) birth else birthDate,
             onBirthDateChange = onBirthDateChange,
             isValidDate = true,
             modifier = Modifier.fillMaxWidth(),
             enabled = editable,
+            isProfile = true,
+            leadingIcon = Icons.Filled.DateRange,
         )
 
 
