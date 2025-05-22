@@ -171,6 +171,49 @@ class AuthViewModel: ViewModel()  {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 _authState.value = AuthState.Authenticated
+
+                                //crear datos en colección users en firebase
+                                val userId = auth.currentUser?.uid
+                                val image = R.drawable.logo_sin_letras //para añadir una imagen por defecto al crear el usuario
+                                val user = auth.currentUser
+
+
+                                if(userId != null){
+                                    val db = FirebaseFirestore.getInstance()
+                                    val document = db.collection("users").document(userId)
+                                    document.get().addOnSuccessListener { document ->
+                                        if(!document.exists()){
+                                            val users = hashMapOf(
+                                                "userName" to (user?.displayName ?:""),
+                                                "birthDate" to Timestamp.now(),
+                                                "email" to (user?.email ?: ""),
+                                                "image" to image
+                                            )
+
+                                            val profile = UserProfileChangeRequest.Builder().setDisplayName(user?.displayName ?:"").build()
+
+                                            auth.currentUser?.updateProfile(profile)
+                                                ?.addOnFailureListener { e ->
+                                                    Log.e("Auth", "No se pudo actualizar displayName", e)
+                                                }
+
+                                            db.collection("users").document(userId)
+                                                .set(users)
+                                                .addOnSuccessListener {
+                                                    println("Usuario guardado correctamente en la bbdd.")
+                                                }
+                                                .addOnFailureListener {
+                                                    println("ERROR al intentar el usuario en la bbdd.")
+                                                    _authState.value = AuthState.Error(it.message.toString())
+                                                }
+                                        }else{
+                                            println("ERROR al intentar el usuario en la bbdd, ya existe.")
+                                        }
+                                    }
+
+                                }
+
+
                             } else {
                                 _authState.value =
                                     AuthState.Error(task.exception?.message ?: "Error al autenticar con Google")
