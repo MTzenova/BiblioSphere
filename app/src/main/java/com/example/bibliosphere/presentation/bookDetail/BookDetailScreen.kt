@@ -46,7 +46,7 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
                 Text(text = "Descripción:", modifier = Modifier.padding(horizontal = 15.dp))
                 Spacer(modifier = Modifier.height(10.dp))
                 BookDescription(
-                    description =  it.volumeInfo?.description ?: "Sin sinopsis disponible."
+                    description =  it.volumeInfo?.description ?: "Sin descripción disponible."
                 )
             }
         }
