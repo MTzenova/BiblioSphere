@@ -28,7 +28,7 @@ import com.example.bibliosphere.presentation.drawerScreens.userProfile.ProfileSc
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.home.HomeScreen
-import com.example.bibliosphere.presentation.library.myLibrary.ExploreLibrariesScreen
+import com.example.bibliosphere.presentation.library.explore.ExploreLibrariesScreen
 import com.example.bibliosphere.presentation.library.myLibrary.MyLibraryScreen
 import com.example.bibliosphere.presentation.login.LoginScreen
 import com.example.bibliosphere.presentation.login.LoginScreenViewModel

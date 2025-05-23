@@ -21,49 +21,65 @@ fun BookDetailCard(
     title: String,
     image: String,
     type: String,
+    initialStates: Set<BookState> = emptySet(),
+    onStatesChanged: (Set<BookState>) -> Unit = {}
 ) {
-    Box(
-        modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 40.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.primary),
-        contentAlignment = Alignment.TopCenter
-    ){
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+    Column{
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 40.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.primary),
+            contentAlignment = Alignment.TopCenter
+        ){
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally) {
 
-            //imagen
-            Image(
-                painter = rememberAsyncImagePainter(model = image.replace("http", "https")),
-                contentDescription = "Book of $author",
-                modifier = Modifier
-                    .size(width = 140.dp, height = 200.dp)
+                //imagen
+                Image(
+                    painter = rememberAsyncImagePainter(model = image.replace("http", "https")),
+                    contentDescription = "Book of $author",
+                    modifier = Modifier
+                        .size(width = 140.dp, height = 200.dp)
                     //.offset(y = (-30).dp)
                     //.clip(RoundedCornerShape(20.dp))
-            )
+                )
 
-            Spacer(modifier = Modifier.height(8.dp))
-            //contenido
-            Text(
-                text = author,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onPrimary,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onPrimary,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            ChipView(type = type)
+                Spacer(modifier = Modifier.height(8.dp))
+                //contenido
+                Text(
+                    text = author,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                ChipView(type = type)
+            }
+        }
+        Column(
+            modifier = Modifier
+                .padding(bottom = 20.dp, start = 16.dp, end = 16.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.inversePrimary),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            //añadir botones
+            BookStateButtons(initialStates, onStatesChanged)
         }
     }
+
 }
 
 @Composable
