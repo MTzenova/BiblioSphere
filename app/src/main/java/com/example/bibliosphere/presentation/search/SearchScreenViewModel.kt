@@ -70,16 +70,23 @@ class SearchScreenViewModel : ViewModel() {
     }
 
     fun updateBookState(newStates: Set<BookState>, bookId: String) {
-        _booksState.update { list ->
-            list.map{ book ->
-                if( book.id == bookId){
-                    book.copy(states = newStates)
-                }else{
-                    book
-                }
-
+//        _booksState.update { list ->
+//            list.map{ book ->
+//                if( book.id == bookId){
+//                    book.copy(states = newStates)
+//                }else{
+//                    book
+//                }
+//
+//            }
+//
+//        }
+        _booksState.value = _booksState.value.map { bookUI ->
+            if (bookUI.id == bookId) {
+                bookUI.copy(states = newStates)
+            } else {
+                bookUI
             }
-
         }
         //probando si funciona el guardar en firestore (funciona)
         saveBookStateFS(bookId, newStates)

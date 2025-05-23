@@ -2,7 +2,6 @@ package com.example.bibliosphere.presentation.bookDetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bibliosphere.data.model.BookUI
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
 import com.example.bibliosphere.presentation.components.BookState
@@ -10,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -24,7 +22,7 @@ class BookDetailScreenViewModel : ViewModel() {
     private val _errorMessage = MutableStateFlow<String?>(null) //si hay error
     val errorMessage: StateFlow<String?> = _errorMessage
 
-    private val _booksState = MutableStateFlow<Set<BookState>>(emptySet())
+    private val _booksState =  MutableStateFlow<Set<BookState>>(emptySet())
     val booksState: StateFlow<Set<BookState>> = _booksState
 
     val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -39,10 +37,11 @@ class BookDetailScreenViewModel : ViewModel() {
             _errorMessage.value = null //se limpian errores
             try{
                 val bookDetail = RetrofitModule.api.getBookDetail(bookId) //hace la consulta a la api para conseguir el libro según la id pasada
-                val states = getBooksStatesFS(bookId)
-
-                _booksState.value = states
                 _bookDetail.value = bookDetail //guardamos el libro
+
+                val states = getBooksStatesFS(bookId)
+                _booksState.value = states
+
             }catch(e:Exception){
                 _errorMessage.value = e.localizedMessage
             }finally {
@@ -88,7 +87,7 @@ class BookDetailScreenViewModel : ViewModel() {
             if(documents.exists())  {
 
                 val status = documents.get("status") as? List<*>
-                val statusNames = status?.mapNotNull { name ->
+                status?.mapNotNull { name ->
                     try {
                         BookState.valueOf(name.toString())
                     } catch (e: IllegalArgumentException) {
@@ -96,7 +95,7 @@ class BookDetailScreenViewModel : ViewModel() {
                         null
                     }
                 }?.toSet() ?: emptySet()
-                statusNames
+
             }else{
                 emptySet()
             }

@@ -37,6 +37,7 @@ import com.example.bibliosphere.presentation.register.RegisterScreenViewModel
 import com.example.bibliosphere.presentation.search.SearchScreen
 import com.example.bibliosphere.presentation.search.SearchScreenViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -48,6 +49,19 @@ fun NavigationWrapper() {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val authState = authViewModel.authState.observeAsState()
+
+    //----para que me funcione bien el SearchScreen escuchando los cambios de firebase y de DetailBookScreen--------
+    val currentDestination = navBackStackEntry?.destination?.route
+    val route = Search::class.qualifiedName
+
+    val searchScreenViewModel : SearchScreenViewModel? = if(currentDestination == route && navBackStackEntry != null){
+        viewModel(navBackStackEntry!!)
+    } else null
+
+    LaunchedEffect(searchScreenViewModel){
+        searchScreenViewModel?.searchBooks()
+    }
+    //--------------------------------------------------------------------------------------------------------------
 
     LaunchedEffect(authState.value) {
         if (authState.value is AuthState.Unauthenticated) {
