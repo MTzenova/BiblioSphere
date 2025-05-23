@@ -1,4 +1,4 @@
-package com.example.bibliosphere.presentation.components.bookState
+package com.example.bibliosphere.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

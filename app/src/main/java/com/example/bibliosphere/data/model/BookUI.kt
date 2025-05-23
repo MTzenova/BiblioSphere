@@ -1,6 +1,6 @@
 package com.example.bibliosphere.data.model
 
-import com.example.bibliosphere.presentation.components.bookState.BookState
+import com.example.bibliosphere.presentation.components.BookState
 
 data class BookUI(
     val id: String,

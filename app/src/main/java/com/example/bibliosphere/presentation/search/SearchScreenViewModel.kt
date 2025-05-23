@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bibliosphere.data.model.BookUI
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
-import com.example.bibliosphere.presentation.components.bookState.BookState
+import com.example.bibliosphere.presentation.components.BookState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

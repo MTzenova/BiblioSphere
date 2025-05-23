@@ -16,8 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.data.model.remote.ImageLinks
-import com.example.bibliosphere.presentation.components.bookState.BookState
-import com.example.bibliosphere.presentation.components.bookState.BookStateButtons
 import com.example.bibliosphere.presentation.theme.primaryBlack
 
 @Composable

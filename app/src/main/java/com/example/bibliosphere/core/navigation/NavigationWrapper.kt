@@ -21,12 +21,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.bibliosphere.data.model.DrawerItems
+import com.example.bibliosphere.data.model.TabDestination
 import com.example.bibliosphere.presentation.bookDetail.BookDetailScreen
 import com.example.bibliosphere.presentation.bookDetail.BookDetailScreenViewModel
 import com.example.bibliosphere.presentation.drawerScreens.userProfile.ProfileScreen
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.home.HomeScreen
+import com.example.bibliosphere.presentation.library.myLibrary.ExploreLibrariesScreen
 import com.example.bibliosphere.presentation.library.myLibrary.MyLibraryScreen
 import com.example.bibliosphere.presentation.login.LoginScreen
 import com.example.bibliosphere.presentation.login.LoginScreenViewModel
@@ -188,18 +190,42 @@ fun Screen(
         state = rememberTopAppBarState()
     )
     var selectedIndex by remember { mutableStateOf(0)}
+
+    val showTabs = currentRoute in listOf(Library::class.qualifiedName, Explore::class.qualifiedName)
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    val tabDestinations = listOf(
+        TabDestination(Library,"Library"),
+        TabDestination(Explore,"Explore libraries"),
+    )
+
+
+
     Scaffold(
         modifier = modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection), //sirve para ocultar el topbar al scrollear
         //esta parte no se ve en login ni en register
         topBar = {
             if (showBars) {
-                TopBar(
-                    scrollBehavior = scrollBehavior,
-                    currentRoute = currentRoute,
-                    drawerState = drawerState,
-                    scope = scope,
-                )
+                Column {
+                    TopBar(
+                        scrollBehavior = scrollBehavior,
+                        currentRoute = currentRoute,
+                        drawerState = drawerState,
+                        scope = scope,
+                    )
+
+                    //no sé si esto está bien así, revisar con el profesor
+                    if (showTabs) {
+                        TabBarNavigation(
+                            destinations = tabDestinations,
+                            selectedIndex = selectedTabIndex,
+                            onTabSelected = { index, destination ->
+                                selectedTabIndex = index
+                                navController.navigate(destination.route)
+                            }
+                        )
+                    }
+                }
             }
         },
         //aqui el bottomBar con el if
@@ -264,6 +290,9 @@ fun Screen(
             }
             composable<Library>{
                 MyLibraryScreen()
+            }
+            composable<Explore>{
+                ExploreLibrariesScreen()
             }
             composable<Profile>{
                 ProfileScreen()

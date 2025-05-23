@@ -25,6 +25,9 @@ object BookDetail{
 object Library
 
 @Serializable
+object Explore
+
+@Serializable
 object Profile
 
 //función para obtener el título según la pantalla
@@ -36,5 +39,6 @@ fun getScreenTitle(route: String?): String = when (route) {
     BookDetail::class.qualifiedName -> "Book detail"
     Library::class.qualifiedName -> "Library"
     Profile::class.qualifiedName -> "Profile"
+    Explore::class.qualifiedName -> "Explore libraries"
     else -> "BiblioSphere"
 }
