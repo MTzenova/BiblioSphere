@@ -38,32 +38,35 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
         }
 
         LazyColumn {
-            items(books) { item ->
-                val bookId = item.id ?: ""
-                val bookState = booksState.find { it.id == bookId }?.states?: emptySet()
+            items(booksState) { itemBookUI ->
+//                val bookId = item.id ?: ""
+//                val bookState = booksState.find { it.id == bookId }?.states?: emptySet()
+                val book = books.find{ it.id == itemBookUI.id }
 
-                ItemBookList(
-                    author = item.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
-                    title = item.volumeInfo?.title ?: "Sin título",
-                    image = item.volumeInfo?.imageLinks ?: ImageLinks(thumbnail = ""),
-                    onClick = {
-                        item.id?.let { id ->
-                            navController.navigate(BookDetail.bookRoute(id))
+                book?.let { item ->
+                    ItemBookList(
+                        author = item.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
+                        title = item.volumeInfo?.title ?: "Sin título",
+                        image = item.volumeInfo?.imageLinks ?: ImageLinks(thumbnail = ""),
+                        onClick = {
+                            item.id?.let { id ->
+                                navController.navigate(BookDetail.bookRoute(itemBookUI.id))
+                            }
+                        },
+                        type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
+                        initialStates = itemBookUI.states,
+                        onStatesChanged = { newState ->
+                            viewModel.updateBookState(newState,itemBookUI.id)
                         }
-                    },
-                    type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
-                    initialStates = bookState,
-                    onStatesChanged = { newState ->
-                        viewModel.updateBookState(newState,bookId)
-                    }
-                )
+                    )
+                }
             }
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun SearchScreenPreview(){
-    SearchScreen(viewModel = SearchScreenViewModel(), navController = rememberNavController())
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun SearchScreenPreview(){
+//    SearchScreen(viewModel = SearchScreenViewModel(), navController = rememberNavController())
+//}

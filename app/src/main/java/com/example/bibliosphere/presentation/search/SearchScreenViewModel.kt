@@ -6,10 +6,15 @@ import com.example.bibliosphere.data.model.BookUI
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
 import com.example.bibliosphere.presentation.components.BookState
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class SearchScreenViewModel : ViewModel() {
     private val _query = MutableStateFlow("")
@@ -24,11 +29,22 @@ class SearchScreenViewModel : ViewModel() {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private val _booksState = MutableStateFlow<List<BookUI>>(emptyList())
+    val booksState: StateFlow<List<BookUI>> = _booksState
 
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private val db = FirebaseFirestore.getInstance()
 
     fun onQueryChange(newQuery: String) {
         _query.value = newQuery
     }
+//
+//    init {
+//        coroutineScope {
+//            getBooksStatesFS()
+//        }
+//
+//    }
 
     fun searchBooks() {
         if (_query.value.isBlank()) return
@@ -39,7 +55,21 @@ class SearchScreenViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrofitModule.api.searchBooks(_query.value)
-                _books.value = response.items ?: emptyList()
+                val items =  response.items ?: emptyList()
+                _books.value = items
+
+                val firestoreStates = getBooksStatesFS()
+
+                _booksState.value = items.mapNotNull { item ->
+                    item.id?.let{ bookId ->
+                        val statesSaved = firestoreStates[bookId]?: emptySet()
+                        BookUI(id = bookId, states = statesSaved)
+                    }
+
+                }
+
+
+
             } catch (e: Exception) {
                 _error.value = e.message
             } finally {
@@ -47,9 +77,6 @@ class SearchScreenViewModel : ViewModel() {
             }
         }
     }
-
-    private val _booksState = MutableStateFlow<List<BookUI>>(emptyList())
-    val booksState: StateFlow<List<BookUI>> = _booksState
 
     fun updateBookState(newStates: Set<BookState>, bookId: String) {
         _booksState.update { list ->
@@ -62,6 +89,51 @@ class SearchScreenViewModel : ViewModel() {
 
             }
 
+        }
+        //probando si funciona el guardar en firestore (funciona)
+        saveBookStateFS(bookId, newStates)
+    }
+
+    private fun saveBookStateFS(bookId: String, states: Set<BookState>) {
+        //tuve que poner permisos también
+        val bookData = mapOf("status" to states.map { it.name })
+        if (userId != null) {
+            db.collection("users")
+                .document(userId)
+                .collection("library")
+                .document(bookId)
+                .set(bookData)
+                .addOnSuccessListener {
+                    println("Successfully updated book $bookData")
+                }
+        }
+    }
+
+    private suspend fun getBooksStatesFS(): Map<String, Set<BookState>> {
+        if (userId == null) return emptyMap()
+
+        return try {
+            val documents = db.collection("users")
+                .document(userId)
+                .collection("library")
+                .get()
+                .await()
+
+            documents.associate { document ->
+                val idBookFS = document.id
+                val status = document.get("status") as? List<*>
+                val statusNames = status?.mapNotNull { name ->
+                    try {
+                        BookState.valueOf(name.toString())
+                    } catch (e: IllegalArgumentException) {
+                        null
+                    }
+                }?.toSet() ?: emptySet()
+                idBookFS to statusNames
+            }
+        } catch (e: Exception) {
+            _error.value = e.localizedMessage
+            emptyMap()
         }
     }
 }

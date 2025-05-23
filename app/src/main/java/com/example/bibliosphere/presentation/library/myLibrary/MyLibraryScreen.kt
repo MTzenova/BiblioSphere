@@ -24,6 +24,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 
 @Composable
 fun MyLibraryScreen() {
@@ -32,8 +35,14 @@ fun MyLibraryScreen() {
             .fillMaxSize()
     ) {
         //Para la textura del fondo
+        val painter = rememberAsyncImagePainter( //hago esto para que las imagenes no pesen tanto
+            ImageRequest.Builder(LocalContext.current)
+                .data(R.drawable.wood_texture)
+                .size(252)
+                .build()
+        )
         Image(
-            painter = painterResource(id = R.drawable.wood_texture),
+            painter = painter,
             contentDescription = "Textura de la estantería",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
@@ -71,8 +80,14 @@ fun BookShelfSeparator(){
 
 
     ) {
+        val painter = rememberAsyncImagePainter( //hago esto para que las imagenes no pesen tanto
+            ImageRequest.Builder(LocalContext.current)
+                .data(R.drawable.wood_texture)
+                .size(252)
+                .build()
+        )
         Image(
-            painter = painterResource(id = R.drawable.wood_texture),
+            painter = painter,
             contentDescription = "Separador",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),

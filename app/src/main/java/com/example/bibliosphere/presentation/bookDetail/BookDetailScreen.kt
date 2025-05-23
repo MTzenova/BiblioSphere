@@ -8,10 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,17 +23,20 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
     val loading by viewModel.loading.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
 
+    val counter by remember { mutableStateOf(0) }
+
     LaunchedEffect(bookId) {
         viewModel.loadBookDetail(bookId)
     }
 
     if (loading) {
-        CircularProgressIndicator()
+        CircularProgressIndicator() //comprobar que se centra bien
     }else if(errorMessage != null) {
         Text(text = errorMessage!!)
     }else{
         bookDetail?.let {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+
                 BookDetailCard(
                     author = it.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
                     title = it.volumeInfo?.title?:"Titulo desconocido",

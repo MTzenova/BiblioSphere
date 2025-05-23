@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1014965920233",
+    "firebase_url": "https://bibliosphere-c77e7-default-rtdb.firebaseio.com",
     "project_id": "bibliosphere-c77e7",
     "storage_bucket": "bibliosphere-c77e7.firebasestorage.app"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1014965920233-h9fui27frhapp384s1jaa35skot26tu8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bibliosphere",
+            "certificate_hash": "1a2720ef712df61f0b232bbe423dade5da9335e5"
+          }
+        },
         {
           "client_id": "1014965920233-aev08ptsiaamhpr6q75te2vl75ken914.apps.googleusercontent.com",
           "client_type": 3
