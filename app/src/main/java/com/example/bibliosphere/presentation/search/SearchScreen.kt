@@ -7,9 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.data.model.remote.ImageLinks
 import com.example.bibliosphere.presentation.components.ItemBookList
@@ -37,7 +35,7 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
-        LazyColumn {
+        LazyColumn { //cambié el de Item por BookUI porque no me actualizaba bien la lista
             items(booksState) { itemBookUI ->
 //                val bookId = item.id ?: ""
 //                val bookState = booksState.find { it.id == bookId }?.states?: emptySet()

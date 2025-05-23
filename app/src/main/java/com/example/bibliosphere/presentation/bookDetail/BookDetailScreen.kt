@@ -1,21 +1,16 @@
 package com.example.bibliosphere.presentation.bookDetail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.presentation.components.BookDescription
 import com.example.bibliosphere.presentation.components.BookDetailCard
-import com.example.bibliosphere.presentation.components.BookStateButtons
 
 @Composable
 fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
@@ -23,14 +18,16 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
     val loading by viewModel.loading.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
 
-    val counter by remember { mutableStateOf(0) }
+    val bookState by viewModel.booksState.collectAsState()
 
     LaunchedEffect(bookId) {
         viewModel.loadBookDetail(bookId)
     }
 
     if (loading) {
-        CircularProgressIndicator() //comprobar que se centra bien
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
     }else if(errorMessage != null) {
         Text(text = errorMessage!!)
     }else{
@@ -42,6 +39,10 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
                     title = it.volumeInfo?.title?:"Titulo desconocido",
                     image = it.volumeInfo?.imageLinks?.thumbnail?:"",
                     type = it.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
+                    initialStates = bookState,
+                    onStatesChanged = { newState ->
+                        viewModel.updateBookState(newState,bookId)
+                    }
                 )
                 Text(text = "Descripción:", modifier = Modifier.padding(horizontal = 15.dp))
                 Spacer(modifier = Modifier.height(10.dp))

@@ -12,6 +12,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -38,13 +39,6 @@ class SearchScreenViewModel : ViewModel() {
     fun onQueryChange(newQuery: String) {
         _query.value = newQuery
     }
-//
-//    init {
-//        coroutineScope {
-//            getBooksStatesFS()
-//        }
-//
-//    }
 
     fun searchBooks() {
         if (_query.value.isBlank()) return
@@ -67,9 +61,6 @@ class SearchScreenViewModel : ViewModel() {
                     }
 
                 }
-
-
-
             } catch (e: Exception) {
                 _error.value = e.message
             } finally {
