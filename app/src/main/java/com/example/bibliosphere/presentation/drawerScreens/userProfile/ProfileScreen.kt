@@ -15,14 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.example.bibliosphere.presentation.components.DatePickerFieldToModal
-import com.example.bibliosphere.presentation.components.PrimaryButton
+import com.example.bibliosphere.presentation.components.textField.DatePickerFieldToModal
+import com.example.bibliosphere.presentation.components.buttons.PrimaryButton
 import com.example.bibliosphere.presentation.components.ProfileImage
-import com.example.bibliosphere.presentation.components.TextFieldDataUser
+import com.example.bibliosphere.presentation.components.textField.TextFieldDataUser
 
 
 @OptIn(ExperimentalMaterial3Api::class)

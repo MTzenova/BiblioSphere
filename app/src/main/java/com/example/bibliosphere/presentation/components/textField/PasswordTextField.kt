@@ -1,4 +1,4 @@
-package com.example.bibliosphere.presentation.components
+package com.example.bibliosphere.presentation.components.textField
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions

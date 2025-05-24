@@ -1,4 +1,4 @@
-package com.example.bibliosphere.presentation.components
+package com.example.bibliosphere.presentation.components.buttons
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

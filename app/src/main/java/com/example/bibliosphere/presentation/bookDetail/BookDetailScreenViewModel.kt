@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
-import com.example.bibliosphere.presentation.components.BookState
+import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow

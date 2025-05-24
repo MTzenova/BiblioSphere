@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.data.model.remote.ImageLinks
 import com.example.bibliosphere.presentation.components.ItemBookList
-import com.example.bibliosphere.presentation.components.TextInputField
+import com.example.bibliosphere.presentation.components.textField.TextInputField
 
 @Composable
 fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController) {

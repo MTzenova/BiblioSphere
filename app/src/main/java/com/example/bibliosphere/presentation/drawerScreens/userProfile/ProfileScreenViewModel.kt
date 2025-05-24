@@ -2,7 +2,7 @@ package com.example.bibliosphere.presentation.drawerScreens.userProfile
 
 import androidx.lifecycle.ViewModel
 import com.example.bibliosphere.R
-import com.example.bibliosphere.presentation.components.convertMillisToDate
+import com.example.bibliosphere.presentation.components.textField.convertMillisToDate
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
