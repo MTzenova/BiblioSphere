@@ -36,8 +36,10 @@ import com.example.bibliosphere.presentation.register.RegisterScreen
 import com.example.bibliosphere.presentation.register.RegisterScreenViewModel
 import com.example.bibliosphere.presentation.search.SearchScreen
 import com.example.bibliosphere.presentation.search.SearchScreenViewModel
+import com.example.bibliosphere.presentation.viewmodel.MyLibraryScreenViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -303,7 +305,10 @@ fun Screen(
                 BookDetailScreen(bookId = bookId, viewModel = viewModel)
             }
             composable<Library>{
-                MyLibraryScreen()
+                val viewModel: MyLibraryScreenViewModel = viewModel()
+                val userId = Firebase.auth.currentUser?.uid.orEmpty()
+
+                MyLibraryScreen( userId = userId,viewModel = viewModel,onClick = {}, navController = navController)
             }
             composable<Explore>{
                 ExploreLibrariesScreen()

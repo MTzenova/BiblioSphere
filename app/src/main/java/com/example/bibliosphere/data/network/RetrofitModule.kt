@@ -16,6 +16,7 @@ object RetrofitModule {
     val api:GoogleBooksApiService by lazy{
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GoogleBooksApiService::class.java)
