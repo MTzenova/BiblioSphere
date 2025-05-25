@@ -41,7 +41,12 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
                     type = it.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
                     initialStates = bookState,
                     onStatesChanged = { newState ->
-                        viewModel.updateBookState(newState,bookId)
+                        if(newState.isEmpty()) {
+                            viewModel.deleteBookFromLibrary(bookId)
+                        }else{
+                            viewModel.updateBookState(newState,bookId)
+                        }
+
                     }
                 )
                 Text(text = "Descripción:", modifier = Modifier.padding(horizontal = 15.dp))

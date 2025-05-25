@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
 import com.example.bibliosphere.presentation.components.buttons.BookState
+import com.example.bibliosphere.presentation.firebase.BookFirestoreRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +31,11 @@ class BookDetailScreenViewModel : ViewModel() {
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
+
+    private val repository = BookFirestoreRepository(
+        db = FirebaseFirestore.getInstance(),
+        api = RetrofitModule.api
+    )
 
     fun loadBookDetail(bookId: String) { //carga libro según la id que se le pase
         viewModelScope.launch {
@@ -102,6 +108,16 @@ class BookDetailScreenViewModel : ViewModel() {
         } catch (e: Exception) {
             _error.value = e.localizedMessage
             emptySet()
+        }
+    }
+
+    fun deleteBookFromLibrary(bookId: String) {
+        viewModelScope.launch {
+            userId.let { userId ->
+                if (userId != null) {
+                    repository.deleteUserBook(userId,bookId)
+                }
+            }
         }
     }
 }
