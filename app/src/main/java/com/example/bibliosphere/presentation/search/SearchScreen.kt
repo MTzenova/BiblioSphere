@@ -41,8 +41,16 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
 
         GenreList(
             genreSelected = selectedGenre,
-            onGenreSelected = {
-                selectedGenre = it }
+            onGenreSelected = { genre ->
+                println("Género seleccionado: $genre")
+                selectedGenre = genre
+                if(genre != null) {
+                    //viewModel.searchBooksByGenre(genre)
+                    viewModel.searchBooksByGenre(genre)
+                }else{
+                    viewModel.searchBooks() //no hace nada
+                }
+            }
         )
 
         if (isLoading) {

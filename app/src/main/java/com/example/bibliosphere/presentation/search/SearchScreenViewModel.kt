@@ -45,12 +45,16 @@ class SearchScreenViewModel : ViewModel() {
     fun searchBooks() {
         if (_query.value.isBlank()) return
 
+        searchFunction(_query.value)
+    }
+
+    private fun searchFunction(searchQuery: String) {
         _isLoading.value = true
         _error.value = null
 
         viewModelScope.launch {
             try {
-                val response = RetrofitModule.api.searchBooks(_query.value)
+                val response = RetrofitModule.api.searchBooks(searchQuery)
                 val items =  response.items ?: emptyList()
                 _books.value = items
 
@@ -70,6 +74,19 @@ class SearchScreenViewModel : ViewModel() {
                 _isLoading.value = false
             }
         }
+    }
+
+    fun searchBooksByGenre(genre: String) {
+
+        if(_query.value.isNotBlank()){ //si la busqueda no esta vacia, el genero lo aplicamos a esa busqueda
+            val searchBoth = "${_query.value}+subject:$genre"
+            searchFunction(searchBoth)
+        }else{
+            val query = "subject:$genre"
+            searchFunction(query)
+        }
+
+
     }
 
     fun updateBookState(newStates: Set<BookState>, bookId: String) {

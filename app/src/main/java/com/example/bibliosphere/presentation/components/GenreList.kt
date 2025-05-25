@@ -10,18 +10,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun GenreList(
     genreSelected: String?,
-    onGenreSelected: (String) -> Unit,
+    onGenreSelected: (String?) -> Unit,
 ){
     var expanded by remember { mutableStateOf(false) }
 
     val genreList = listOf(
-        "Fantasy", "Action", "Adventure", "Thriller", "Drama", "Science Fiction", "Horror", "Romance", "Mistery", "Poetry", "Biography", "Science", "Fiction", "Art", "Health"
+        "Fantasy", "Adventure", "Thriller", "Drama", "Science Fiction", "Horror", "Romance", "Mistery", "Poetry", "Biography", "Science", "Fiction", "Art", "Health",
+        "Juvenile Fiction"
     )
 
     Column(
