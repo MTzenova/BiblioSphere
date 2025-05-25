@@ -6,6 +6,7 @@ import com.example.bibliosphere.data.model.BookUI
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
 import com.example.bibliosphere.presentation.components.buttons.BookState
+import com.example.bibliosphere.presentation.firebase.BookFirestoreRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +32,11 @@ class SearchScreenViewModel : ViewModel() {
 
     val userId = FirebaseAuth.getInstance().currentUser?.uid
     private val db = FirebaseFirestore.getInstance()
+
+    private val repository = BookFirestoreRepository(
+        db = FirebaseFirestore.getInstance(),
+        api = RetrofitModule.api
+    )
 
     fun onQueryChange(newQuery: String) {
         _query.value = newQuery
@@ -131,4 +137,16 @@ class SearchScreenViewModel : ViewModel() {
             emptyMap()
         }
     }
+
+    fun deleteBookFromLibrary(bookId: String) {
+        viewModelScope.launch {
+            userId.let { userId ->
+                if (userId != null) {
+                    repository.deleteUserBook(userId,bookId)
+                    //searchBooks()
+                }
+            }
+        }
+    }
+
 }

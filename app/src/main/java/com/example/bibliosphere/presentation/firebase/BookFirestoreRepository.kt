@@ -1,5 +1,6 @@
 package com.example.bibliosphere.presentation.firebase
 
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.GoogleBooksApiService
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,14 +21,22 @@ class BookFirestoreRepository(
         val booksIds = getUserLibraryId(userId)
         return booksIds.mapNotNull { bookid ->
             try {
-                println("Intentando obtener detalle del libro con ID: $bookid")
                 val book = api.getBookDetail(bookid)
-                println("Libro obtenido: ${book.volumeInfo?.title ?: "Sin título"}")
                 book
             } catch (e: Exception) {
                 println("Error al obtener libro con ID $bookid: ${e.message}")
                 null
             }
+        }
+    }
+
+    //para borarr libro de coleccion library
+    suspend fun deleteUserBook(userId:String, bookId:String) {
+        try{
+            db.collection("users").document(userId).collection("library").document(bookId).delete().await()
+            println("Successfully deleted user book $bookId")
+        }catch (e:Exception){
+            println("Error deleting user book $bookId")
         }
     }
 }

@@ -59,7 +59,11 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
                             type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
                             initialStates = itemBookUI.states,
                             onStatesChanged = { newState ->
-                                viewModel.updateBookState(newState,itemBookUI.id)
+                                if(newState.isEmpty()) {
+                                    viewModel.deleteBookFromLibrary(itemBookUI.id)
+                                }else{
+                                    viewModel.updateBookState(newState,itemBookUI.id)
+                                }
                             }
                         )
                     }
