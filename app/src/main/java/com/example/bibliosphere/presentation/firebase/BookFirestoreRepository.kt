@@ -21,7 +21,7 @@ class BookFirestoreRepository(
         val booksIds = getUserLibraryId(userId)
         return booksIds.mapNotNull { bookid ->
             try {
-                val book = api.getBookDetail(bookid) //esto para que es
+                val book = api.getBookDetail(bookid) //esto ya no nos va a servir
                 book
             } catch (e: Exception) {
                 println("Error al obtener libro con ID $bookid: ${e.message}")
@@ -51,7 +51,6 @@ class BookFirestoreRepository(
                 doc.update("status", states.map { it.name }).await()
             }else{
                 val bookData = mutableMapOf<String, Any>("status" to states.map{it.name})
-                "status" to states.map{it.name}
 
                 book?.volumeInfo?.let { volInfo ->
                     bookData["authors"] = volInfo.authors?: emptyList<String>()
@@ -68,31 +67,36 @@ class BookFirestoreRepository(
         }catch(e:Exception){
             println("Error al obtener libro con ID $bookId: ${e.message}")
         }
-//        val bookData = mutableMapOf<String, Any>(
-//            "status" to states.map{it.name}
-//        )
-//
-//        book?.volumeInfo?.let { volInfo ->
-//            bookData["authors"] = volInfo.authors?: emptyList<String>()
-//            bookData["title"] = volInfo.title?: ""
-//            bookData["publisher"] = volInfo.publisher?: ""
-//            bookData["publishedDate"] = volInfo.publishedDate?: ""
-//            bookData["thumbnail"] = volInfo.imageLinks?.thumbnail?:""
-//            bookData["categories"] = volInfo.categories ?: emptyList<String>()
-//            //si necesito mas datos, los puedo poner aqui
-//        }
-//
-//        try {
-//            db.collection("users").document(userId)
-//                .collection("library")
-//                .document(bookId)
-//                .set(bookData)
-//                .await()
-//            println("Successfully updated user book $bookId")
-//        }catch (e:Exception){
-//            println("Error saving state book $bookId")
-//        }
-
     }
 
+    //este es el q hay q usar
+    suspend fun getBookDataFS(userId: String): List<BookData> { //recojo los datos de firestore que guardé desde saveBookStateFS
+        return try{
+            val doc = db.collection("users").document(userId).collection("library").get().await()
+            doc.documents.map { documentSnapshot ->
+                val bookData = documentSnapshot.data?: emptyMap<String,Any>()
+                BookData(
+                    id = documentSnapshot.id,
+                    authors = bookData["authors"] as? List<String>?:emptyList(),
+                    title = documentSnapshot["title"] as? String?:"",
+                    publisher = documentSnapshot["publisher"] as? String?:"",
+                    publishedDate = documentSnapshot["publishedDate"] as? String?:"",
+                    thumbnail = documentSnapshot["thumbnail"] as? String?:"",
+                    categories = documentSnapshot["categories"] as? List<String>?:emptyList(),
+                )
+            }
+        }catch (e:Exception){
+            emptyList()
+        }
+    }
 }
+
+data class BookData(
+    val id: String,
+    val authors: List<String>,
+    val title: String,
+    val publisher: String,
+    val publishedDate: String,
+    val thumbnail: String,
+    val categories: List<String>,
+)

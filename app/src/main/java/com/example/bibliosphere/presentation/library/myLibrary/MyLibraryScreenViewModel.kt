@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
+import com.example.bibliosphere.presentation.firebase.BookData
 import com.example.bibliosphere.presentation.firebase.BookFirestoreRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -26,26 +27,45 @@ class MyLibraryScreenViewModel : ViewModel() {
         api = RetrofitModule.api
     )
 
-    private val _books = MutableStateFlow <List<Item>>(emptyList())
-    val books: StateFlow<List<Item>> = _books
+    private val _books = MutableStateFlow <List<BookData>>(emptyList())
+    val books: StateFlow<List<BookData>> = _books
 
     //cargamos los libros del usuario, pero deberiamos filtrar por libros con estado
+
+
     fun getUserBooks(userId: String) {
 
         _isLoading.value = true
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val list = repository.getUserBooks(userId)
+                val list = repository.getBookDataFS(userId)
                 _books.value = list
             }catch (e: Exception) {
                 _error.value = e.message
             }finally {
                 _isLoading.value = false
             }
-
-
         }
     }
+
+
+//    fun getUserBooks(userId: String) {
+//
+//        _isLoading.value = true
+//
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                val list = repository.getUserBooks(userId)
+//                _books.value = list
+//            }catch (e: Exception) {
+//                _error.value = e.message
+//            }finally {
+//                _isLoading.value = false
+//            }
+//
+//
+//        }
+//    }
 
 }

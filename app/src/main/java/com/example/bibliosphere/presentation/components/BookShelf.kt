@@ -147,6 +147,7 @@ import coil.request.ImageRequest
 import com.example.bibliosphere.R
 import com.example.bibliosphere.data.model.remote.ImageLinks
 import com.example.bibliosphere.data.model.remote.Item
+import com.example.bibliosphere.presentation.firebase.BookData
 
 // Modelo simple para los libros desde Firestore
 data class BookFromFirestore(
@@ -239,10 +240,11 @@ fun BookShelf(
 
 @Composable
 fun BookCover(
-    book: Item,
+    book: BookData,
     onClick: () -> Unit
 ) {
-    val imageUrl = book.volumeInfo?.imageLinks?.thumbnail?.replace("http", "https") ?: ""
+//    val imageUrl = book.volumeInfo?.imageLinks?.thumbnail?.replace("http", "https") ?: ""
+    val imageUrl = book.thumbnail.replace("http", "https")
     Card(
         modifier = Modifier
             .size(width = 120.dp, height = 180.dp)

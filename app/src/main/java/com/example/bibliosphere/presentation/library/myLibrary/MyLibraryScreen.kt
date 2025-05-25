@@ -53,7 +53,7 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
         ){
             items(books) { book ->
                 BookCover(book = book, onClick = {
-                    book.id?.let { id ->
+                    book.id.let { id ->
                         navController.navigate(BookDetail.bookRoute(id))
                     }
                 })
