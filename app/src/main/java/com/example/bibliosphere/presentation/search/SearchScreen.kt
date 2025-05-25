@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
 import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.data.model.remote.ImageLinks
+import com.example.bibliosphere.presentation.components.GenreList
 import com.example.bibliosphere.presentation.components.ItemBookList
 import com.example.bibliosphere.presentation.components.textField.TextInputField
 
@@ -20,6 +21,7 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
     val isLoading by viewModel.isLoading.collectAsState()
 
     val booksState by viewModel.booksState.collectAsState()
+    var selectedGenre by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
         if(viewModel.query.value.isNotBlank()) {
@@ -35,6 +37,12 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
             value = query,
             onValueChange = { viewModel.onQueryChange(it) },
             onImeAction = {viewModel.searchBooks()}
+        )
+
+        GenreList(
+            genreSelected = selectedGenre,
+            onGenreSelected = {
+                selectedGenre = it }
         )
 
         if (isLoading) {
