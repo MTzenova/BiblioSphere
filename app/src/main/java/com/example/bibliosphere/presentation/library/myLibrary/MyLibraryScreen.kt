@@ -1,13 +1,12 @@
 package com.example.bibliosphere.presentation.library.myLibrary
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Text
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,24 +15,35 @@ import androidx.navigation.NavController
 import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.presentation.components.BookCover
 import com.example.bibliosphere.presentation.viewmodel.MyLibraryScreenViewModel
-
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 
 @Composable
 fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navController: NavController) {
 
     val books by viewModel.books.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     LaunchedEffect(userId) {
         viewModel.getUserBooks(userId)
     }
 
-    if(books.isEmpty()) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ){
-            Text(text = "Aún no has añadido ningún libro a tu biblioteca")
+//    if(books.isEmpty()) {
+//        Box(
+//            modifier = Modifier.fillMaxSize(),
+//            contentAlignment = Alignment.Center
+//        ){
+//            Text(text = "Aún no has añadido ningún libro a tu biblioteca")
+//        }
+//    }else{
+//
+//    }
+    //poner un loading
+    if(isLoading) { //lo malo es que al vovler atrás vuelve a ponerse a cargar
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+           CircularProgressIndicator()
         }
+
     }else{
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
@@ -51,6 +61,7 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
             }
         }
     }
+
 }
 
 //val isLoading by viewModel.isLoading.collectAsState()

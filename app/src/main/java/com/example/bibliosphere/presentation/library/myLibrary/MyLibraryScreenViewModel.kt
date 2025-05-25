@@ -15,6 +15,12 @@ import kotlinx.coroutines.launch
 
 class MyLibraryScreenViewModel : ViewModel() {
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+
     private val repository = BookFirestoreRepository(
         db = FirebaseFirestore.getInstance(),
         api = RetrofitModule.api
@@ -25,10 +31,21 @@ class MyLibraryScreenViewModel : ViewModel() {
 
     //cargamos los libros del usuario, pero deberiamos filtrar por libros con estado
     fun getUserBooks(userId: String) {
+
+        _isLoading.value = true
+
         viewModelScope.launch(Dispatchers.IO) {
-            val list = repository.getUserBooks(userId)
-            println("Cantidad de libros obtenidos: ${list.size}")
-            _books.value = list
+            try {
+                val list = repository.getUserBooks(userId)
+                println("Cantidad de libros obtenidos: ${list.size}")
+                _books.value = list
+            }catch (e: Exception) {
+                _error.value = e.message
+            }finally {
+                _isLoading.value = false
+            }
+
+
         }
     }
 
