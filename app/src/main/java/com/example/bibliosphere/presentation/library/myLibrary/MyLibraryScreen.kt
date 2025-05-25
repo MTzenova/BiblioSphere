@@ -16,7 +16,6 @@ import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.presentation.components.BookCover
 import com.example.bibliosphere.presentation.viewmodel.MyLibraryScreenViewModel
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 
 @Composable
 fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navController: NavController) {

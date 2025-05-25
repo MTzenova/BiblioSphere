@@ -64,19 +64,27 @@ class BookDetailScreenViewModel : ViewModel() {
 
     private fun saveBookStateFS(bookId: String, states: Set<BookState>) {
         //tuve que poner permisos también
-        val bookData = mapOf("status" to states.map { it.name })
-        if (userId != null) {
-            db.collection("users")
-                .document(userId)
-                .collection("library")
-                .document(bookId)
-                .set(bookData)
-                .addOnSuccessListener {
-                    println("Successfully updated book $bookData")
+        viewModelScope.launch {
+            val book = _bookDetail.value
+            if (book != null) {
+                if (userId != null) {
+                    repository.saveBookStateFS(bookId, states, userId, book)
                 }
-        }else{
-            println("User not logged in")
+            }
         }
+//        val bookData = mapOf("status" to states.map { it.name })
+//        if (userId != null) {
+//            db.collection("users")
+//                .document(userId)
+//                .collection("library")
+//                .document(bookId)
+//                .set(bookData)
+//                .addOnSuccessListener {
+//                    println("Successfully updated book $bookData")
+//                }
+//        }else{
+//            println("User not logged in")
+//        }
     }
 
     private suspend fun getBooksStatesFS(bookId: String): Set<BookState> {

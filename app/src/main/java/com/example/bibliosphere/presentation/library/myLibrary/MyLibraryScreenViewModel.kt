@@ -37,7 +37,6 @@ class MyLibraryScreenViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val list = repository.getUserBooks(userId)
-                println("Cantidad de libros obtenidos: ${list.size}")
                 _books.value = list
             }catch (e: Exception) {
                 _error.value = e.message

@@ -90,17 +90,7 @@ class SearchScreenViewModel : ViewModel() {
     }
 
     fun updateBookState(newStates: Set<BookState>, bookId: String) {
-//        _booksState.update { list ->
-//            list.map{ book ->
-//                if( book.id == bookId){
-//                    book.copy(states = newStates)
-//                }else{
-//                    book
-//                }
-//
-//            }
-//
-//        }
+
         _booksState.value = _booksState.value.map { bookUI ->
             if (bookUI.id == bookId) {
                 bookUI.copy(states = newStates)
@@ -114,17 +104,25 @@ class SearchScreenViewModel : ViewModel() {
 
     private fun saveBookStateFS(bookId: String, states: Set<BookState>) {
         //tuve que poner permisos también
-        val bookData = mapOf("status" to states.map { it.name })
-        if (userId != null) {
-            db.collection("users")
-                .document(userId)
-                .collection("library")
-                .document(bookId)
-                .set(bookData)
-                .addOnSuccessListener {
-                    println("Successfully updated book $bookData")
+        viewModelScope.launch {
+            val book = _books.value.find { it.id == bookId }
+            if (book != null) {
+                if (userId != null) {
+                    repository.saveBookStateFS(bookId, states, userId, book)
                 }
+            }
         }
+//        val bookData = mapOf("status" to states.map { it.name })
+//        if (userId != null) {
+//            db.collection("users")
+//                .document(userId)
+//                .collection("library")
+//                .document(bookId)
+//                .set(bookData)
+//                .addOnSuccessListener {
+//                    println("Successfully updated book $bookData")
+//                }
+//        }
     }
 
     private suspend fun getBooksStatesFS(): Map<String, Set<BookState>> {
