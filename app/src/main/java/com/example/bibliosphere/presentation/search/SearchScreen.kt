@@ -21,6 +21,12 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
 
     val booksState by viewModel.booksState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        if(viewModel.query.value.isNotBlank()) {
+            viewModel.searchBooks()
+        }
+    }
+
     Column(modifier = Modifier.fillMaxWidth()) {
 
         //campo de búsqueda como un searchbar
@@ -33,33 +39,35 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
 
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-        }
-
-        LazyColumn { //cambié el de Item por BookUI porque no me actualizaba bien la lista
-            items(booksState) { itemBookUI ->
+        }else{
+            LazyColumn { //cambié el de Item por BookUI porque no me actualizaba bien la lista
+                items(booksState) { itemBookUI ->
 //                val bookId = item.id ?: ""
 //                val bookState = booksState.find { it.id == bookId }?.states?: emptySet()
-                val book = books.find{ it.id == itemBookUI.id }
+                    val book = books.find{ it.id == itemBookUI.id }
 
-                book?.let { item ->
-                    ItemBookList(
-                        author = item.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
-                        title = item.volumeInfo?.title ?: "Sin título",
-                        image = item.volumeInfo?.imageLinks ?: ImageLinks(thumbnail = ""),
-                        onClick = {
-                            item.id?.let { id ->
-                                navController.navigate(BookDetail.bookRoute(itemBookUI.id))
+                    book?.let { item ->
+                        ItemBookList(
+                            author = item.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
+                            title = item.volumeInfo?.title ?: "Sin título",
+                            image = item.volumeInfo?.imageLinks ?: ImageLinks(thumbnail = ""),
+                            onClick = {
+                                item.id?.let { id ->
+                                    navController.navigate(BookDetail.bookRoute(itemBookUI.id))
+                                }
+                            },
+                            type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
+                            initialStates = itemBookUI.states,
+                            onStatesChanged = { newState ->
+                                viewModel.updateBookState(newState,itemBookUI.id)
                             }
-                        },
-                        type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
-                        initialStates = itemBookUI.states,
-                        onStatesChanged = { newState ->
-                            viewModel.updateBookState(newState,itemBookUI.id)
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
+
+
     }
 }
 

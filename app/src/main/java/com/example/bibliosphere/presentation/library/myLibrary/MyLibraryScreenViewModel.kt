@@ -23,7 +23,7 @@ class MyLibraryScreenViewModel : ViewModel() {
     private val _books = MutableStateFlow <List<Item>>(emptyList())
     val books: StateFlow<List<Item>> = _books
 
-    //cargamos los libros del usuario
+    //cargamos los libros del usuario, pero deberiamos filtrar por libros con estado
     fun getUserBooks(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val list = repository.getUserBooks(userId)

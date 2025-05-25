@@ -52,19 +52,6 @@ fun NavigationWrapper() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val authState = authViewModel.authState.observeAsState()
 
-    //----para que me funcione bien el SearchScreen escuchando los cambios de firebase y de DetailBookScreen--------
-    val currentDestination = navBackStackEntry?.destination?.route
-    val route = Search::class.qualifiedName
-
-    val searchScreenViewModel : SearchScreenViewModel? = if(currentDestination == route && navBackStackEntry != null){
-        viewModel(navBackStackEntry!!)
-    } else null
-
-    LaunchedEffect(searchScreenViewModel){
-        searchScreenViewModel?.searchBooks()
-    }
-    //--------------------------------------------------------------------------------------------------------------
-
     LaunchedEffect(authState.value) {
         if (authState.value is AuthState.Unauthenticated) {
             navController.navigate(Login) {
@@ -308,7 +295,7 @@ fun Screen(
                 val viewModel: MyLibraryScreenViewModel = viewModel()
                 val userId = Firebase.auth.currentUser?.uid.orEmpty()
 
-                MyLibraryScreen( userId = userId,viewModel = viewModel,onClick = {}, navController = navController)
+                MyLibraryScreen( userId = userId,viewModel = viewModel, navController = navController)
             }
             composable<Explore>{
                 ExploreLibrariesScreen()

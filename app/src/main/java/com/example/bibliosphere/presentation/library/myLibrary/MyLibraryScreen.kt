@@ -14,13 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bibliosphere.core.navigation.BookDetail
-import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.presentation.components.BookCover
 import com.example.bibliosphere.presentation.viewmodel.MyLibraryScreenViewModel
 
 
 @Composable
-fun MyLibraryScreen(userId: String, onClick: (Item) -> Unit, viewModel: MyLibraryScreenViewModel, navController: NavController) {
+fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navController: NavController) {
 
     val books by viewModel.books.collectAsState()
 

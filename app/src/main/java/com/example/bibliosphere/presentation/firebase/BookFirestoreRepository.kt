@@ -30,16 +30,4 @@ class BookFirestoreRepository(
             }
         }
     }
-
-//    suspend fun getBookById(id:String): Item?{ //documento de la coleccion de library
-//
-//        return try {
-//            println("Ids de los libros de la biblioteca obtenidos")
-//            api.getBookDetail(id)
-//        } catch (e: Exception) {
-//            null
-//        }
-//
-//    }
-
 }
