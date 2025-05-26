@@ -21,9 +21,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.presentation.firebase.UserData
 import androidx.compose.foundation.lazy.grid.items
+import androidx.navigation.NavController
+import com.example.bibliosphere.core.navigation.Library
+import com.example.bibliosphere.core.navigation.UserLibrary
 
 @Composable
-fun ExploreLibrariesScreen(viewModel: ExploreLibrariesScreenViewModel) {
+fun ExploreLibrariesScreen(viewModel: ExploreLibrariesScreenViewModel, navController: NavController) {
 
     val users = viewModel.userData.collectAsState()
     val isLoading = viewModel.isLoading.collectAsState()
@@ -47,7 +50,7 @@ fun ExploreLibrariesScreen(viewModel: ExploreLibrariesScreenViewModel) {
             items(users.value){ user ->
                 LibraryCard(
                     userData = user,
-                    onClick = { }
+                    onClick = { navController.navigate(UserLibrary.libraryRoute(user.userId)) },
                 )
             }
         }

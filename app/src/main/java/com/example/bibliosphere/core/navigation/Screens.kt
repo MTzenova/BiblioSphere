@@ -25,6 +25,12 @@ object BookDetail{
 object Library
 
 @Serializable
+object UserLibrary { //copia de Library para los otros usuarios desde explore
+    const val route = "userLibrary"
+    fun libraryRoute(userId: String) = "userLibrary/$userId"
+}
+
+@Serializable
 object Explore
 
 @Serializable
@@ -38,6 +44,7 @@ fun getScreenTitle(route: String?): String = when (route) {
     Search::class.qualifiedName -> "Search books"
     BookDetail::class.qualifiedName -> "Book detail"
     Library::class.qualifiedName -> "Library"
+    UserLibrary::class.qualifiedName -> "User Library"
     Profile::class.qualifiedName -> "Profile"
     Explore::class.qualifiedName -> "Explore libraries"
     else -> "BiblioSphere"

@@ -292,15 +292,22 @@ fun Screen(
                 val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
                 BookDetailScreen(bookId = bookId, viewModel = viewModel)
             }
-            composable<Library>{
-                val viewModel: MyLibraryScreenViewModel = viewModel()
-                val userId = Firebase.auth.currentUser?.uid.orEmpty()
+            composable<Library> { backStackEntry ->
 
-                MyLibraryScreen( userId = userId,viewModel = viewModel, navController = navController)
+                val viewModel: MyLibraryScreenViewModel = viewModel()
+                val userId = backStackEntry.arguments?.getString("userId") ?: ""
+                val actualUser = Firebase.auth.currentUser?.uid.orEmpty()
+
+                MyLibraryScreen( userId = userId.ifEmpty {  actualUser} ,viewModel = viewModel, navController = navController)
+            }
+            composable("${UserLibrary.route}/{userId}"){ backStackEntry -> //copia de Library para acceder desde explore
+                val userId = backStackEntry.arguments?.getString("userId") ?: ""
+                val viewModel:MyLibraryScreenViewModel = viewModel()
+                MyLibraryScreen( userId = userId, viewModel = viewModel, navController = navController)
             }
             composable<Explore>{
                 val viewModel: ExploreLibrariesScreenViewModel = viewModel()
-                ExploreLibrariesScreen(viewModel = viewModel)
+                ExploreLibrariesScreen(viewModel = viewModel, navController)
             }
             composable<Profile>{
                 ProfileScreen()
