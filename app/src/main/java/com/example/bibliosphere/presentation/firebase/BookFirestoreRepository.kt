@@ -5,6 +5,7 @@ import com.example.bibliosphere.data.network.GoogleBooksApiService
 import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import org.w3c.dom.Comment
 
 class BookFirestoreRepository(
     private val db: FirebaseFirestore,
@@ -89,6 +90,49 @@ class BookFirestoreRepository(
             emptyList()
         }
     }
+
+    //comentarios
+    //guardar comentario en firestore
+    suspend fun sendCommentFS(bookId:String, comment:String, userId:String, userName:String, userImage:Int) {
+        try{
+            val commenData = hashMapOf(
+                "bookId" to bookId,
+                "userId" to userId,
+                "comment" to comment,
+                "userName" to userName,
+                "userImage" to userImage,
+                "timestamp" to System.currentTimeMillis()
+            )
+
+            val doc = db.collection("books").document(bookId).collection("comments").add(commenData).await()
+            println("Successfully sent comment $comment")
+        }catch (e:Exception){
+            println("Error sending comment $comment: ${e.message}")
+        }
+    }
+
+    //obtener los comentarios de un libro
+    suspend fun getCommentsFS(bookId:String): List<CommentData> {
+        return try{
+
+            val doc = db.collection("books").document(bookId).collection("comments").orderBy("timestamp").get().await()
+
+            doc.documents.map{ docs ->
+                CommentData(
+                    userId = docs["userId"] as? String ?: "",
+                    bookId = docs["bookId"] as? String ?: "",
+                    comment = docs["comment"] as? String ?: "",
+                    userName = docs["userName"] as? String ?: "",
+                    userImage = (docs["userImage"] as? Long)?.toInt() ?: 0,
+                    timestamp = docs["timestamp"] as? Long ?: 0L,
+                )
+            }
+
+        }catch (e:Exception){
+            println("Error reading comments: $bookId")
+            emptyList()
+        }
+    }
 }
 
 data class BookData(
@@ -99,4 +143,13 @@ data class BookData(
     val publishedDate: String,
     val thumbnail: String,
     val categories: List<String>,
+)
+
+data class CommentData(
+    val userId:String,
+    val bookId:String,
+    val comment:String,
+    val userImage:Int,
+    val userName:String,
+    val timestamp:Long,
 )

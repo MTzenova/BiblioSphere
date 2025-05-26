@@ -54,7 +54,6 @@ fun ExploreLibrariesScreen(viewModel: ExploreLibrariesScreenViewModel, navContro
             }
         }
     }
-
 }
 
 @Composable
@@ -84,7 +83,6 @@ fun LibraryCard(
                 Text(text = userData.userName)
                 Text(text = "Libros: ${userData.booksNumber}")
             }
-
         }
     }
 }

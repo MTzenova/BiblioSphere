@@ -2,12 +2,17 @@ package com.example.bibliosphere.presentation.bookDetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bibliosphere.R
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.RetrofitModule
 import com.example.bibliosphere.presentation.components.buttons.BookState
+import com.example.bibliosphere.presentation.components.textField.convertMillisToDate
 import com.example.bibliosphere.presentation.firebase.BookFirestoreRepository
+import com.example.bibliosphere.presentation.firebase.CommentData
+import com.example.bibliosphere.presentation.firebase.UserFirestoreRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -36,6 +41,46 @@ class BookDetailScreenViewModel : ViewModel() {
         db = FirebaseFirestore.getInstance(),
         api = RetrofitModule.api
     )
+
+    private val userRepository = UserFirestoreRepository(db)
+
+    private val _imageResId = MutableStateFlow(R.drawable.logo_sin_letras) //cargar de firestore
+    val imageResId: StateFlow<Int> = _imageResId
+
+    private val _userName = MutableStateFlow("")
+    val userName: StateFlow<String> = _userName
+
+    private val _comments = MutableStateFlow<List<CommentData>>(emptyList())
+    val comments: StateFlow<List<CommentData>> = _comments
+
+    fun getUserData(userId: String) {
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val timeStamp = document.getTimestamp("birthDate")
+                    val birthDateString = timeStamp?.toDate()?.time?.let { convertMillisToDate(it) } ?: ""
+
+                    _userName.value = document.getString("userName")?: ""
+                    // _userBirthday.value = document.getTimestamp("birthDate").toString()?: ""
+                    _imageResId.value = (document.getLong("image")?.toInt()) ?: R.drawable.logo_sin_letras
+                }
+
+            }.addOnFailureListener { exception ->
+                exception.printStackTrace()
+            }
+
+    }
+
+    fun getUserImage(){
+        viewModelScope.launch(Dispatchers.IO) {
+            if (userId != null) {
+                val image = userRepository.getUserImage(userId)
+                if (image != null) {
+                    _imageResId.value = image
+                }
+            }
+        }
+    }
 
     fun loadBookDetail(bookId: String) { //carga libro según la id que se le pase
         viewModelScope.launch {
@@ -72,19 +117,6 @@ class BookDetailScreenViewModel : ViewModel() {
                 }
             }
         }
-//        val bookData = mapOf("status" to states.map { it.name })
-//        if (userId != null) {
-//            db.collection("users")
-//                .document(userId)
-//                .collection("library")
-//                .document(bookId)
-//                .set(bookData)
-//                .addOnSuccessListener {
-//                    println("Successfully updated book $bookData")
-//                }
-//        }else{
-//            println("User not logged in")
-//        }
     }
 
     private suspend fun getBooksStatesFS(bookId: String): Set<BookState> {
@@ -125,6 +157,38 @@ class BookDetailScreenViewModel : ViewModel() {
                 if (userId != null) {
                     repository.deleteUserBook(userId,bookId)
                 }
+            }
+        }
+    }
+
+    //comentarios
+
+    //enviar comentario a fs
+    fun sendComment(bookId: String, commentText: String, userName: String, userImage: Int) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        viewModelScope.launch {
+            try{
+                if (userId != null) {
+                    repository.sendCommentFS(bookId,commentText,userId,userName,userImage)
+                    val commentsLoaded = repository.getCommentsFS(bookId) //para recargar para ver el propio comentario
+                    _comments.value = commentsLoaded
+                }
+            }catch(e:Exception){
+                _errorMessage.value = e.localizedMessage
+            }
+        }
+    }
+
+    //recoger los comentarios de fs de un libro
+    fun getComments(bookId: String) {
+
+        viewModelScope.launch {
+            try{
+                val commentsLoaded = repository.getCommentsFS(bookId)
+                _comments.value = commentsLoaded
+            }catch(e:Exception){
+                _errorMessage.value = e.localizedMessage
             }
         }
     }

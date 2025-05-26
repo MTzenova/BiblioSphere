@@ -5,6 +5,16 @@ import kotlinx.coroutines.tasks.await
 
 class UserFirestoreRepository( private val db: FirebaseFirestore) {
 
+    suspend fun getUserImage(userId: String):Int?{
+        return try{
+            val doc = db.collection("users").document().get().await()
+            if (!doc.exists()) return null
+            doc.getLong("image")?.toInt()
+        }catch (e:Exception){
+            null
+        }
+    }
+
     suspend fun getAllUsersId():List<String> { //obtenemos las ids de todos los usuarios
         return try{
 
@@ -52,6 +62,7 @@ class UserFirestoreRepository( private val db: FirebaseFirestore) {
         }
 
     } //al igual no hace ni falta esto
+
 
 }
 
