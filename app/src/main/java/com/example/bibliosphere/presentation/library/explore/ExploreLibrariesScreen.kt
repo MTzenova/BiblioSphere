@@ -22,7 +22,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.presentation.firebase.UserData
 import androidx.compose.foundation.lazy.grid.items
 import androidx.navigation.NavController
-import com.example.bibliosphere.core.navigation.Library
 import com.example.bibliosphere.core.navigation.UserLibrary
 
 @Composable
@@ -42,7 +41,7 @@ fun ExploreLibrariesScreen(viewModel: ExploreLibrariesScreenViewModel, navContro
     }else{
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
-            columns = GridCells.Fixed(3),
+            columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(16.dp)
@@ -71,20 +70,21 @@ fun LibraryCard(
             .shadow(120.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ){
-        Column(
-            modifier = Modifier.padding(8.dp),
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            // Imagen de perfil con Coil (si tienes url)
-            Image(
-                painter = rememberAsyncImagePainter(userData.profileImage),
-                contentDescription = "${userData.userName} profile picture",
-                modifier = Modifier.size(64.dp).clip(RoundedCornerShape(32.dp))
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = userData.userName)
-            Text(text = "Libros: ${userData.booksNumber}")
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                Image(
+                    painter = rememberAsyncImagePainter(userData.profileImage),
+                    contentDescription = "${userData.userName} profile picture",
+                    modifier = Modifier.size(84.dp).clip(RoundedCornerShape(42.dp))
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = userData.userName)
+                Text(text = "Libros: ${userData.booksNumber}")
+            }
+
         }
     }
 }
