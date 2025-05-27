@@ -20,8 +20,8 @@ fun GenreList(
     var expanded by remember { mutableStateOf(false) }
 
     val genreList = listOf(
-        "Fantasy", "Adventure", "Thriller", "Drama", "Science Fiction", "Horror", "Romance", "Mistery", "Poetry", "Biography", "Science", "Fiction", "Art", "Health",
-        "Juvenile Fiction"
+        "Fantasy", "Adventure", "Thriller", "Drama", "Science Fiction", "Horror", "Romance", "Mystery", "Poetry", "Biography", "Science", "Fiction", "Art", "Health",
+        "Juvenile Fiction","Epic", "Action & Adventure"
     )
 
     Column(

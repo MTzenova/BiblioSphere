@@ -85,8 +85,6 @@ class SearchScreenViewModel : ViewModel() {
             val query = "subject:$genre"
             searchFunction(query)
         }
-
-
     }
 
     fun updateBookState(newStates: Set<BookState>, bookId: String) {

@@ -1,5 +1,6 @@
 package com.example.bibliosphere.presentation.library.myLibrary
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,12 @@ import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.presentation.components.BookCover
 import com.example.bibliosphere.presentation.viewmodel.MyLibraryScreenViewModel
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.components.BookShelfSeparator
 
 @Composable
 fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navController: NavController) {
@@ -44,21 +51,44 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
         }
 
     }else{
-        LazyVerticalGrid(
+        Box(
             modifier = Modifier.fillMaxSize(),
-            columns = GridCells.Fixed(3),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(16.dp)
-        ){
-            items(books) { book ->
-                BookCover(book = book, onClick = {
-                    book.id.let { id ->
-                        navController.navigate(BookDetail.bookRoute(id))
-                    }
-                })
+        )
+        {
+            // Textura del fondo
+        val painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(LocalContext.current)
+                .data(R.drawable.wood_texture)
+                .size(600)
+                .build()
+        )
+
+        Image(
+            painter = painter,
+            contentDescription = "Textura de la estantería",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
+            LazyVerticalGrid(
+                modifier = Modifier.fillMaxSize(),
+                columns = GridCells.Fixed(3),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(16.dp),
+            ){
+                items(books) { book ->
+                    BookCover(book = book, onClick = {
+                        book.id.let { id ->
+                            navController.navigate(BookDetail.bookRoute(id))
+                        }
+                    })
+                }
             }
+
         }
+
+
     }
 
 }
