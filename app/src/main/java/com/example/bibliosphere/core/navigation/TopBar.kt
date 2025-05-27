@@ -54,17 +54,7 @@ fun TopBar(
                         .size(27.dp)
                 )
             }
-        },
-        actions = {
-            IconButton(onClick = { /* Notifications action */ }) {
-                Icon(
-                    imageVector = Icons.Rounded.Notifications,
-                    contentDescription = "Notificaciones",
-                    modifier = Modifier
-                        .padding(end = BiblioSphereTheme.dimens.paddingNormal)
-                        .size(27.dp)
-                )
-            }
         }
+        //campanita eliminada
     )
 }
