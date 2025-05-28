@@ -1,17 +1,16 @@
 package com.example.bibliosphere.core.navigation
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavBackStackEntry
+import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -24,11 +23,30 @@ fun TopBar(
     currentRoute: String?,
     drawerState: DrawerState,
     scope: CoroutineScope,
+    authViewModel: AuthViewModel,
+    currentBackStackEntry: NavBackStackEntry?,
 ) {
+
     TopAppBar(
         title = {
+
+            val userName by authViewModel.userNameLibrary.observeAsState()
+            var titleScreen = getScreenTitle(currentBackStackEntry?.destination?.route)
+
+            if (currentRoute?.startsWith(UserLibrary.route) == true) {
+                val userId = currentBackStackEntry?.arguments?.getString("userId")
+                if(userId != null) {
+                    println("userid: ${userId.toString()}")
+                    LaunchedEffect(userId) {
+                        authViewModel.getUserName(userId)
+                    }
+                }
+
+                titleScreen = "Biblioteca de $userName"
+            }
+
             Text(
-                text = getScreenTitle(currentRoute),
+                text = titleScreen,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                 fontSize = 17.sp
             )

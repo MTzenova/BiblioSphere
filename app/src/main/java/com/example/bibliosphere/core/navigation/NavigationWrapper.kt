@@ -211,11 +211,14 @@ fun Screen(
         topBar = {
             if (showBars) {
                 Column {
+                    val viewModel:AuthViewModel= viewModel()
                     TopBar(
                         scrollBehavior = scrollBehavior,
                         currentRoute = currentRoute,
                         drawerState = drawerState,
                         scope = scope,
+                        authViewModel = authViewModel,
+                        currentBackStackEntry = navController.currentBackStackEntryAsState().value,
                     )
 
                     //no sé si esto está bien así, revisar con el profesor

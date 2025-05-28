@@ -9,6 +9,7 @@ import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.bibliosphere.R
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -20,6 +21,7 @@ import java.util.*
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -27,17 +29,37 @@ import java.util.Locale
 class AuthViewModel: ViewModel()  {
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
 
+    private val db = FirebaseFirestore.getInstance()
+
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState
 
     private val _userName = MutableLiveData<String>()
     val userName: LiveData<String> = _userName
 
+    private val _userNameLibrary = MutableLiveData<String>()
+    val userNameLibrary: LiveData<String> = _userNameLibrary
+
+    private val userRepository = UserFirestoreRepository(db)
+
+//    private val _userNameLibrary = String
+//    val userNameLibrary: LiveData<String> = _userNameLibrary
+
+
     init{
         checkAuthStatus()
         auth.addAuthStateListener { authState ->
             val user = authState.currentUser
             _userName.value = user?.displayName ?:""
+        }
+    }
+
+    fun getUserName(userId: String?){
+        viewModelScope.launch {
+            if (userId != null) {
+                val userName = userRepository.getUserName(userId)
+                _userNameLibrary.value = userName?:"Desconocido"
+            }
         }
     }
 

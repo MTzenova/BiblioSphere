@@ -1,5 +1,6 @@
 package com.example.bibliosphere.presentation.firebase
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -7,10 +8,23 @@ class UserFirestoreRepository( private val db: FirebaseFirestore) {
 
     suspend fun getUserImage(userId: String):Int?{
         return try{
-            val doc = db.collection("users").document().get().await()
+            val doc = db.collection("users").document(userId).get().await()
             if (!doc.exists()) return null
             doc.getLong("image")?.toInt()
         }catch (e:Exception){
+            null
+        }
+    }
+
+    suspend fun getUserName(userId: String): String?{
+        return try{
+            val doc = db.collection("users").document(userId).get().await()
+            val idUser = doc.id
+            Log.d("UserRepo", "Documento encontrado: ${doc.exists()}, Datos: ${doc.data}, idUser: $idUser")
+            if (!doc.exists()) return null
+            val usernName = doc.getString("userName")
+            usernName
+        }catch(e:Exception){
             null
         }
     }
