@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bibliosphere.data.network.RetrofitModule
+import com.example.bibliosphere.presentation.components.genreBooksList
 import com.example.bibliosphere.presentation.firebase.BookFirestoreRepository
 import com.example.bibliosphere.presentation.firebase.BookStatusFS
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +27,12 @@ class HomeScreenViewModel : ViewModel(){
 
     private val _topFiveBooks = MutableLiveData<List<Map<String, Any>>>()
     val topFiveBooks: LiveData<List<Map<String, Any>>> = _topFiveBooks
+
+    private val _bookGenre = MutableLiveData<List<String>>()
+    val bookGenre: LiveData<List<String>> = _bookGenre
+
+    private val _randomBooks = MutableLiveData<List<Map<String, Any>>>()
+    val randomBooks: LiveData<List<Map<String, Any>>> = _randomBooks
 
     fun getStatusBooks() {
 
@@ -65,8 +72,38 @@ class HomeScreenViewModel : ViewModel(){
                 println("Exception HomeScreenViewModel: $e")
             }
         }
-
-
     }
 
+    fun getRandomBooks(){
+
+        //buscar en api 10 libros random a partir de pillar 10 géneros random de la lista.
+        viewModelScope.launch {
+            val bookListRandom = mutableListOf<Map<String, Any>>()
+            val genreList = genreBooksList().shuffled().take(10) //lista de géneros
+            genreList.forEach { genre ->
+                try{
+                    val response = RetrofitModule.api.searchBooks(genre)
+                    val randomBooks = response.items?.filter { it.volumeInfo?.imageLinks?.thumbnail != null }
+
+                    if(!randomBooks.isNullOrEmpty()){ //pillo uno random de aqui
+                        val randomBook = randomBooks.random()
+                        val volumeInfo = randomBook.volumeInfo
+
+                        bookListRandom.add(
+                            mapOf(
+                                "id" to (randomBook.id ?: ""),
+                                "thumbnail" to (volumeInfo?.imageLinks?.thumbnail ?: ""),
+                                "rating" to (volumeInfo?.averageRating ?: 0.0),
+                            )
+                        )
+                    }
+
+                }catch (e:Exception){
+                    println("Exception HomeScreenViewModel: $e")
+                }
+            }
+            //pillar un libro random de cada género. Devolver 10 libros.
+            _randomBooks.value = bookListRandom
+        }
+    }
 }

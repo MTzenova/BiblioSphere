@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bibliosphere.core.navigation.BookDetail
+import com.example.bibliosphere.presentation.components.BoxRandomBooks
 import com.example.bibliosphere.presentation.components.BoxTopFive
 import com.example.bibliosphere.presentation.components.TextStats
 import com.example.bibliosphere.presentation.firebase.BookStatusFS
@@ -25,24 +26,34 @@ import com.google.firebase.auth.FirebaseAuth
 fun HomeScreen(navController: NavController,viewModel: HomeScreenViewModel = HomeScreenViewModel()){
     val bookStatus by viewModel.bookStatusFS.observeAsState()
     val topFiveBooks by viewModel.topFiveBooks.observeAsState(emptyList())
+    val randomBooks by viewModel.randomBooks.observeAsState(emptyList())
 
     LaunchedEffect(Unit){
         viewModel.getStatusBooks()
         viewModel.getTopFiveBooks("subject:fantasy")
+        viewModel.getRandomBooks()
     }
+    LaunchedEffect(randomBooks) {
+        println("DEBUG - Random Books:")
+        randomBooks.forEach {
+            println(it)
+        }
+    }
+
 
     ScreenContent(
         bookStatusFS = bookStatus,
         topFiveBooks = topFiveBooks,
         navController = navController,
         onClickBook = { bookId -> navController.navigate(BookDetail.bookRoute(bookId))
-        }
+        },
+        randomBooks = randomBooks
     )
 
 }
 
 @Composable
-fun ScreenContent(bookStatusFS: List<BookStatusFS>?, topFiveBooks: List<Map<String, Any>>, navController: NavController, onClickBook: (String) -> Unit) {
+fun ScreenContent(bookStatusFS: List<BookStatusFS>?, topFiveBooks: List<Map<String, Any>>, navController: NavController, onClickBook: (String) -> Unit, randomBooks: List<Map<String, Any>>) {
     val nItems = 4
     LazyColumn(
         modifier = Modifier
@@ -57,7 +68,6 @@ fun ScreenContent(bookStatusFS: List<BookStatusFS>?, topFiveBooks: List<Map<Stri
         val favoriteStatus = bookStatusFS?.count { it.status.contains("FAVORITO") }?: 0
         val pendingStatus = bookStatusFS?.count { it.status.contains("PENDIENTE")  }?: 0
         val totalBooks = readingStatus + readedStatus + favoriteStatus + pendingStatus
-
 
         items(nItems) { index ->
             Box(
@@ -79,29 +89,18 @@ fun ScreenContent(bookStatusFS: List<BookStatusFS>?, topFiveBooks: List<Map<Stri
                         TopFive(topFiveBooks, onClickBook)
                     }
                     3 -> {
-                        Column(
-                            modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
-                        ){
-                            Text(
-                                text = "RECOMENDACIONES",
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "¿No sabes qué leer? Aquí tienes algunos libros random:",
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                        }
+                        RandomBooks(randomBooks, onClickBook)
                     }
                 }
             }
             Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingMedium))
         }
     }
+}
+
+@Composable
+private fun RandomBooks(randomBooks: List<Map<String, Any>>, onClickBook: (String) -> Unit) {
+    BoxRandomBooks(randomBooks, onClickBook)
 }
 
 @Composable

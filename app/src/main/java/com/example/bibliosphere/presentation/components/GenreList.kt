@@ -19,10 +19,7 @@ fun GenreList(
 ){
     var expanded by remember { mutableStateOf(false) }
 
-    val genreList = listOf(
-        "Fantasy", "Adventure", "Thriller", "Drama", "Science Fiction", "Horror", "Romance", "Mystery", "Poetry", "Biography", "Science", "Fiction", "Art", "Health",
-        "Juvenile Fiction","Epic", "Action & Adventure"
-    )
+    val genreList = genreBooksList()
 
     Column(
         modifier = Modifier
@@ -81,4 +78,26 @@ fun GenreList(
             }
         }
     }
+}
+
+fun genreBooksList(): List<String> {
+    return listOf(
+        "Fantasy",
+        "Adventure",
+        "Thriller",
+        "Drama",
+        "Science Fiction",
+        "Horror",
+        "Romance",
+        "Mystery",
+        "Poetry",
+        "Biography",
+        "Science",
+        "Fiction",
+        "Art",
+        "Health",
+        "Juvenile Fiction",
+        "Epic",
+        "Action & Adventure"
+    )
 }
