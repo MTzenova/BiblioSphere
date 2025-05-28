@@ -71,16 +71,16 @@ class BookDetailScreenViewModel : ViewModel() {
 
     }
 
-    fun getUserImage(){
-        viewModelScope.launch(Dispatchers.IO) {
-            if (userId != null) {
-                val image = userRepository.getUserImage(userId)
-                if (image != null) {
-                    _imageResId.value = image
-                }
-            }
-        }
-    }
+//    fun getUserImage(){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            if (userId != null) {
+//                val image = userRepository.getUserImage(userId)
+//                if (image != null) {
+//                    _imageResId.value = image
+//                }
+//            }
+//        }
+//    }
 
     fun loadBookDetail(bookId: String) { //carga libro según la id que se le pase
         viewModelScope.launch {

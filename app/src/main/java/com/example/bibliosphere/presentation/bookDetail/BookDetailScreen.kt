@@ -63,7 +63,8 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
                             viewModel.updateBookState(newState,bookId)
                         }
 
-                    }
+                    },
+                    averageRating = it.volumeInfo?.averageRating?:0f,
                 )
                 Text(text = "Descripción:", modifier = Modifier.padding(horizontal = 15.dp))
                 Spacer(modifier = Modifier.height(10.dp))

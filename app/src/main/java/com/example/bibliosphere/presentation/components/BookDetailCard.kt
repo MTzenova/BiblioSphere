@@ -23,6 +23,8 @@ fun BookDetailCard(
     title: String,
     image: String,
     type: String,
+    averageRating: Float?,
+
     initialStates: Set<BookState> = emptySet(),
     onStatesChanged: (Set<BookState>) -> Unit = {}
 ) {
@@ -49,7 +51,7 @@ fun BookDetailCard(
                     //.offset(y = (-30).dp)
                     //.clip(RoundedCornerShape(20.dp))
                 )
-
+                RatingBooks(averageRating = averageRating)
                 Spacer(modifier = Modifier.height(8.dp))
                 //contenido
                 Text(
@@ -108,5 +110,6 @@ fun BookDetailCardPreview() {
         "Harry Potter y el cáliz de fuego",
         "https://upload.wikimedia.org/wikipedia/en/a/a9/Harry_Potter_and_the_Goblet_of_Fire.jpg",
         type = "Fantasia",
+        averageRating = 2f
     )
 }

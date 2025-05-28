@@ -22,12 +22,9 @@ import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenViewModel = HomeScreenViewModel(),
-    //paddingValues: PaddingValues
 ){
 
-    ScreenContent(
-        //paddingValues = paddingValues,
-    )
+    ScreenContent()
 
 }
 
