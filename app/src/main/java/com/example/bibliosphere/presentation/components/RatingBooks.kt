@@ -20,7 +20,7 @@ fun RatingBooks( averageRating: Float?, maxRating: Int = 5){
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "Puntuación: $averageRating",
+            text = "$averageRating",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
         )

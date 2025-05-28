@@ -1,7 +1,9 @@
 package com.example.bibliosphere.presentation.firebase
 
+import com.example.bibliosphere.data.model.BookUI
 import com.example.bibliosphere.data.model.remote.Item
 import com.example.bibliosphere.data.network.GoogleBooksApiService
+import com.example.bibliosphere.data.network.RetrofitModule
 import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -107,6 +109,7 @@ class BookFirestoreRepository(
             emptyList()
         }
     }
+
 
     //comentarios
     //guardar comentario en firestore

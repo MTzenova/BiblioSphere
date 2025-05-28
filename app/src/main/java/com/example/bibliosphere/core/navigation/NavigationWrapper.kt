@@ -28,6 +28,7 @@ import com.example.bibliosphere.presentation.drawerScreens.userProfile.ProfileSc
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.home.HomeScreen
+import com.example.bibliosphere.presentation.home.HomeScreenViewModel
 import com.example.bibliosphere.presentation.library.explore.ExploreLibrariesScreen
 import com.example.bibliosphere.presentation.library.explore.ExploreLibrariesScreenViewModel
 import com.example.bibliosphere.presentation.library.myLibrary.MyLibraryScreen
@@ -72,7 +73,6 @@ fun NavigationWrapper() {
 
     val items = listOf(
         DrawerItems("Perfil", Icons.Default.AccountBox),
-        DrawerItems("Ajustes", Icons.Filled.Settings),
         DrawerItems("Acerca de", Icons.Filled.Info),
         DrawerItems("Salir", Icons.AutoMirrored.Filled.Logout),
 
@@ -155,9 +155,6 @@ fun DetailedDrawer(
                                     drawerState.close()
                                     if (item.title.lowercase() == "salir") {
                                         authViewModel.signout()
-                                    }
-                                    else if(item.title.lowercase() == "ajustes"){
-                                        navController.navigate(Search)
                                     }
                                     else if(item.title.lowercase() == "perfil"){
                                         navController.navigate(Profile)
@@ -273,9 +270,8 @@ fun Screen(
                 )
             }
             composable<Home> {
-                HomeScreen(
-                    //paddingValues = paddingValues
-                )
+                val viewModel:HomeScreenViewModel = viewModel()
+                HomeScreen(navController=navController, viewModel = viewModel)
             }
             composable<Register> {
                 val viewModel: RegisterScreenViewModel = viewModel()

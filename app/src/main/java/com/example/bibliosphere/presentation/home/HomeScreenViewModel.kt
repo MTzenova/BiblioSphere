@@ -24,6 +24,9 @@ class HomeScreenViewModel : ViewModel(){
     private val _bookStatusFS = MutableLiveData<List<BookStatusFS>>()
     val bookStatusFS: LiveData<List<BookStatusFS>> = _bookStatusFS
 
+    private val _topFiveBooks = MutableLiveData<List<Map<String, Any>>>()
+    val topFiveBooks: LiveData<List<Map<String, Any>>> = _topFiveBooks
+
     fun getStatusBooks() {
 
         userId?.let {  id ->
@@ -34,4 +37,36 @@ class HomeScreenViewModel : ViewModel(){
             }
         }
     }
+
+    fun getTopFiveBooks(search: String) {
+
+        viewModelScope.launch {
+            try {
+                val response = RetrofitModule.api.searchBooks(search)
+                val items = response.items?.mapNotNull { item ->
+                    val volumeInfo = item.volumeInfo
+                    val ratingAverage = volumeInfo?.averageRating
+                    //si tiene puntuacion
+                    if(ratingAverage != null) {
+                        mapOf(
+                            "id" to (item.id ?: ""), //id para ir a BookDetailScreen
+                            "thumbnail" to (volumeInfo.imageLinks?.thumbnail ?: ""),
+                            "categories" to (volumeInfo.categories ?: listOf<String>()),
+                            "rating" to ratingAverage.toDouble(),
+                        )
+                    }else null
+                }
+                    ?.sortedByDescending { it["rating"] as Double }
+                    ?.take(5)
+
+                _topFiveBooks.value = items
+
+            }catch (e:Exception){
+                println("Exception HomeScreenViewModel: $e")
+            }
+        }
+
+
+    }
+
 }

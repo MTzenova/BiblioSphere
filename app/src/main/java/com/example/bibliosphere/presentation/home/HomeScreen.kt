@@ -1,6 +1,5 @@
 package com.example.bibliosphere.presentation.home
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,38 +13,43 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.bibliosphere.core.navigation.BookDetail
+import com.example.bibliosphere.presentation.components.BoxTopFive
+import com.example.bibliosphere.presentation.components.TextStats
 import com.example.bibliosphere.presentation.firebase.BookStatusFS
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun HomeScreen(
-    viewModel: HomeScreenViewModel = HomeScreenViewModel(),
-){
+fun HomeScreen(navController: NavController,viewModel: HomeScreenViewModel = HomeScreenViewModel()){
     val bookStatus by viewModel.bookStatusFS.observeAsState()
+    val topFiveBooks by viewModel.topFiveBooks.observeAsState(emptyList())
 
     LaunchedEffect(Unit){
         viewModel.getStatusBooks()
+        viewModel.getTopFiveBooks("subject:fantasy")
     }
 
-    ScreenContent(bookStatusFS = bookStatus)
+    ScreenContent(
+        bookStatusFS = bookStatus,
+        topFiveBooks = topFiveBooks,
+        navController = navController,
+        onClickBook = { bookId -> navController.navigate(BookDetail.bookRoute(bookId))
+        }
+    )
 
 }
 
 @Composable
-fun ScreenContent(bookStatusFS: List<BookStatusFS>?){
+fun ScreenContent(bookStatusFS: List<BookStatusFS>?, topFiveBooks: List<Map<String, Any>>, navController: NavController, onClickBook: (String) -> Unit) {
     val nItems = 4
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(top = 16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-//        contentPadding = PaddingValues(
-//            top = paddingValues.calculateBottomPadding()
-//        )
     ){
-
-        bookStatusFS?.forEach {
-            Log.d("DEBUG", "BookId: ${it.bookId} - Status: '${it.status}'")
-        }
 
         val userName = FirebaseAuth.getInstance().currentUser?.displayName
         val readedStatus = bookStatusFS?.count { it.status.contains("LEIDO") } ?: 0
@@ -66,73 +70,13 @@ fun ScreenContent(bookStatusFS: List<BookStatusFS>?){
             ){
                 when (index) {
                     0 -> { //metemos info en el cuadro 1
-                        Column(
-                            modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
-                        ){
-                            Text(
-                                text = "¡Bienvenido $userName!",
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
+                        Welcome(userName)
                     }
                     1 -> {
-                        Column(
-                            modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
-                        ){
-                            Text(
-                                text = "BIBLIOTECA - ESTADÍSTICAS",
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "Estado actual de tus $totalBooks libros:",
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "Leídos: Tienes $readedStatus libros.",
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "Leyendo: Tienes $readingStatus libros.",
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "Pendientes: Tienes $pendingStatus libros.",
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "Favoritos: Tienes $favoriteStatus libros.",
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                        }
+                        Stats(totalBooks, readedStatus, readingStatus, pendingStatus, favoriteStatus)
                     }
                     2 -> {
-                        Column(
-                            modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
-                        ){
-                            Text(
-                                text = "TOP 5 LIBROS CON MAYOR PUNTUACIÓN",
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start
-                            )
-                        }
+                        TopFive(topFiveBooks, onClickBook)
                     }
                     3 -> {
                         Column(
@@ -157,6 +101,59 @@ fun ScreenContent(bookStatusFS: List<BookStatusFS>?){
             }
             Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingMedium))
         }
+    }
+}
+
+@Composable
+private fun TopFive(topFiveBooks: List<Map<String, Any>>, onClickBook: (String) -> Unit) {
+    BoxTopFive(topFiveBooks, onClickBook)
+}
+
+@Composable
+private fun Stats(
+    totalBooks: Int,
+    readedStatus: Int,
+    readingStatus: Int,
+    pendingStatus: Int,
+    favoriteStatus: Int
+) {
+    Column(
+        modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
+    ) {
+        TextStats(
+            text = "BIBLIOTECA - ESTADÍSTICAS",
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextStats(
+            text = "Estado actual de tus $totalBooks libros:",
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        TextStats(
+            text = "Leídos: Tienes $readedStatus libros.",
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        TextStats(
+            text = "Leyendo: Tienes $readingStatus libros.",
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        TextStats(
+            text = "Pendientes: Tienes $pendingStatus libros.",
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        TextStats(
+            text = "Favoritos: Tienes $favoriteStatus libros.",)
+    }
+}
+
+@Composable
+private fun Welcome(userName: String?) {
+    Column(
+        modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
+    ) {
+        Text(
+            text = "¡Bienvenido $userName!",
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
