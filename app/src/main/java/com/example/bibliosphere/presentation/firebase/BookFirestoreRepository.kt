@@ -5,7 +5,6 @@ import com.example.bibliosphere.data.network.GoogleBooksApiService
 import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import org.w3c.dom.Comment
 
 class BookFirestoreRepository(
     private val db: FirebaseFirestore,
@@ -91,6 +90,24 @@ class BookFirestoreRepository(
         }
     }
 
+    suspend fun getStatusBookFS(userId: String): List<BookStatusFS> {
+        return try{
+            val doc = db.collection("users").document(userId).collection("library").get().await()
+
+            doc.documents.mapNotNull{ documentSnapShot ->
+                val bookId = documentSnapShot.id
+                val status = documentSnapShot.get("status") as? List<String>
+                if(status!=null){
+                    BookStatusFS(bookId = bookId, status = status)
+                }else{
+                    null
+                }
+            }
+        }catch (e:Exception){
+            emptyList()
+        }
+    }
+
     //comentarios
     //guardar comentario en firestore
     suspend fun sendCommentFS(bookId:String, comment:String, userId:String, userName:String, userImage:Int) {
@@ -152,4 +169,9 @@ data class CommentData(
     val userImage:Int,
     val userName:String,
     val timestamp:Long,
+)
+
+data class BookStatusFS(
+    val bookId:String,
+    val status: List<String>
 )
