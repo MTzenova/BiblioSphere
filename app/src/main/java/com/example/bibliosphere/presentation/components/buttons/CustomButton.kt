@@ -22,8 +22,8 @@ fun CustomButton(
     onTap: () -> Unit = {}
 ) {
     Button( //contenedor
-        modifier = modifier.height(BiblioSphereTheme.dimens.buttonHeightNormal),
-        shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeNormal),
+        modifier = modifier.height(BiblioSphereTheme.dimens.buttonHeightSmall),
+        shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeMedium),
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor,
         ),
