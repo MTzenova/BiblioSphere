@@ -68,7 +68,7 @@ fun BookStateButtons(
             Icon(
                 imageVector = if (buttonIsSelected) buttonIcon  else unselectedButtonIcon,
                 contentDescription = description,
-                tint = if(buttonIsSelected) MaterialTheme.colorScheme.primary else LocalContentColor.current
+                tint = if(buttonIsSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
             )
         }
     }

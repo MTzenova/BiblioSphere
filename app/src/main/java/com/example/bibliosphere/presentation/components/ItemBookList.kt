@@ -66,7 +66,7 @@ fun ChipView(type:String){
             .padding(start = 12.dp, end = 12.dp, top = 5.dp, bottom = 5.dp),
         contentAlignment = Alignment.Center
     ){
-        Text(text = type, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
+        Text(text = type, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimary)
     }
 }
 

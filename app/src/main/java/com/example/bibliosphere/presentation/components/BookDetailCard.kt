@@ -28,10 +28,10 @@ fun BookDetailCard(
     initialStates: Set<BookState> = emptySet(),
     onStatesChanged: (Set<BookState>) -> Unit = {}
 ) {
-    Column{
+    Column(modifier = Modifier.fillMaxWidth().padding(0.dp)) {
         Box(
             modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 40.dp)
+                .padding(start = 20.dp, end = 20.dp, top = 40.dp, bottom = 15.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.primary),
@@ -76,7 +76,7 @@ fun BookDetailCard(
                 .padding(bottom = 20.dp, start = 16.dp, end = 16.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.inversePrimary),
+                .background(MaterialTheme.colorScheme.onBackground),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             //añadir botones

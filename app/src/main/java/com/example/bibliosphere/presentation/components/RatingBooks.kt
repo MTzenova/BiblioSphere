@@ -19,23 +19,22 @@ fun RatingBooks( averageRating: Float?, maxRating: Int = 5){
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
-            text = "$averageRating",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = "de $maxRating",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
         Icon(
             imageVector = Icons.Filled.Star,
             contentDescription = "Star",
-            tint = MaterialTheme.colorScheme.onBackground,
+            tint = MaterialTheme.colorScheme.background,
             modifier = Modifier.size(24.dp)
         )
-
+        Text(
+            text = "$averageRating",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.background,
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = "/ $maxRating",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.background,
+        )
     }
 }
