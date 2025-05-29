@@ -11,6 +11,8 @@ import com.example.bibliosphere.presentation.firebase.BookFirestoreRepository
 import com.example.bibliosphere.presentation.firebase.BookStatusFS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel : ViewModel(){
@@ -18,6 +20,9 @@ class HomeScreenViewModel : ViewModel(){
     private val db = FirebaseFirestore.getInstance()
 
     val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     private val bookFirestoreRepository = BookFirestoreRepository(db = FirebaseFirestore.getInstance(),
         api = RetrofitModule.api)
@@ -47,6 +52,8 @@ class HomeScreenViewModel : ViewModel(){
 
     fun getTopFiveBooks(search: String) {
 
+        _isLoading.value = true
+
         viewModelScope.launch {
             try {
                 val response = RetrofitModule.api.searchBooks(search)
@@ -70,17 +77,21 @@ class HomeScreenViewModel : ViewModel(){
 
             }catch (e:Exception){
                 println("Exception HomeScreenViewModel: $e")
+            }finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun getRandomBooks(){
 
+        _isLoading.value = true
+
         //buscar en api 10 libros random a partir de pillar 10 géneros random de la lista.
         viewModelScope.launch {
             val bookListRandom = mutableListOf<Map<String, Any>>()
-            val genreList = genreBooksList().shuffled().take(10) //lista de géneros
-            genreList.forEach { genre ->
+            val genreList = genreBooksList().shuffled().take(5) //lista de géneros
+             genreList.forEach { genre ->
                 try{
                     val response = RetrofitModule.api.searchBooks(genre)
                     val randomBooks = response.items?.filter { it.volumeInfo?.imageLinks?.thumbnail != null }
@@ -100,6 +111,8 @@ class HomeScreenViewModel : ViewModel(){
 
                 }catch (e:Exception){
                     println("Exception HomeScreenViewModel: $e")
+                }finally {
+                    _isLoading.value = false
                 }
             }
             //pillar un libro random de cada género. Devolver 10 libros.

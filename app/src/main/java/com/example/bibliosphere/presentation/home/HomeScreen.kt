@@ -32,13 +32,6 @@ fun HomeScreen(navController: NavController,viewModel: HomeScreenViewModel = Hom
         viewModel.getTopFiveBooks("subject:fantasy")
         viewModel.getRandomBooks()
     }
-    LaunchedEffect(randomBooks) {
-        println("DEBUG - Random Books:")
-        randomBooks.forEach {
-            println(it)
-        }
-    }
-
 
     ScreenContent(
         bookStatusFS = bookStatus,
