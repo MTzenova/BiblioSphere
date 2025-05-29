@@ -33,6 +33,8 @@ class SearchScreenViewModel : ViewModel() {
     val userId = FirebaseAuth.getInstance().currentUser?.uid
     private val db = FirebaseFirestore.getInstance()
 
+    private val key = "AIzaSyD3XGbuQhMUFqYs1qGEY0Wq_8Dh3_hwRqQ"
+
     private val repository = BookFirestoreRepository(
         db = FirebaseFirestore.getInstance(),
         api = RetrofitModule.api
@@ -54,7 +56,7 @@ class SearchScreenViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val response = RetrofitModule.api.searchBooks(searchQuery)
+                val response = RetrofitModule.api.searchBooks(searchQuery,key)
                 val items =  response.items ?: emptyList()
                 _books.value = items
 

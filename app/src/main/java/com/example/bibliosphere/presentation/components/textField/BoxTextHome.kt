@@ -1,4 +1,4 @@
-package com.example.bibliosphere.presentation.components
+package com.example.bibliosphere.presentation.components.textField
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.bibliosphere.presentation.components.RatingBooks
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable

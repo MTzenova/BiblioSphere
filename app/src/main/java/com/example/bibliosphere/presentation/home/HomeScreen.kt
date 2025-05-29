@@ -14,9 +14,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bibliosphere.core.navigation.BookDetail
-import com.example.bibliosphere.presentation.components.BoxRandomBooks
-import com.example.bibliosphere.presentation.components.BoxTopFive
-import com.example.bibliosphere.presentation.components.TextStats
+import com.example.bibliosphere.presentation.components.textField.BoxRandomBooks
+import com.example.bibliosphere.presentation.components.textField.BoxTopFive
+import com.example.bibliosphere.presentation.components.textField.TextStats
 import com.example.bibliosphere.presentation.firebase.BookStatusFS
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import com.google.firebase.auth.FirebaseAuth
@@ -30,7 +30,7 @@ fun HomeScreen(navController: NavController,viewModel: HomeScreenViewModel = Hom
     LaunchedEffect(Unit){
         viewModel.getStatusBooks()
         viewModel.getTopFiveBooks("subject:fantasy")
-        viewModel.getRandomBooks()
+        viewModel.getRandomBooksSimple()
     }
 
     ScreenContent(

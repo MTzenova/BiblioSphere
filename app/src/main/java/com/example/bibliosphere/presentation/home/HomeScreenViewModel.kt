@@ -1,6 +1,7 @@
 package com.example.bibliosphere.presentation.home
 
 import android.util.Log
+import androidx.compose.runtime.key
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,6 +40,8 @@ class HomeScreenViewModel : ViewModel(){
     private val _randomBooks = MutableLiveData<List<Map<String, Any>>>()
     val randomBooks: LiveData<List<Map<String, Any>>> = _randomBooks
 
+    private val key = "AIzaSyD3XGbuQhMUFqYs1qGEY0Wq_8Dh3_hwRqQ"
+
     fun getStatusBooks() {
 
         userId?.let {  id ->
@@ -56,7 +59,7 @@ class HomeScreenViewModel : ViewModel(){
 
         viewModelScope.launch {
             try {
-                val response = RetrofitModule.api.searchBooks(search)
+                val response = RetrofitModule.api.searchBooks(search, key)
                 val items = response.items?.mapNotNull { item ->
                     val volumeInfo = item.volumeInfo
                     val ratingAverage = volumeInfo?.averageRating
@@ -73,7 +76,7 @@ class HomeScreenViewModel : ViewModel(){
                     ?.sortedByDescending { it["rating"] as Double }
                     ?.take(5)
 
-                _topFiveBooks.value = items
+                _topFiveBooks.value = items?:emptyList()
 
             }catch (e:Exception){
                 println("Exception HomeScreenViewModel: $e")
@@ -90,10 +93,10 @@ class HomeScreenViewModel : ViewModel(){
         //buscar en api 10 libros random a partir de pillar 10 géneros random de la lista.
         viewModelScope.launch {
             val bookListRandom = mutableListOf<Map<String, Any>>()
-            val genreList = genreBooksList().shuffled().take(5) //lista de géneros
+            val genreList = genreBooksList().shuffled().take(1) //lista de géneros
              genreList.forEach { genre ->
                 try{
-                    val response = RetrofitModule.api.searchBooks(genre)
+                    val response = RetrofitModule.api.searchBooks(genre,key)
                     val randomBooks = response.items?.filter { it.volumeInfo?.imageLinks?.thumbnail != null }
 
                     if(!randomBooks.isNullOrEmpty()){ //pillo uno random de aqui
@@ -117,6 +120,33 @@ class HomeScreenViewModel : ViewModel(){
             }
             //pillar un libro random de cada género. Devolver 10 libros.
             _randomBooks.value = bookListRandom
+        }
+    }
+
+    private var randomBooksLoaded = false
+
+    fun getRandomBooksSimple() {
+        if (randomBooksLoaded) return //evita volver a llamar
+
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = RetrofitModule.api.searchBooks("subject:fiction", key)
+                val books = response.items?.shuffled()?.take(10)?.map {
+                    mapOf(
+                        "id" to (it.id ?: ""),
+                        "thumbnail" to (it.volumeInfo?.imageLinks?.thumbnail ?: ""),
+                        "rating" to (it.volumeInfo?.averageRating ?: 0.0)
+                    )
+                } ?: emptyList()
+
+                _randomBooks.value = books
+                randomBooksLoaded = true
+            } catch (e: Exception) {
+                println("Error: $e")
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 }
