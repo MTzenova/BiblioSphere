@@ -25,7 +25,8 @@ fun TextStats(text:String){
         text = text,
         style = MaterialTheme.typography.titleMedium,
         modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Start
+        textAlign = TextAlign.Start,
+        color = MaterialTheme.colorScheme.onPrimary,
     )
 }
 
@@ -51,12 +52,12 @@ fun BoxTopFive(topFiveBooks: List<Map<String, Any>>, onClickBook: (String) -> Un
                 Column(
                     modifier = Modifier
                         .padding(BiblioSphereTheme.dimens.paddingNormal)
-                        .align(Alignment.CenterHorizontally)
                         .clickable {
                             if (id != null) {
                                 onClickBook(id)
                             }
                         },
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
                         painter = rememberAsyncImagePainter(model = coverBook),
@@ -64,7 +65,7 @@ fun BoxTopFive(topFiveBooks: List<Map<String, Any>>, onClickBook: (String) -> Un
                         modifier = Modifier
                             .size(98.dp, 145.dp)
                             .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.inversePrimary)
+                            .background(MaterialTheme.colorScheme.background)
                             .padding(8.dp)
 
 
@@ -116,7 +117,7 @@ fun BoxRandomBooks(randomBooks: List<Map<String, Any>>, onClickBook: (String) ->
                         modifier = Modifier
                             .size(98.dp, 145.dp)
                             .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.inversePrimary)
+                            .background(MaterialTheme.colorScheme.background)
                             .padding(8.dp)
                     )
                     Spacer(modifier = Modifier.height(4.dp))
