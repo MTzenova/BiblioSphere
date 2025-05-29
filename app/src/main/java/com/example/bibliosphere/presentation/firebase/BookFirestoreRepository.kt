@@ -6,6 +6,7 @@ import com.example.bibliosphere.data.network.GoogleBooksApiService
 import com.example.bibliosphere.data.network.RetrofitModule
 import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 
 class BookFirestoreRepository(
@@ -135,7 +136,7 @@ class BookFirestoreRepository(
     suspend fun getCommentsFS(bookId:String): List<CommentData> {
         return try{
 
-            val doc = db.collection("books").document(bookId).collection("comments").orderBy("timestamp").get().await()
+            val doc = db.collection("books").document(bookId).collection("comments").orderBy("timestamp",Query.Direction.DESCENDING).get().await()
 
             doc.documents.map{ docs ->
                 CommentData(
