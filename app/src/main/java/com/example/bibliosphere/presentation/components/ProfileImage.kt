@@ -8,7 +8,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -45,6 +47,16 @@ fun ProfileImage(
         R.drawable.profile_fox_sunglases,
         R.drawable.profile_orange_cat,
         R.drawable.profile_penguin_balloons,
+        R.drawable.profile_baby_dragon_fire,
+        R.drawable.profile_baby_dragon_red,
+        R.drawable.profile_brontosaurus_blue,
+        R.drawable.profile_cute_astronaut_alien,
+        R.drawable.profile_cute_panda,
+        R.drawable.profile_elephant_gamer,
+        R.drawable.profile_halloween_cat,
+        R.drawable.profile_mouse_heart,
+        R.drawable.profile_panda_detective,
+        R.drawable.profile_tyranosaur_red,
     )
 
     LazyVerticalGrid(
@@ -70,8 +82,10 @@ fun ProfileImage(
 fun ImageSelector(resId: Int, onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .size(84.dp)
-            .clickable(onClick = onClick)
+            .size(100.dp)
+            .clickable(onClick = onClick),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        shape = RoundedCornerShape(12.dp),
     ) {
 
         val context = LocalContext.current

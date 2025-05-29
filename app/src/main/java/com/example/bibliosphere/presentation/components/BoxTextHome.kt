@@ -104,12 +104,12 @@ fun BoxRandomBooks(randomBooks: List<Map<String, Any>>, onClickBook: (String) ->
                 Column(
                     modifier = Modifier
                         .padding(BiblioSphereTheme.dimens.paddingNormal)
-                        .align(Alignment.CenterHorizontally)
                         .clickable {
                             if (id != null) {
                                 onClickBook(id)
                             }
                         },
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
                         painter = rememberAsyncImagePainter(model = coverBook),
