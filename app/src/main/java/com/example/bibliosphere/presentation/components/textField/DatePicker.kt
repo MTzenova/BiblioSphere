@@ -158,6 +158,12 @@ fun convertMillisToDate(millis: Long): String {
     return formatter.format(Date(millis))
 }
 
+fun formatTimestamp(timestamp: Long): String {
+    val date = Date(timestamp)
+    val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+    return formatter.format(date)
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerModal(

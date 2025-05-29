@@ -66,8 +66,13 @@ fun CommentBox(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)) {
+                        .padding(vertical = 8.dp)
+                    )
+                    {
+                        Text(text = formatTimestamp(comment.timestamp), style = MaterialTheme.typography.bodySmall)
+                        Spacer(modifier = Modifier.height(3.dp))
                         Text(text = comment.userName, style = MaterialTheme.typography.bodyMedium)
+                        Spacer(modifier = Modifier.height(5.dp))
                         Text(text = comment.comment, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
