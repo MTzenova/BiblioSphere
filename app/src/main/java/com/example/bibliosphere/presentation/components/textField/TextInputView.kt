@@ -41,8 +41,7 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
 
     OutlinedTextField(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
+            .fillMaxWidth(),
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -94,6 +93,62 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
     )
 
 }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextInputFieldComment(label: String, value: String, onValueChange: (String) -> Unit, onImeAction: () -> Unit) {
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth(),
+        value = value,
+        onValueChange = {
+            onValueChange(it)
+        },
+        placeholder = { Text(text = label, color = colorScheme.onSurface) },
+        //label = { LabelView(title = label) },
+        textStyle = MaterialTheme.typography.bodyMedium,
+        colors = textFieldColors(
+            focusedTextColor = colorScheme.onSurface,
+            unfocusedTextColor = colorScheme.onSurface,
+            disabledTextColor = colorScheme.onSurface.copy(alpha = 0.38f),
+            focusedContainerColor = Color.Transparent, //no me lo pone transparente
+            unfocusedContainerColor = Color.Transparent,
+            cursorColor = colorScheme.primary,
+            focusedIndicatorColor = colorScheme.primary,
+            unfocusedIndicatorColor = colorScheme.outline,
+            disabledIndicatorColor = colorScheme.outline.copy(alpha = 0.38f),
+            focusedLabelColor = colorScheme.primary,
+            unfocusedLabelColor = colorScheme.outline,
+            disabledLabelColor = colorScheme.outline.copy(alpha = 0.38f),
+            focusedPlaceholderColor = colorScheme.onSurfaceVariant,
+            unfocusedPlaceholderColor = colorScheme.onSurfaceVariant,
+        ),
+        shape = RoundedCornerShape(30.dp),
+        trailingIcon = {
+            IconButton(
+                onClick = {
+                    onImeAction()
+                    keyboardController?.hide()
+                }
+            ) {
+                Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
+            }
+        },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+                onImeAction()
+            }
+        )
+    )
+
+}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.presentation.components.BookDescription
 import com.example.bibliosphere.presentation.components.BookDetailCard
@@ -30,7 +31,7 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
     val bookState by viewModel.booksState.collectAsState()
 
     var showBottomSheet by remember {mutableStateOf(false)}
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     LaunchedEffect(bookId) {
         viewModel.loadBookDetail(bookId)
@@ -38,6 +39,7 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
         if (userId != null) {
             viewModel.getUserData(userId)
         }
+        if(showBottomSheet)sheetState.expand() //para que cuando se abra el BottomSheet, se expanda para ver la caja de comentarios
     }
 
     if (loading) {
@@ -82,7 +84,8 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
             onDismissRequest = {
                 showBottomSheet = false
             },
-            sheetState = sheetState
+            sheetState = sheetState,
+            modifier = Modifier.imePadding()
         ) {
             if (userId != null) {
                 CommentBox(
@@ -93,7 +96,8 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
                     comments = comments,
                     onSend = { commentText ->
                         viewModel.sendComment(bookId, commentText, userName, userImage)
-                    }
+                    },
+                    modifier = Modifier.imePadding().fillMaxHeight(0.9f)
                 )
             }
         }
