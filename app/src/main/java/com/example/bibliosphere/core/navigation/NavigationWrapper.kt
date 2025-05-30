@@ -192,13 +192,24 @@ fun Screen(
     )
     var selectedIndex by remember { mutableStateOf(0)}
 
-    val showTabs = currentRoute in listOf(Library::class.qualifiedName, Explore::class.qualifiedName)
-    var selectedTabIndex by remember { mutableStateOf(0) }
+
     val tabDestinations = listOf(
         TabDestination(Library,"Library"),
         TabDestination(Explore,"Explore libraries"),
     )
 
+    val showTabs = currentRoute in listOf(Library::class.qualifiedName, Explore::class.qualifiedName)
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = currentBackStackEntry?.destination?.route
+
+    LaunchedEffect(currentDestination) {
+        if (currentDestination == Library::class.qualifiedName && selectedTabIndex != 0) {
+            selectedTabIndex = 0
+        } else if (currentDestination == Explore::class.qualifiedName && selectedTabIndex != 1) {
+            selectedTabIndex = 1
+        }
+    }
 
 
     Scaffold(
@@ -243,7 +254,7 @@ fun Screen(
                         when (index) {
                             //0 -> navController.popBackStack()
                             1 -> navController.navigate(Home)
-                            2 -> navController.navigate(Library)
+                            2 -> if(currentRoute == Library::class.qualifiedName)selectedIndex=0 else navController.navigate(Library)
                             3 -> navController.navigate(Search)
                         }
                         if(index!= 0){
