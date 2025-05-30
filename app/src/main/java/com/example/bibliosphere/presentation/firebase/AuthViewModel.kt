@@ -102,38 +102,43 @@ class AuthViewModel: ViewModel()  {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {task->
 
-                val userId = auth.currentUser?.uid
-                val birthDateTimestamp = birthDate.toTimestampOrNull() //convertir fecha para firestore
-                val image = R.drawable.logo_sin_letras //para añadir una imagen por defecto al crear el usuario
-
                 if(task.isSuccessful){
-                    _authState.value = AuthState.Authenticated
+                    val user = auth.currentUser
+                    val userId = user?.uid
+                    val birthDateTimestamp = birthDate.toTimestampOrNull() //convertir fecha para firestore
+                    val image = R.drawable.logo_sin_letras //para añadir una imagen por defecto al crear el usuario
+                    val profile = UserProfileChangeRequest.Builder().setDisplayName(userName).build()
 
-                    if(userId != null){
-                        val users = hashMapOf(
-                            "userName" to userName,
-                            "birthDate" to birthDateTimestamp,
-                            "email" to email,
-                            "image" to image
-                        )
-                        val profile = UserProfileChangeRequest.Builder().setDisplayName(userName).build()
-                        
-                        auth.currentUser?.updateProfile(profile)
-                            ?.addOnFailureListener { e ->
-                                Log.e("Auth", "No se pudo actualizar displayName", e)
+                    user?.updateProfile(profile)
+                        ?.addOnCompleteListener { update ->
+                        if(update.isSuccessful){
+                            println("Nombre de usuario actualizado.")
+
+                            if(userId != null){
+                                val users = hashMapOf(
+                                    "userName" to userName,
+                                    "birthDate" to birthDateTimestamp,
+                                    "email" to email,
+                                    "image" to image
+                                )
+
+                                val db = FirebaseFirestore.getInstance()
+                                db.collection("users").document(userId)
+                                    .set(users)
+                                    .addOnSuccessListener {
+                                        _authState.value = AuthState.Authenticated
+                                        println("Usuario guardado correctamente en la bbdd.")
+                                    }
+                                    .addOnFailureListener {
+                                        println("ERROR al intentar guardar el usuario en la bbdd.")
+                                        _authState.value = AuthState.Error(it.message.toString())
+                                    }
+                            }else{
+                                _authState.value = AuthState.Error("No se ha actualizado el nombre de usuario.")
                             }
-                        val db = FirebaseFirestore.getInstance()
-                        db.collection("users").document(userId)
-                            .set(users)
-                            .addOnSuccessListener {
-                                println("Usuario guardado correctamente en la bbdd.")
-                            }
-                            .addOnFailureListener {
-                                println("ERROR al intentar guardar el usuario en la bbdd.")
-                                _authState.value = AuthState.Error(it.message.toString())
-                            }
+
+                        }
                     }
-
                 }else{
                     _authState.value = AuthState.Error(task.exception?.message ?: "Parece que algo fue mal")
                 }

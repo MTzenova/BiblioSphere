@@ -227,9 +227,11 @@ fun UserName(
     isValidUserName: Boolean,
     modifier: Modifier = Modifier
 ){
-    val maxChars = 20
+    val maxChars = 40
+    val userNameValue = if(value.length > maxChars) value.take(maxChars) else value
+
     OutlinedTextField(
-        value = value,
+        value = userNameValue,
         onValueChange = { newValue ->
             if (newValue.length <= maxChars) {
                 onValueChange(newValue)

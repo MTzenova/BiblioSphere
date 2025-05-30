@@ -48,7 +48,7 @@ class RegisterScreenViewModel : ViewModel() {
         _isValidBirthDate.value = isValidBirthDate(birthDate)
     }
 
-    private fun isValidUserName(userName: String): Boolean = userName.length in 4..14
+    private fun isValidUserName(userName: String): Boolean = userName.length in 4..40
 
     private fun isValidEmail(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
 

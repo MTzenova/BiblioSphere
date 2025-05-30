@@ -40,6 +40,7 @@ import com.example.bibliosphere.presentation.search.SearchScreen
 import com.example.bibliosphere.presentation.search.SearchScreenViewModel
 import com.example.bibliosphere.presentation.viewmodel.MyLibraryScreenViewModel
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -118,13 +119,16 @@ fun NavigationWrapper() {
 fun DetailedDrawer(
     content: @Composable (PaddingValues) -> Unit,
     navController: NavHostController,
-    authViewModel: AuthViewModel,
     currentRoute: String?,
+    authViewModel: AuthViewModel,
     scope: CoroutineScope,
     drawerState: DrawerState,
     items: List<DrawerItems>
 ) {
-    val userName by authViewModel.userName.observeAsState("")
+
+    val user = FirebaseAuth.getInstance().currentUser
+    val userName = user?.displayName
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -137,13 +141,15 @@ fun DetailedDrawer(
                     Spacer(Modifier.height(12.dp))
                     Text("BiblioSphere", style = MaterialTheme.typography.titleLarge)
                     HorizontalDivider()
-                    if (userName.isNotEmpty()) {
-                        Text(
-                            text = userName,
-                            style = MaterialTheme.typography.headlineSmall,
-                            modifier = Modifier
-                                .padding(top = 4.dp, bottom = 12.dp)
-                        )
+                    if (userName != null) {
+                        if (userName.isNotEmpty()) {
+                            Text(
+                                text = userName,
+                                style = MaterialTheme.typography.headlineSmall,
+                                modifier = Modifier
+                                    .padding(top = 4.dp, bottom = 12.dp)
+                            )
+                        }
                     }
                     items.forEach { item ->
                         NavigationDrawerItem(
@@ -200,10 +206,10 @@ fun Screen(
 
     val showTabs = currentRoute in listOf(Library::class.qualifiedName, Explore::class.qualifiedName)
     var selectedTabIndex by remember { mutableStateOf(0) }
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState() //para arreglar bug de tabs
     val currentDestination = currentBackStackEntry?.destination?.route
 
-    LaunchedEffect(currentDestination) {
+    LaunchedEffect(currentDestination) { //para arreglar bug de tabs
         if (currentDestination == Library::class.qualifiedName && selectedTabIndex != 0) {
             selectedTabIndex = 0
         } else if (currentDestination == Explore::class.qualifiedName && selectedTabIndex != 1) {
