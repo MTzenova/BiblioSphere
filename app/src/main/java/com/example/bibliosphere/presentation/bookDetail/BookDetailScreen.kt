@@ -42,7 +42,7 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
         if (userId != null) {
             viewModel.getUserData(userId)
         }
-        if(showBottomSheet) sheetState.expand() //para que cuando se abra el BottomSheet, se expanda para ver la caja de comentarios
+        if(showBottomSheet)sheetState.expand() //para que cuando se abra el BottomSheet, se expanda para ver la caja de comentarios
     }
 
     if (loading) {
