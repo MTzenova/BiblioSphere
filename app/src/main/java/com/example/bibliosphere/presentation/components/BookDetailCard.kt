@@ -10,10 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.example.bibliosphere.presentation.components.buttons.BookStateButtons
 
@@ -41,10 +43,17 @@ fun BookDetailCard(
                 .fillMaxWidth()
                 .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally) {
-
+                val painter = rememberAsyncImagePainter( //hago esto para que las imagenes no pesen tanto
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(image.replace("http", "https"))
+                        .size(140, 200)
+                        .allowHardware(false)
+                        .crossfade(true)
+                        .build()
+                )
                 //imagen
                 Image(
-                    painter = rememberAsyncImagePainter(model = image.replace("http", "https")),
+                    painter = painter,
                     contentDescription = "Book of $author",
                     modifier = Modifier
                         .size(width = 140.dp, height = 200.dp)
