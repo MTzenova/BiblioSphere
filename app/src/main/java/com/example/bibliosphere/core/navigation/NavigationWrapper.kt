@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bibliosphere.data.model.DrawerItems
@@ -142,7 +144,7 @@ fun DetailedDrawer(
 
     val user = FirebaseAuth.getInstance().currentUser
     val userName = user?.displayName
-    val imageRes by authViewModel.userImage.observeAsState()
+    val imageRes by authViewModel.userImage.collectAsState()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -165,16 +167,17 @@ fun DetailedDrawer(
                     ) {
                         if (userName != null) {
                             if (userName.isNotEmpty()) {
-                                val painter = imageRes?.let { painterResource(id = it) }
-                                if (painter != null) {
-                                    Image(
-                                        painter = painter,
-                                        contentDescription = "$imageRes profile picture",
+                                key(imageRes){
+                                    AsyncImage(
+                                        model = imageRes,
+                                        contentDescription = "User profile picture",
                                         modifier = Modifier
                                             .size(94.dp)
-                                            .clip(RoundedCornerShape(62.dp))
+                                            .clip(RoundedCornerShape(62.dp)),
+                                        contentScale = ContentScale.Crop,
                                     )
                                 }
+
                                 Text(
                                     text = userName,
                                     style = MaterialTheme.typography.headlineSmall,

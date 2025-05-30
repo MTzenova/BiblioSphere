@@ -21,6 +21,9 @@ import java.util.*
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -37,8 +40,8 @@ class AuthViewModel: ViewModel()  {
     private val _userName = MutableLiveData<String>()
     val userName: LiveData<String> = _userName
 
-    private val _userImage = MutableLiveData<Int>()
-    val userImage: LiveData<Int> = _userImage
+    private val _userImage = MutableStateFlow<Int?>(null)
+    val userImage: StateFlow<Int?> = _userImage.asStateFlow()
 
     private val _userNameLibrary = MutableLiveData<String>()
     val userNameLibrary: LiveData<String> = _userNameLibrary
