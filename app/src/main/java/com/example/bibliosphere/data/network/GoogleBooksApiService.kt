@@ -11,7 +11,7 @@ interface GoogleBooksApiService {
     suspend fun searchBooks(
         @Query("q") query: String,
         @Query("key") apikey: String,
-        @Query("maxResults") maxResults: Int = 40,
+        @Query("maxResults") maxResults: Int = 25,
     ): BookDto
 
     @GET("volumes/{id}") //para conseguir el id de un libro, endpoint

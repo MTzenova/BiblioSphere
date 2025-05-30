@@ -30,7 +30,7 @@ fun HomeScreen(navController: NavController,viewModel: HomeScreenViewModel = Hom
     LaunchedEffect(Unit){
         viewModel.getStatusBooks()
         viewModel.getTopFiveBooks("subject:fantasy")
-        viewModel.getRandomBooksSimple()
+        viewModel.getRandomBooks()
     }
 
     ScreenContent(

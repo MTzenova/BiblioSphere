@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitModule {
 
     private const val BASE_URL = "https://www.googleapis.com/books/v1/"
-    private const val API_KEY = "AIzaSyD3XGbuQhMUFqYs1qGEY0Wq_8Dh3_hwRqQ"
+    private const val API_KEY = "AIzaSyBF7rERYx2M8miJEyYZlxDFjSywpLhnHmU"
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(ApiKeyInterceptor(API_KEY))

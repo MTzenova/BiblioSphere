@@ -33,7 +33,7 @@ class SearchScreenViewModel : ViewModel() {
     val userId = FirebaseAuth.getInstance().currentUser?.uid
     private val db = FirebaseFirestore.getInstance()
 
-    private val key = "AIzaSyD3XGbuQhMUFqYs1qGEY0Wq_8Dh3_hwRqQ"
+    private val key = "AIzaSyBF7rERYx2M8miJEyYZlxDFjSywpLhnHmU"
 
     private val repository = BookFirestoreRepository(
         db = FirebaseFirestore.getInstance(),
