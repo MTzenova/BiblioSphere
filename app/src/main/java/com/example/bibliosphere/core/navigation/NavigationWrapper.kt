@@ -1,7 +1,9 @@
 package com.example.bibliosphere.core.navigation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
@@ -11,8 +13,12 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -20,6 +26,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.bibliosphere.data.model.DrawerItems
 import com.example.bibliosphere.data.model.TabDestination
 import com.example.bibliosphere.presentation.bookDetail.BookDetailScreen
@@ -27,6 +35,7 @@ import com.example.bibliosphere.presentation.bookDetail.BookDetailScreenViewMode
 import com.example.bibliosphere.presentation.drawerScreens.userProfile.ProfileScreen
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
+import com.example.bibliosphere.presentation.firebase.UserFirestoreRepository
 import com.example.bibliosphere.presentation.home.HomeScreen
 import com.example.bibliosphere.presentation.home.HomeScreenViewModel
 import com.example.bibliosphere.presentation.library.explore.ExploreLibrariesScreen
@@ -42,6 +51,7 @@ import com.example.bibliosphere.presentation.viewmodel.MyLibraryScreenViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -55,12 +65,16 @@ fun NavigationWrapper() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val authState = authViewModel.authState.observeAsState()
 
+    val user = FirebaseAuth.getInstance().currentUser
+    val userId = user?.uid
+
     LaunchedEffect(authState.value) {
         if (authState.value is AuthState.Unauthenticated) {
             navController.navigate(Login) {
                 popUpTo(0)
             }
         }
+        authViewModel.getUserImage(userId)
     }
 
 
@@ -128,29 +142,49 @@ fun DetailedDrawer(
 
     val user = FirebaseAuth.getInstance().currentUser
     val userName = user?.displayName
+    val imageRes by authViewModel.userImage.observeAsState()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
                 Column(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState()),
+
                 ) {
                     Spacer(Modifier.height(12.dp))
-                    Text("BiblioSphere", style = MaterialTheme.typography.titleLarge)
+
+                    Text("BiblioSphere", style = MaterialTheme.typography.headlineLarge)
                     HorizontalDivider()
-                    if (userName != null) {
-                        if (userName.isNotEmpty()) {
-                            Text(
-                                text = userName,
-                                style = MaterialTheme.typography.headlineSmall,
-                                modifier = Modifier
-                                    .padding(top = 4.dp, bottom = 12.dp)
-                            )
+                    Spacer(Modifier.height(12.dp))
+                    Column(
+                        modifier = Modifier.padding(start = 16.dp,top = 8.dp, end = 16.dp, bottom = 12.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        if (userName != null) {
+                            if (userName.isNotEmpty()) {
+                                val painter = imageRes?.let { painterResource(id = it) }
+                                if (painter != null) {
+                                    Image(
+                                        painter = painter,
+                                        contentDescription = "$imageRes profile picture",
+                                        modifier = Modifier
+                                            .size(94.dp)
+                                            .clip(RoundedCornerShape(62.dp))
+                                    )
+                                }
+                                Text(
+                                    text = userName,
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    modifier = Modifier
+                                        .padding(top = 4.dp, bottom = 12.dp)
+                                )
+                            }
                         }
                     }
+                    HorizontalDivider()
                     items.forEach { item ->
                         NavigationDrawerItem(
                             label = { Text(item.title) },

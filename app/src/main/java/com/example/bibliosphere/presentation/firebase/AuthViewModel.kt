@@ -37,6 +37,9 @@ class AuthViewModel: ViewModel()  {
     private val _userName = MutableLiveData<String>()
     val userName: LiveData<String> = _userName
 
+    private val _userImage = MutableLiveData<Int>()
+    val userImage: LiveData<Int> = _userImage
+
     private val _userNameLibrary = MutableLiveData<String>()
     val userNameLibrary: LiveData<String> = _userNameLibrary
 
@@ -59,6 +62,15 @@ class AuthViewModel: ViewModel()  {
             if (userId != null) {
                 val userName = userRepository.getUserName(userId)
                 _userNameLibrary.value = userName?:"Desconocido"
+            }
+        }
+    }
+
+    fun getUserImage(userId: String?){
+        viewModelScope.launch {
+            if (userId != null) {
+                val userImage = userRepository.getUserImage(userId)
+                _userImage.value = userImage
             }
         }
     }
