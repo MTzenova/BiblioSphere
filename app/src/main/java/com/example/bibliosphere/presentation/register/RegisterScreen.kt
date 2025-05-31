@@ -22,6 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -202,8 +203,9 @@ fun RowAccount(onClick: () -> Unit) {
         TextButton(onClick = onClick) {
             Text(
                 text = stringResource(R.string.login),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                color = colorScheme.onBackground,
+                textDecoration = TextDecoration.Underline
             )
         }
     }
@@ -224,7 +226,10 @@ fun RowButtonRegister(
             stringResource(R.string.register_button),
             onClick = { onRegisterSelected() },
             enabled = registerEnable,
-            buttonColor = ButtonDefaults.buttonColors()
+            buttonColor = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.onBackground,
+                contentColor = colorScheme.background
+            )
         )
     }
 }

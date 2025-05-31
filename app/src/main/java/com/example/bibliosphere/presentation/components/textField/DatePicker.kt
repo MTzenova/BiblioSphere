@@ -121,7 +121,7 @@ fun DatePickerFieldToModal(
 //        },
         textStyle = LocalTextStyle.current.copy(
             textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onSurface
         ),
         isError = !isValidDate && birthDate.isNotEmpty(),
         modifier = modifier
