@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.filled.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,13 +71,13 @@ fun BookStateButtons(
             Icon(
                 imageVector = if (buttonIsSelected) buttonIcon  else unselectedButtonIcon,
                 contentDescription = description,
-                tint = if(buttonIsSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimary
+                tint = if(buttonIsSelected) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.surface
             )
         }
     }
 
     //row con los botones de estado
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)) {
 
         StateToggleButton(
             state = BookState.FAVORITO,

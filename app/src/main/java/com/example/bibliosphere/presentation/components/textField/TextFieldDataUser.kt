@@ -1,7 +1,10 @@
 package com.example.bibliosphere.presentation.components.textField
 
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -30,38 +33,41 @@ fun TextFieldDataUser(
     editable: Boolean,
 
     ) {
-
+    val scrollState = rememberScrollState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().horizontalScroll(scrollState),
         value = value,
         onValueChange = onValueChange,
         singleLine = singleLine,
+        maxLines = 1,
         leadingIcon = {
             leadingIcon?.let { icon ->
-                Icon(icon, contentDescription = stringResource(R.string.icon), tint = MaterialTheme.colorScheme.onPrimary)
+                Icon(icon, contentDescription = stringResource(R.string.icon), tint = if(editable)MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background)
             }
         },
-        label = { Text(label, color = MaterialTheme.colorScheme.onPrimary) },
+        label = { Text(label, color =if(editable) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.background) },
         shape = RoundedCornerShape(20.dp),
         textStyle = LocalTextStyle.current.copy(
             textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = if(editable) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background
         ),
-        colors = OutlinedTextFieldDefaults.colors(
+
+        colors =  OutlinedTextFieldDefaults.colors(
             focusedLabelColor = MaterialTheme.colorScheme.secondary,
-            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+            focusedTextColor = MaterialTheme.colorScheme.onBackground,
             unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-            unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
+            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
             cursorColor = MaterialTheme.colorScheme.secondary,
             errorCursorColor = MaterialTheme.colorScheme.error,
             errorTextColor = MaterialTheme.colorScheme.error,
-            focusedContainerColor = MaterialTheme.colorScheme.onBackground,
-            unfocusedContainerColor = MaterialTheme.colorScheme.onBackground,
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
             unfocusedBorderColor = MaterialTheme.colorScheme.background,
         ),
-        enabled = editable
+        enabled = editable,
+        readOnly = !editable,
     )
 }
 

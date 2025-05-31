@@ -13,14 +13,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.data.model.remote.ImageLinks
 import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.example.bibliosphere.presentation.components.buttons.BookStateButtons
-import com.example.bibliosphere.presentation.theme.primaryBlack
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
 fun ItemBookList(
@@ -32,24 +34,34 @@ fun ItemBookList(
     initialStates: Set<BookState> = emptySet(),
     onStatesChanged: (Set<BookState>) -> Unit = {}
 ) {
-    Card(modifier = Modifier.padding(16.dp).clickable { onClick()}) {
+    Card(modifier = Modifier
+        .padding(start = BiblioSphereTheme.dimens.paddingNormal, end = BiblioSphereTheme.dimens.paddingNormal, top = BiblioSphereTheme.dimens.paddingMedium)
+        .clickable { onClick() }) {
 
-        Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.onSecondaryContainer),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             //imagen
             //aqui podriamos colocar los botones de añadir a la biblioteca
             Image(
                 painter = rememberAsyncImagePainter(model = image.thumbnail?.replace("http", "https") ?: ""),
                 contentDescription = stringResource(R.string.book_image_from),
-                modifier = Modifier.size(98.dp,145.dp).clip(RoundedCornerShape(8.dp)).background(MaterialTheme.colorScheme.inversePrimary).padding(8.dp)
+                modifier = Modifier
+                    .size(98.dp, 145.dp)
+                    .clip(RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeNormal))
+                    .background(MaterialTheme.colorScheme.onBackground)
+                    .padding(BiblioSphereTheme.dimens.paddingNormal)
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(BiblioSphereTheme.dimens.paddingNormal))
             //contenido
             Column {
-                Text(text = author, style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = title, style = MaterialTheme.typography.bodyMedium)
-                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = author, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.background, textAlign = TextAlign.Start)
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
+                Text(text = title, style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.background, textAlign = TextAlign.Start)
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
                 ChipView(type = type)
 
                 //añadir botones
@@ -63,12 +75,12 @@ fun ItemBookList(
 fun ChipView(type:String){
     Box(
         modifier = Modifier
-            .clip(shape = RoundedCornerShape(12.dp))
-            .background(primaryBlack.copy(alpha = 0.10f))
+            .clip(shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeMedium))
+            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.7f))
             .padding(start = 12.dp, end = 12.dp, top = 5.dp, bottom = 5.dp),
         contentAlignment = Alignment.Center
     ){
-        Text(text = type, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimary)
+        Text(text = type, style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.onBackground)
     }
 }
 

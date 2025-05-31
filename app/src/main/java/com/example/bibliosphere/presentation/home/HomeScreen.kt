@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -159,6 +160,7 @@ private fun Welcome(userName: String?) {
             text = stringResource(R.string.welcome, userName ?: "").uppercase(Locale.ROOT),
             style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onPrimary,
+            textAlign = TextAlign.Center
         )
     }
 }

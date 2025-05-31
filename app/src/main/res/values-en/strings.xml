@@ -97,15 +97,10 @@
 
     <!-- AboutScreen -->
     <string name="about_title">What do you need to know about us?</string>
-    <string name="about_body">
-        We are readers, just like you, users.
-
-        This app is by and for you.
-        All book searches are done through Google Books.
-
-        At BiblioSphere, we\'re thrilled to have you with us sharing books and a passion for reading, sharing opinions, making recommendations, and above all, being part of this wonderful community.
-    </string>
-    <string name="contact">Contact BiblioSphere via:</string>
+    <string name="about_body0">We are readers, just like our users. This app is by and for you.</string>
+    <string name="about_body1">All book searches are done through Google Books.</string>
+    <string name="about_body2"> At BiblioSphere, we\'re thrilled to have you with us sharing books and a passion for reading, sharing opinions, making recommendations, and above all, being part of this wonderful community.</string>
+    <string name="contact">If you have any suggestions or problems with the app, please contact BiblioSphere via:</string>
     <string name="contact_email">Email</string>
     <string name="email_subject">Support</string>
     <string name="email_address">bibliosphereapp@gmail.com</string>
@@ -118,7 +113,7 @@
     <string name="password">Password</string>
 
     <!-- HomeScreen -->
-    <string name="welcome">Welcome %1$s!</string>
+    <string name="welcome">Welcome, %1$s!</string>
     <string name="library_stats">Your library stats</string>
     <string name="books_status">Current status of your %1$d books:</string>
     <string name="books_read">Read: %1$d</string>

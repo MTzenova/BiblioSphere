@@ -11,6 +11,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.R
 
@@ -32,7 +35,9 @@ fun GenreList(
         Row(modifier = Modifier
             .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ){
+
             Text(text = stringResource(R.string.filter_by_genre))
 
             IconButton(onClick = { expanded = !expanded }) {
@@ -46,15 +51,17 @@ fun GenreList(
                         }
                 )
             }
-
+            Spacer(modifier = Modifier.weight(1f))
             //quita el genero seleccionado
             Text(text = stringResource(R.string.clear_filters),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.clickable {
                     onGenreSelected(null.toString())
                     expanded = false
-                }
+                },
+                textAlign = TextAlign.End,
+                textDecoration = TextDecoration.Underline
             )
         }
         if (expanded) {

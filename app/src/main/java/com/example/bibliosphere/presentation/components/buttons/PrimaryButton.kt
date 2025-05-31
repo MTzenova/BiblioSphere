@@ -30,3 +30,24 @@ fun PrimaryButton(
         Text(text = text,style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
     }
 } //podemos ver para añadir estilos y eso más adelante
+
+@Composable
+fun ProfileButton(
+    text: String,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier,
+    buttonColor: ButtonColors
+) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        shape = RoundedCornerShape(50.dp),
+        colors = buttonColor
+    ) {
+        Text(text = text,style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold))
+    }
+}

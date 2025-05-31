@@ -78,15 +78,10 @@
     <string name="star_icon">Estrella</string>
     <!-- DrawerScreens: AboutScreen -->
     <string name="about_title">¿Qué necesitas saber sobre nosotros?</string>
-    <string name="about_body">
-        Somos lectores, al igual que vosotros, usuarios.
-
-        Esta aplicación es por y para vosotros.
-        Todas las búsquedas de libros se realizan a través de Google Libros.
-
-        En BiblioSphere, estamos encantados de que estéis con nosotros compartiendo libros y la pasión sobre la lectura, comentando opiniones, haciendo recomendaciones y sobre todo, formando parte de esta bonita comunidad.
-    </string>
-    <string name="contact">Contacta con BiblioSphere a través de:</string>
+    <string name="about_body0">Somos lectores, al igual que nuestros usuarios. Esta aplicación es por y para vosotros.</string>
+    <string name="about_body1">Todas las búsquedas de libros se realizan a través de Google Libros.</string>
+    <string name="about_body2">En BiblioSphere, estamos encantados de que estéis con nosotros compartiendo libros y la pasión sobre la lectura, comentando opiniones, haciendo recomendaciones y sobre todo, formando parte de esta bonita comunidad.</string>
+    <string name="contact">Si tienes alguna sugerencia o problema con la app, contacta con BiblioSphere a través de:</string>
     <string name="contact_email">Correo electrónico</string>
     <string name="email_subject">Soporte</string>
     <string name="email_address">bibliosphereapp@gmail.com</string>
@@ -97,7 +92,7 @@
     <string name="select_image">Selecciona tu imagen de perfil</string>
     <string name="password">Contraseña</string>
     <!-- HomeScreen -->
-    <string name="welcome">¡Bienvenido %1$s!</string>
+    <string name="welcome">¡Bienvenido/a, %1$s!</string>
     <string name="library_stats">Estado de tu biblioteca</string>
     <string name="books_status">Estado actual de tus %1$d libro(s):</string>
     <string name="books_read">Leídos: %1$ds</string>

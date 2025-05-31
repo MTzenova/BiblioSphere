@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,14 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.components.textField.DatePickerFieldToModal
-import com.example.bibliosphere.presentation.components.buttons.PrimaryButton
 import com.example.bibliosphere.presentation.components.ProfileImage
+import com.example.bibliosphere.presentation.components.buttons.ProfileButton
 import com.example.bibliosphere.presentation.components.textField.TextFieldDataUser
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +40,6 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
     var name by remember { mutableStateOf(userName) }
     var mail by remember { mutableStateOf(email) }
     var birth by remember { mutableStateOf(birthDate) }
-    var password by remember { mutableStateOf("*********") }
 
     val sheetState = rememberModalBottomSheetState()
     val scrollState = rememberScrollState()
@@ -58,13 +59,13 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.primary),
+                .clip(RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeLarge))
+                .background(MaterialTheme.colorScheme.secondary),
             contentAlignment = Alignment.Center
         ){
             Column(modifier = Modifier
                 .width(IntrinsicSize.Min)
-                .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
+                .padding(top = 20.dp, bottom = 20.dp, start = BiblioSphereTheme.dimens.paddingMedium, end = BiblioSphereTheme.dimens.paddingMedium),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -75,7 +76,8 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                         .size(140.dp)
                         .clickable(enabled = editable) { showBottomSheet = true }, //solo se puede ahcer click si es true
                     shape = CircleShape,
-
+                    border = if (editable) BorderStroke(5.dp, MaterialTheme.colorScheme.background) else null,
+                    elevation = CardDefaults.cardElevation(defaultElevation = BiblioSphereTheme.dimens.cardElevation),
                     ){
                     val painter = rememberAsyncImagePainter( //hago esto para que las imagenes no pesen tanto
                         ImageRequest.Builder(LocalContext.current)
@@ -88,13 +90,14 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                         painter = painter,
                         contentDescription = stringResource(R.string.profile_picture),
                         modifier = Modifier.fillMaxSize(),
+
                     )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingNormal))
                 //botón editar
 
-                PrimaryButton(
+                ProfileButton(
                     text = stringResource(R.string.edit_profile),
                     onClick = {
                         profileEditable = true
@@ -115,14 +118,14 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
         Column( modifier = Modifier
             .align(Alignment.Start)
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 0.dp)) {
-            Text(stringResource(R.string.profile_data))
+            Text(stringResource(R.string.profile_data), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         }
         Box( //caja para los datos del perfil
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.primary),
+                .clip(RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeLarge))
+                .background(MaterialTheme.colorScheme.secondary),
             contentAlignment = Alignment.TopStart,
         ){
 
@@ -130,15 +133,11 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                 userName = userName,
                 name = name,
                 email = email,
-                password = password,
                 birthDate = birthDate,
                 birth = birth,
-                enableNotifications = true,
                 editable = editable,
                 onNameChange = { name = it },
-                onEmailChange = { mail = it },
                 onBirthDateChange = { birth = it },
-                onPasswordChange = { password = it }
             )
         }
         if(profileEditable){
@@ -146,10 +145,10 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(horizontal = 20.dp, vertical = BiblioSphereTheme.dimens.paddingNormal),
+                horizontalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerNormal),
             ) {
-                PrimaryButton(
+                ProfileButton(
                     text = stringResource(R.string.save),
                     onClick = {
                         viewModel.updateImageResId(imageResId)
@@ -163,7 +162,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                     ),
                 )
 
-                PrimaryButton(
+                ProfileButton(
                     text = stringResource(R.string.cancel),
                     onClick = {
                         profileEditable = false
@@ -196,7 +195,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
         ) {
            Text(text = stringResource(R.string.select_image),
                style = MaterialTheme.typography.bodyMedium,
-               modifier = Modifier.padding(16.dp)
+               modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)
            )
             ProfileImage{ pickedResId ->
                 viewModel.setImageResId(pickedResId)
@@ -204,7 +203,6 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
             }
         }
     }
-
 }
 
 @Composable
@@ -214,14 +212,10 @@ fun UserDataProfile(
     email: String,
     birthDate: String,
     birth:String,
-    password: String,
-    enableNotifications: Boolean,
     modifier: Modifier = Modifier,
     editable: Boolean,
     onNameChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
     onBirthDateChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
 ) {
     //cargar de firebase
     Column(modifier = Modifier
@@ -248,7 +242,6 @@ fun UserDataProfile(
             leadingIcon = Icons.Filled.DateRange,
         )
 
-
         TextFieldDataUser(
             value = email,
             onValueChange =  {},
@@ -258,13 +251,5 @@ fun UserDataProfile(
             editable = false,
         )
 
-        TextFieldDataUser(
-            value = password,
-            onValueChange = {},
-            label = stringResource(R.string.password),
-            leadingIcon = Icons.Filled.Key,
-            modifier = Modifier.fillMaxWidth(),
-            editable = false,
-        )
     }
 }

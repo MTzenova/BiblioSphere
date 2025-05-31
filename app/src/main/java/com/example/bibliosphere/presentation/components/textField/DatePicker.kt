@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -95,10 +96,19 @@ fun DatePickerFieldToModal(
     OutlinedTextField(
         value = birthDate,
         onValueChange = { },
-        label = { Text(text = stringResource(R.string.dob_label), color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Start) },
+        label = {
+            Text(
+                text = stringResource(R.string.dob_label),
+                color = if (isProfile == true)
+                    MaterialTheme.colorScheme.background
+                else
+                    MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Start
+            )
+        },
         readOnly = true,
         enabled = enabled,
-        placeholder = { Text(stringResource(R.string.dob_placeholder)) },
+        placeholder = { Text(stringResource(R.string.dob_placeholder),  color = MaterialTheme.colorScheme.onBackground) },
         shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeExtraLarge),
         leadingIcon = {
             IconButton(
@@ -110,7 +120,7 @@ fun DatePickerFieldToModal(
                 Icon(
                     imageVector = Icons.Default.DateRange,
                     contentDescription = stringResource(R.string.select_date),
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = if(enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surface
                 )
             }
         },
@@ -121,7 +131,26 @@ fun DatePickerFieldToModal(
 //        },
         textStyle = LocalTextStyle.current.copy(
             textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSurface
+            color = if(enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surface
+        ),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+            disabledTextColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+            cursorColor = MaterialTheme.colorScheme.secondary,
+            errorCursorColor = MaterialTheme.colorScheme.error,
+            errorTextColor = MaterialTheme.colorScheme.error,
+
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+
+            // 🎯 Aquí lo importante:
+            disabledContainerColor = if (isProfile == true) Color.Transparent else MaterialTheme.colorScheme.surfaceVariant,
+
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            disabledBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+            errorBorderColor = MaterialTheme.colorScheme.error,
         ),
         isError = !isValidDate && birthDate.isNotEmpty(),
         modifier = modifier
@@ -145,7 +174,7 @@ fun DatePickerFieldToModal(
             text = stringResource(R.string.dob_error),
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+            modifier = Modifier.padding(start = BiblioSphereTheme.dimens.paddingMedium, top = BiblioSphereTheme.dimens.paddingSmall)
         )
     }
 
