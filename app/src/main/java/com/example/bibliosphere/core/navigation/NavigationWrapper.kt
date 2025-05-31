@@ -34,6 +34,7 @@ import com.example.bibliosphere.data.model.DrawerItems
 import com.example.bibliosphere.data.model.TabDestination
 import com.example.bibliosphere.presentation.bookDetail.BookDetailScreen
 import com.example.bibliosphere.presentation.bookDetail.BookDetailScreenViewModel
+import com.example.bibliosphere.presentation.drawerScreens.about.AboutScreen
 import com.example.bibliosphere.presentation.drawerScreens.userProfile.ProfileScreen
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
@@ -90,7 +91,7 @@ fun NavigationWrapper() {
 
     val items = listOf(
         DrawerItems("Perfil", Icons.Default.AccountBox),
-        DrawerItems("Acerca de", Icons.Filled.Info),
+        DrawerItems("Acerca de nosotros", Icons.Filled.Info),
         DrawerItems("Salir", Icons.AutoMirrored.Filled.Logout),
 
     )
@@ -201,6 +202,9 @@ fun DetailedDrawer(
                                     }
                                     else if(item.title.lowercase() == "perfil"){
                                         navController.navigate(Profile)
+                                    }
+                                    else if(item.title.lowercase() == "acerca de nosotros"){
+                                        navController.navigate(About)
                                     }
                                     else {
                                         navController.navigate(item.title.lowercase()) {
@@ -364,6 +368,9 @@ fun Screen(
             }
             composable<Profile>{
                 ProfileScreen()
+            }
+            composable<About> {
+                AboutScreen()
             }
         }
 

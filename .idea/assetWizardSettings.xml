@@ -79,7 +79,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="E:\IdeaProjectsRepos\BiblioSphere\app\src\main\res\drawable\logo_bibliosphere.png" />
+                                                <entry key="imagePath" value="E:\IdeaProjectsRepos\BiblioSphere\app\src\main\res\drawable\logo_biblioshpere_oscuro.png" />
                                                 <entry key="scalingPercent" value="93" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
@@ -113,10 +113,11 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="generatePlayStoreIcon" value="false" />
-                                      <entry key="generateWebpIcons" value="false" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="595555" />
                                       <entry key="legacyIconShape" value="NONE" />
-                                      <entry key="outputName" value="ic_launcher_bs" />
+                                      <entry key="outputName" value="ic_launcher_grey_bs" />
+                                      <entry key="showGrid" value="true" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -280,6 +281,11 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="showGrid" value="true" />
                                     </map>
                                   </option>
                                 </PersistentState>
