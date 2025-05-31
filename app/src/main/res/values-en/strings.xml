@@ -1,0 +1,160 @@
+<resources>
+    <string name="app_name">BiblioSphere</string>
+    <string name="web_client_id">1014965920233-aev08ptsiaamhpr6q75te2vl75ken914.apps.googleusercontent.com</string>
+
+    <!-- BottomBar, Screens -->
+    <string name="icon">Icon</string>
+    <string name="back">Back</string>
+    <string name="home">Home</string>
+    <string name="library">Library</string>
+    <string name="search">Search</string>
+
+    <!-- NavigationDrawer items -->
+    <string name="profile">Profile</string>
+    <string name="about">About us</string>
+    <string name="exit">Exit</string>
+
+    <!-- NavigationDrawer ModalNavigationDrawer -->
+    <string name="user_profile_picture">User profile picture</string>
+    <string name="explore">Explore libraries</string>
+
+    <!-- Screens -->
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="search_books">Search books</string>
+    <string name="book_detail">Book details</string>
+    <string name="user_library">User library</string>
+
+    <!-- BookDetailScreen -->
+    <string name="unknown_author">Unknown author</string>
+    <string name="unknown_title">Untitled</string>
+    <string name="no_category">No category</string>
+    <string name="description">Description:</string>
+    <string name="no_description">No description available.</string>
+    <string name="show_comments">Show comments</string>
+
+    <!-- BookStateButtons -->
+    <string name="mark_favorite">Mark as favorite</string>
+    <string name="mark_read">Mark as read</string>
+    <string name="mark_reading">Mark as reading</string>
+    <string name="mark_pending">Mark as pending</string>
+
+    <!-- BoxTextHome -->
+    <string name="top_five_books">Top 5 highest-rated books</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="random_books">Don\'t know what to read? Here are some random books:</string>
+    <string name="book_cover">Book cover</string>
+
+    <!-- CommentTextBox -->
+    <string name="comments">Comments:</string>
+    <string name="write_comment">Write a comment</string>
+    <string name="profile_picture">%1$s\'s profile picture</string>
+
+    <!-- DatePicker -->
+    <string name="dob_label">Date of birth</string>
+    <string name="dob_placeholder">MM/DD/YYYY</string>
+    <string name="dob_error">Please select a date of birth</string>
+    <string name="select_date">Select date</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- EmailTextField -->
+    <string name="email">Email</string>
+    <string name="email_placeholder">example@email.com</string>
+
+    <!-- PasswordTextField -->
+    <string name="show_password">Show password</string>
+
+    <!-- TextFieldDataUser -->
+    <string name="user_name">Username</string>
+
+    <!-- TextInputField -->
+    <string name="send">Send</string>
+
+    <!-- AppIcon -->
+    <string name="logo">Logo</string>
+    <string name="login_image">Login image</string>
+
+    <!-- BookDetailCard, ItemBookList -->
+    <string name="book_image_from">Book by %1$s</string>
+
+    <!-- BookShelf -->
+    <string name="book_image">Book image</string>
+    <string name="bookshelf_separator">Shelf separator</string>
+
+    <!-- ExpandingText -->
+    <string name="read_more">Read more</string>
+    <string name="read_less">Read less</string>
+
+    <!-- GenreList -->
+    <string name="filter_by_genre">Filter by genre</string>
+    <string name="clear_filters">Clear filters</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
+
+    <!-- RatingBooks -->
+    <string name="star_icon">Star</string>
+
+    <!-- AboutScreen -->
+    <string name="about_title">What do you need to know about us?</string>
+    <string name="about_body">
+        We are readers, just like you, users.
+
+        This app is by and for you.
+        All book searches are done through Google Books.
+
+        At BiblioSphere, we\'re thrilled to have you with us sharing books and a passion for reading, sharing opinions, making recommendations, and above all, being part of this wonderful community.
+    </string>
+    <string name="contact">Contact BiblioSphere via:</string>
+    <string name="contact_email">Email</string>
+    <string name="email_subject">Support</string>
+    <string name="email_address">bibliosphereapp@gmail.com</string>
+
+    <!-- ProfileScreen -->
+    <string name="edit_profile">Edit profile</string>
+    <string name="profile_data">Profile data:</string>
+    <string name="save">Save</string>
+    <string name="select_image">Select your profile picture</string>
+    <string name="password">Password</string>
+
+    <!-- HomeScreen -->
+    <string name="welcome">Welcome %1$s!</string>
+    <string name="library_stats">Your library stats</string>
+    <string name="books_status">Current status of your %1$d books:</string>
+    <string name="books_read">Read: You have %1$d books.</string>
+    <string name="books_reading">Reading: You have %1$d books.</string>
+    <string name="books_pending">Pending: You have %1$d books.</string>
+    <string name="books_favorites">Favorites: You have %1$d books.</string>
+
+    <!-- ExploreLibrariesScreen -->
+    <string name="user_books">Books: %1$d</string>
+    <string name="profile_picture_of">%1$s\'s profile picture</string>
+
+    <!-- MyLibraryScreen -->
+    <string name="shelf_texture">Shelf texture</string>
+
+    <!-- LoginScreen -->
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="no_account">Don\'t have an account? Sign up</string>
+    <string name="login_with">Or login with</string>
+    <string name="google">Google</string>
+    <string name="forgotten_password">Don\'t worry, we\'ll send you a recovery link</string>
+    <string name="email_invalid">Invalid email address</string>
+    <string name="login_error">Login error</string>
+    <string name="no_activity_error">Could not get the activity</string>
+    <string name="reset_email_sent">Email sent, check your inbox</string>
+    <string name="enter">Enter</string>
+
+    <!-- RegisterScreen -->
+    <string name="register_title">Register:</string>
+    <string name="register_birthdate">Birthdate</string>
+    <string name="register_button">Sign up</string>
+    <string name="error_username">Invalid username</string>
+    <string name="error_email">Invalid email</string>
+    <string name="error_password">Invalid password</string>
+    <string name="error_birthdate">Invalid birthdate</string>
+
+    <!-- SearchScreen -->
+    <string name="search_book">Search book</string>
+    <string name="no_title">Untitled</string>
+</resources>

@@ -16,9 +16,10 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-
+import com.example.bibliosphere.R
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 
 
@@ -69,7 +70,7 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.icon),
                 tint = colorScheme.onSurface,
             )
         },
@@ -80,7 +81,7 @@ fun TextInputField(label: String, value: String, onValueChange: (String) -> Unit
                     keyboardController?.hide()
                 }
             ) {
-                Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
+                Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = stringResource(R.string.send))
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -135,7 +136,7 @@ fun TextInputFieldComment(label: String, value: String, onValueChange: (String) 
                     keyboardController?.hide()
                 }
             ) {
-                Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
+                Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = stringResource(R.string.send))
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),

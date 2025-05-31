@@ -10,7 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.bibliosphere.R
 
 @Composable
 fun GenreList(
@@ -31,22 +33,22 @@ fun GenreList(
             .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ){
-            Text(text = "Filtrar por género")
+            Text(text = stringResource(R.string.filter_by_genre))
 
             IconButton(onClick = { expanded = !expanded }) {
                 Icon(
                     imageVector = if(expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
                     contentDescription =
                         if(expanded){
-                            "Mostrar menos"
+                            stringResource(R.string.show_less)
                         }else{
-                            "Mostrar más"
+                            stringResource(R.string.show_more)
                         }
                 )
             }
 
             //quita el genero seleccionado
-            Text(text = "Limpiar filtros",
+            Text(text = stringResource(R.string.clear_filters),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.clickable {

@@ -1,20 +1,17 @@
 package com.example.bibliosphere.presentation.bookDetail
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.components.BookDescription
 import com.example.bibliosphere.presentation.components.BookDetailCard
-import com.example.bibliosphere.presentation.components.ProfileImage
 import com.example.bibliosphere.presentation.components.buttons.CustomButton
 import com.example.bibliosphere.presentation.components.textField.CommentBox
 import com.google.firebase.auth.FirebaseAuth
@@ -56,10 +53,10 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
                 BookDetailCard(
-                    author = it.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
-                    title = it.volumeInfo?.title?:"Titulo desconocido",
+                    author = it.volumeInfo?.authors?.joinToString(", ") ?: stringResource(R.string.unknown_author),
+                    title = it.volumeInfo?.title?:stringResource(R.string.unknown_title),
                     image = it.volumeInfo?.imageLinks?.thumbnail?:"",
-                    type = it.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
+                    type = it.volumeInfo?.categories?.joinToString(", ") ?: stringResource(R.string.no_category),
                     initialStates = bookState,
                     onStatesChanged = { newState ->
                         if(newState.isEmpty()) {
@@ -71,14 +68,14 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
                     },
                     averageRating = it.volumeInfo?.averageRating?:0f,
                 )
-                Text(text = "Descripción:", modifier = Modifier.padding(horizontal = 15.dp))
+                Text(text = stringResource(R.string.description), modifier = Modifier.padding(horizontal = 15.dp))
                 Spacer(modifier = Modifier.height(10.dp))
                 BookDescription(
-                    description =  it.volumeInfo?.description ?: "Sin descripción disponible."
+                    description =  it.volumeInfo?.description ?: stringResource(R.string.no_description)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 CustomButton(
-                    text = "Mostrar comentarios",
+                    text = stringResource(R.string.show_comments),
                     onTap = { showBottomSheet = !showBottomSheet },
                     modifier = Modifier.padding(horizontal = 15.dp),
                     textColor = MaterialTheme.colorScheme.onPrimary,

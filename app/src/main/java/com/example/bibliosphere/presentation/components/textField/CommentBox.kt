@@ -15,10 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bibliosphere.presentation.firebase.CommentData
+import com.example.bibliosphere.R
 
 @Composable
 fun CommentBox(
@@ -37,7 +39,7 @@ fun CommentBox(
         .padding(16.dp)
         .imePadding()) {
 
-        Text(text = "Comentarios:", style = MaterialTheme.typography.titleMedium, modifier = Modifier.align(Alignment.CenterHorizontally))
+        Text(text = stringResource(R.string.comments), style = MaterialTheme.typography.titleMedium, modifier = Modifier.align(Alignment.CenterHorizontally))
 
         LazyColumn(modifier = Modifier
             .fillMaxHeight(0.5f)
@@ -58,7 +60,7 @@ fun CommentBox(
                     )
                     Image(
                         painter = painter,
-                        contentDescription = "${comment.userName} profile picture",
+                        contentDescription = stringResource(R.string.profile_picture, comment.userName),
                         modifier = Modifier
                             .size(74.dp)
                             .clip(RoundedCornerShape(42.dp))
@@ -81,7 +83,7 @@ fun CommentBox(
         Spacer(modifier = Modifier.height(16.dp))
 
         TextInputFieldComment(
-            label = "Escribir un comentario",
+            label = stringResource(R.string.write_comment),
             value = text.value,
             onValueChange = { text.value = it },
             onImeAction = {val commentText:String = text.value.trim()

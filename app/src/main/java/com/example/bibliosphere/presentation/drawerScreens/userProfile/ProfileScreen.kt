@@ -15,9 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.components.textField.DatePickerFieldToModal
 import com.example.bibliosphere.presentation.components.buttons.PrimaryButton
 import com.example.bibliosphere.presentation.components.ProfileImage
@@ -84,7 +86,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
 
                     Image(
                         painter = painter,
-                        contentDescription = "Profile Image",
+                        contentDescription = stringResource(R.string.profile_picture),
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
@@ -93,7 +95,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                 //botón editar
 
                 PrimaryButton(
-                    text = "Editar perfil",
+                    text = stringResource(R.string.edit_profile),
                     onClick = {
                         profileEditable = true
                         name = userName
@@ -113,7 +115,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
         Column( modifier = Modifier
             .align(Alignment.Start)
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 0.dp)) {
-            Text("Datos del perfil:")
+            Text(stringResource(R.string.profile_data))
         }
         Box( //caja para los datos del perfil
             modifier = Modifier
@@ -148,7 +150,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 PrimaryButton(
-                    text = "Guardar",
+                    text = stringResource(R.string.save),
                     onClick = {
                         viewModel.updateImageResId(imageResId)
                         viewModel.updateProfileData(userName = name, userBirthday = birth)
@@ -162,7 +164,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
                 )
 
                 PrimaryButton(
-                    text = "Cancelar",
+                    text = stringResource(R.string.cancel),
                     onClick = {
                         profileEditable = false
                         name = userName
@@ -192,7 +194,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = remember{ProfileScreenView
             },
             sheetState = sheetState
         ) {
-           Text(text = "Select your image profile",
+           Text(text = stringResource(R.string.select_image),
                style = MaterialTheme.typography.bodyMedium,
                modifier = Modifier.padding(16.dp)
            )
@@ -230,7 +232,7 @@ fun UserDataProfile(
         TextFieldDataUser(
             value = if(editable) name else userName,
             onValueChange = onNameChange,
-            label = "Nombre de usuario",
+            label = stringResource(R.string.user_name),
             leadingIcon = Icons.Filled.Person,
             modifier = Modifier.fillMaxWidth(),
             editable = editable,
@@ -250,7 +252,7 @@ fun UserDataProfile(
         TextFieldDataUser(
             value = email,
             onValueChange =  {},
-            label = "Correo electrónico",
+            label = stringResource(R.string.email),
             leadingIcon = Icons.Filled.Email,
             modifier = Modifier.fillMaxWidth(),
             editable = false,
@@ -259,7 +261,7 @@ fun UserDataProfile(
         TextFieldDataUser(
             value = password,
             onValueChange = {},
-            label = "Contraseña",
+            label = stringResource(R.string.password),
             leadingIcon = Icons.Filled.Key,
             modifier = Modifier.fillMaxWidth(),
             editable = false,

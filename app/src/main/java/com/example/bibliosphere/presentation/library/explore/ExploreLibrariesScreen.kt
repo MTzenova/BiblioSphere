@@ -21,8 +21,10 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.presentation.firebase.UserData
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.bibliosphere.core.navigation.UserLibrary
+import com.example.bibliosphere.R
 
 @Composable
 fun ExploreLibrariesScreen(viewModel: ExploreLibrariesScreenViewModel, navController: NavController) {
@@ -76,12 +78,12 @@ fun LibraryCard(
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                 Image(
                     painter = rememberAsyncImagePainter(userData.profileImage),
-                    contentDescription = "${userData.userName} profile picture",
+                    contentDescription = stringResource(R.string.profile_picture_of, userData.userName),
                     modifier = Modifier.size(84.dp).clip(RoundedCornerShape(42.dp))
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = userData.userName)
-                Text(text = "Libros: ${userData.booksNumber}")
+                Text(text = stringResource(R.string.user_books, userData.booksNumber))
             }
         }
     }

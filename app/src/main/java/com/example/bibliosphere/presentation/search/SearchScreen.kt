@@ -7,7 +7,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.bibliosphere.R
 import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.data.model.remote.ImageLinks
 import com.example.bibliosphere.presentation.components.GenreList
@@ -33,7 +35,7 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
 
         //campo de búsqueda como un searchbar
         TextInputField(
-            label = "Buscar libro",
+            label = stringResource(id = R.string.search_book),
             value = query,
             onValueChange = { viewModel.onQueryChange(it) },
             onImeAction = {viewModel.searchBooks()}
@@ -64,15 +66,15 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
 
                     book?.let { item ->
                         ItemBookList(
-                            author = item.volumeInfo?.authors?.joinToString(", ") ?: "Autor desconocido",
-                            title = item.volumeInfo?.title ?: "Sin título",
+                            author = item.volumeInfo?.authors?.joinToString(", ") ?: stringResource(id = R.string.unknown_author),
+                            title = item.volumeInfo?.title ?: stringResource(id = R.string.no_title),
                             image = item.volumeInfo?.imageLinks ?: ImageLinks(thumbnail = ""),
                             onClick = {
                                 item.id?.let { id ->
                                     navController.navigate(BookDetail.bookRoute(itemBookUI.id))
                                 }
                             },
-                            type = item.volumeInfo?.categories?.joinToString(", ") ?: "Sin categoría",
+                            type = item.volumeInfo?.categories?.joinToString(", ") ?: stringResource(id = R.string.no_category),
                             initialStates = itemBookUI.states,
                             onStatesChanged = { newState ->
                                 if(newState.isEmpty()) {

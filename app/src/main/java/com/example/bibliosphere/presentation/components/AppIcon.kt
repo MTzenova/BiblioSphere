@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.R
@@ -17,7 +18,7 @@ fun AppIcon(
     lightLogo: Int = R.drawable.logo_bibliosphere,
     darkLogo: Int = R.drawable.logo_biblioshpere_oscuro,
     width: Dp,
-    contentDescription: String = "Logo"
+    contentDescription: String = stringResource(R.string.logo),
 ){
     val isDarkTheme = isSystemInDarkTheme()
     //si está en modo oscuro o claro
@@ -35,7 +36,7 @@ fun AppIcon(
         Image(
             modifier = Modifier.width(200.dp),
             painter = painterResource(id= logo),
-            contentDescription = "Imagen login",
+            contentDescription = stringResource(R.string.login_image),
         )
     }
 

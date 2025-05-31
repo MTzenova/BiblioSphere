@@ -12,7 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.bibliosphere.R
 
 @Composable
 fun RatingBooks( averageRating: Float?, maxRating: Int = 5){
@@ -21,7 +23,7 @@ fun RatingBooks( averageRating: Float?, maxRating: Int = 5){
     ) {
         Icon(
             imageVector = Icons.Filled.Star,
-            contentDescription = "Star",
+            contentDescription = stringResource(R.string.star_icon),
             tint = MaterialTheme.colorScheme.background,
             modifier = Modifier.size(24.dp)
         )

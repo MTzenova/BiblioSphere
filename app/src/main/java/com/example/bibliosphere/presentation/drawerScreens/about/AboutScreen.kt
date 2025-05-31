@@ -17,12 +17,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
+import com.example.bibliosphere.R
 
 @Composable
 fun AboutScreen() {
@@ -51,7 +53,7 @@ fun AboutScreen() {
                     .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("¿Qué necesitas saber sobre nosotros?", textAlign = TextAlign.Start)
+                Text(stringResource(R.string.about_title), textAlign = TextAlign.Start,style = MaterialTheme.typography.headlineSmall)
             }
         }
         Box(
@@ -68,19 +70,13 @@ fun AboutScreen() {
                     .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
             ) {
                 Text(
-                    text = ("Somos lectores, al igual que vosotros, usuarios.\n" +
-                            "\n" +
-                            "Esta aplicación es por y para vosotros." +
-                            "\n" +
-                            "Todas las búsquedas de libros se realizan a través de Google Libros.\n" +
-                            "\n" +
-                            "En BiblioSphere, estamos encantados de que estéis con nosotros compartiendo libros y la pasión sobre la lectura, comentando opiniones, haciendo recomendaciones y sobre todo, formando parte de esta bonita comunidad."),
+                    text = (stringResource(R.string.about_body)),
                     textAlign = TextAlign.Start,
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                Text(text = "Contacta con BiblioSphere a través de: ", textAlign = TextAlign.Start)
+                Text(text = stringResource(R.string.contact), textAlign = TextAlign.Start)
                 Text(
-                    text = ("Correo electrónico."),
+                    text = stringResource(R.string.contact_email),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.onPrimary,
                         textDecoration = TextDecoration.Underline
@@ -88,8 +84,8 @@ fun AboutScreen() {
                     textAlign = TextAlign.Start,
                     modifier = Modifier.clickable {
                         val intent = Intent(Intent.ACTION_SENDTO).apply {
-                            data = Uri.parse("mailto:bibliosphereapp@gmail.com")
-                            putExtra(Intent.EXTRA_SUBJECT, "Support")
+                            data = Uri.parse("mailto:${context.getString(R.string.email_address)}")
+                            putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.email_subject))
                         }
                         startActivity(context, intent, null)
                     }

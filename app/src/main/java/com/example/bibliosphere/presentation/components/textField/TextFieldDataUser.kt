@@ -12,9 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.bibliosphere.R
 
 
 @Composable
@@ -38,7 +40,7 @@ fun TextFieldDataUser(
         singleLine = singleLine,
         leadingIcon = {
             leadingIcon?.let { icon ->
-                Icon(icon, contentDescription = "Icon", tint = MaterialTheme.colorScheme.onPrimary)
+                Icon(icon, contentDescription = stringResource(R.string.icon), tint = MaterialTheme.colorScheme.onPrimary)
             }
         },
         label = { Text(label, color = MaterialTheme.colorScheme.onPrimary) },

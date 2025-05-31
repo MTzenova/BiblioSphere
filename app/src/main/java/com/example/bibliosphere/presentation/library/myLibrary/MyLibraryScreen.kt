@@ -19,6 +19,7 @@ import com.example.bibliosphere.presentation.viewmodel.MyLibraryScreenViewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bibliosphere.R
@@ -65,7 +66,7 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
 
         Image(
             painter = painter,
-            contentDescription = "Textura de la estantería",
+            contentDescription = stringResource(R.string.shelf_texture),
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
@@ -85,38 +86,6 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
                     })
                 }
             }
-
         }
-
-
     }
-
 }
-
-//val isLoading by viewModel.isLoading.collectAsState()
-//
-//when {
-//    isLoading -> {
-//        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-//            CircularProgressIndicator()
-//        }
-//    }
-//    books.isEmpty() -> {
-//        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-//            Text(text = "Aún no has añadido ningún libro a tu biblioteca")
-//        }
-//    }
-//    else -> {
-//        LazyVerticalGrid(
-//            modifier = Modifier.fillMaxSize(),
-//            columns = GridCells.Fixed(3),
-//            horizontalArrangement = Arrangement.spacedBy(8.dp),
-//            verticalArrangement = Arrangement.spacedBy(8.dp),
-//            contentPadding = PaddingValues(16.dp)
-//        ) {
-//            items(books) { book ->
-//                BookCover(book = book, onClick = { onClick(book) })
-//            }
-//        }
-//    }
-//}

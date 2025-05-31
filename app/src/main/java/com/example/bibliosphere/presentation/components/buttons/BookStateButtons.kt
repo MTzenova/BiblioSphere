@@ -10,7 +10,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.bibliosphere.R
 
 //estados
 enum class BookState {
@@ -80,28 +82,28 @@ fun BookStateButtons(
             state = BookState.FAVORITO,
             buttonIcon = Icons.Filled.Favorite,
             unselectedButtonIcon = Icons.Outlined.FavoriteBorder,
-            description = "Marcar como favorito"
+            description = stringResource(R.string.mark_favorite)
         )
 
         StateToggleButton(
             state = BookState.LEIDO,
             buttonIcon = Icons.Filled.CheckCircle,
             unselectedButtonIcon = Icons.Outlined.CheckCircle,
-            description = "Marcar como leído"
+            description = stringResource(R.string.mark_read)
         )
 
         StateToggleButton(
             state = BookState.LEYENDO,
             buttonIcon = Icons.Filled.Bookmark,
             unselectedButtonIcon = Icons.Outlined.BookmarkBorder,
-            description = "Marcar como leyendo"
+            description = stringResource(R.string.mark_reading)
         )
 
         StateToggleButton(
             state = BookState.PENDIENTE,
             buttonIcon = Icons.Filled.AccessTimeFilled,
             unselectedButtonIcon = Icons.Outlined.AccessTime,
-            description = "Marcar como pendiente"
+            description = stringResource(R.string.mark_pending)
         )
 
     }

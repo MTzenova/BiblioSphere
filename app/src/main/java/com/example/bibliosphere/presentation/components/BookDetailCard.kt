@@ -10,12 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.example.bibliosphere.presentation.components.buttons.BookStateButtons
+import com.example.bibliosphere.R
 
 @Composable
 fun BookDetailCard(
@@ -45,7 +47,7 @@ fun BookDetailCard(
                 //imagen
                 Image(
                     painter = rememberAsyncImagePainter(model = image.replace("http", "https")),
-                    contentDescription = "Book of $author",
+                    contentDescription = stringResource(id = R.string.book_image_from,author),
                     modifier = Modifier
                         .size(width = 140.dp, height = 200.dp)
                     //.offset(y = (-30).dp)

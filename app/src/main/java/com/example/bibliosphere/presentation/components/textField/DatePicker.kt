@@ -17,9 +17,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import com.example.bibliosphere.R
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,13 +40,13 @@ fun DatePicker() {
         OutlinedTextField(
             value = selectedDate,
             onValueChange = { },
-            label = { Text("DOB") },
+            label = { Text(stringResource(R.string.dob_label)) },
             readOnly = true,
             trailingIcon = {
                 IconButton(onClick = { showDatePicker = !showDatePicker }) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date"
+                        contentDescription = stringResource(R.string.select_date)
                     )
                 }
             },
@@ -92,21 +94,21 @@ fun DatePickerFieldToModal(
     OutlinedTextField(
         value = birthDate,
         onValueChange = { },
-        label = { Text("Fecha de nacimiento", color = MaterialTheme.colorScheme.onPrimary) },
+        label = { Text(stringResource(R.string.dob_label), color = MaterialTheme.colorScheme.onPrimary) },
         readOnly = true,
         enabled = enabled,
-        placeholder = { Text("MM/DD/YYYY") },
+        placeholder = { Text(stringResource(R.string.dob_placeholder)) },
         shape = RoundedCornerShape(20.dp),
         leadingIcon = {
             if (isProfile==true) {
                 leadingIcon?.let { icon ->
-                    Icon(icon, contentDescription = "Icon", tint = MaterialTheme.colorScheme.onPrimary)
+                    Icon(icon, contentDescription =  stringResource(R.string.icon), tint = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         },
         trailingIcon = {
             if(isProfile != true){
-                Icon(Icons.Default.DateRange, contentDescription = "Select date")
+                Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.select_date))
             }
         },
         textStyle = LocalTextStyle.current.copy(
@@ -132,7 +134,7 @@ fun DatePickerFieldToModal(
 
     if(!isValidDate && birthDate.isNotEmpty()) {
         Text(
-            text = "Seleciona una fecha de nacimiento",
+            text = stringResource(R.string.dob_error),
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -170,7 +172,11 @@ fun DatePickerModal(
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = System.currentTimeMillis(),
+        initialDisplayedMonthMillis = System.currentTimeMillis(),
+        yearRange = 1900..2025
+    )
 
     DatePickerDialog(
         onDismissRequest = onDismiss,
@@ -179,12 +185,12 @@ fun DatePickerModal(
                 onDateSelected(datePickerState.selectedDateMillis)
                 onDismiss()
             }) {
-                Text("OK")
+                Text(stringResource(R.string.ok))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     ) {

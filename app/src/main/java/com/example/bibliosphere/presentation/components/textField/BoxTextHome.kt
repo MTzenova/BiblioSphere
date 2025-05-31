@@ -14,11 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.presentation.components.RatingBooks
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
+import com.example.bibliosphere.R
 
 @Composable
 fun TextStats(text:String){
@@ -38,7 +40,8 @@ fun BoxTopFive(topFiveBooks: List<Map<String, Any>>, onClickBook: (String) -> Un
     ) {
 
         TextStats(
-            text = "TOP 5 LIBROS CON MAYOR PUNTUACIÓN",)
+            text = stringResource(R.string.top_five_books)
+        )
 
         LazyHorizontalGrid(
             rows = GridCells.Fixed(1),
@@ -62,7 +65,7 @@ fun BoxTopFive(topFiveBooks: List<Map<String, Any>>, onClickBook: (String) -> Un
                 ) {
                     Image(
                         painter = rememberAsyncImagePainter(model = coverBook),
-                        contentDescription = "Book cover",
+                        contentDescription = stringResource(R.string.book_cover),
                         modifier = Modifier
                             .size(98.dp, 145.dp)
                             .clip(RoundedCornerShape(8.dp))
@@ -87,9 +90,11 @@ fun BoxRandomBooks(randomBooks: List<Map<String, Any>>, onClickBook: (String) ->
     ){
 
         TextStats(
-            text = "RECOMENDACIONES",)
+            text = stringResource(R.string.recommendations)
+        )
         TextStats(
-            text ="¿No sabes qué leer? Aquí tienes algunos libros random:",)
+            text = stringResource(R.string.random_books)
+        )
 
         LazyHorizontalGrid(
             rows = GridCells.Fixed(1),
@@ -114,7 +119,7 @@ fun BoxRandomBooks(randomBooks: List<Map<String, Any>>, onClickBook: (String) ->
                 ) {
                     Image(
                         painter = rememberAsyncImagePainter(model = coverBook),
-                        contentDescription = "Book cover",
+                        contentDescription = stringResource(R.string.book_cover),
                         modifier = Modifier
                             .size(98.dp, 145.dp)
                             .clip(RoundedCornerShape(8.dp))

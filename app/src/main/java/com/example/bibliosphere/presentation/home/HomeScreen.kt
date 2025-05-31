@@ -11,8 +11,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.bibliosphere.R
 import com.example.bibliosphere.core.navigation.BookDetail
 import com.example.bibliosphere.presentation.components.textField.BoxRandomBooks
 import com.example.bibliosphere.presentation.components.textField.BoxTopFive
@@ -121,27 +123,27 @@ private fun Stats(
         modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
     ) {
         TextStats(
-            text = "BIBLIOTECA - ESTADÍSTICAS",
+            text = stringResource(R.string.library_stats),
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextStats(
-            text = "Estado actual de tus $totalBooks libros:",
+            text = stringResource(R.string.books_status, totalBooks),
         )
         Spacer(modifier = Modifier.height(4.dp))
         TextStats(
-            text = "Leídos: Tienes $readedStatus libros.",
+            text = stringResource(R.string.books_read, readedStatus),
         )
         Spacer(modifier = Modifier.height(4.dp))
         TextStats(
-            text = "Leyendo: Tienes $readingStatus libros.",
+            text = stringResource(R.string.books_reading, readingStatus),
         )
         Spacer(modifier = Modifier.height(4.dp))
         TextStats(
-            text = "Pendientes: Tienes $pendingStatus libros.",
+            text = stringResource(R.string.books_pending, pendingStatus),
         )
         Spacer(modifier = Modifier.height(4.dp))
         TextStats(
-            text = "Favoritos: Tienes $favoriteStatus libros.",
+            text = stringResource(R.string.books_favorites, favoriteStatus),
         )
     }
 }
@@ -152,7 +154,7 @@ private fun Welcome(userName: String?) {
         modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
     ) {
         Text(
-            text = "¡Bienvenido $userName!",
+            text = stringResource(R.string.welcome, userName ?: ""),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimary
         )

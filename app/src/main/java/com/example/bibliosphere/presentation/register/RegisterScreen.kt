@@ -17,10 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.firebase.AuthState
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.components.*
@@ -94,7 +96,7 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
             ){
-                Text(text = "Registro:",
+                Text(text = stringResource(id = R.string.register_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier
                         .padding(start = BiblioSphereTheme.dimens.paddingNormal,
@@ -149,7 +151,7 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
                     isValidPassword = isValidPassword,
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = "Contraseña"
+                    text = stringResource(R.string.password),
                 )
             }
 
@@ -195,7 +197,7 @@ fun RowAccount(onClick: () -> Unit) {
     ) {
         TextButton(onClick = onClick) {
             Text(
-                text = "Iniciar sesión",
+                text = stringResource(R.string.login),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -214,7 +216,8 @@ fun RowButtonRegister(
             .fillMaxWidth()
             .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center){
-        PrimaryButton("Registrarse",
+        PrimaryButton(
+            stringResource(R.string.register_button),
             onClick = { onRegisterSelected() },
             enabled = registerEnable)
     }
@@ -237,7 +240,7 @@ fun UserName(
                 onValueChange(newValue)
             }
                                         },
-        label = {Text("Nombre de usuario")},
+        label = {Text(stringResource(R.string.user_name))},
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         maxLines = 1,
         singleLine = true,

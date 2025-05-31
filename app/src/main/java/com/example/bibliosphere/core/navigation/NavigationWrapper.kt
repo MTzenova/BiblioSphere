@@ -207,7 +207,7 @@ fun DetailedDrawer(
                                             navController.navigate(About)
                                         }
                                         "exit" -> {
-                                            navController.navigate(Login)
+                                            authViewModel.signout()
                                         }
                                         else -> navController.navigate(item.route) {
                                             launchSingleTop = true

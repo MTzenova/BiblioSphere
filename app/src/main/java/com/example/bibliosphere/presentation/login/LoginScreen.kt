@@ -25,6 +25,7 @@ import com.example.bibliosphere.presentation.components.buttons.PrimaryButton
 import com.example.bibliosphere.presentation.components.textField.EmailTextField
 import com.example.bibliosphere.presentation.components.textField.PasswordTextField
 import kotlinx.coroutines.launch
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun LoginScreen(
@@ -70,6 +71,9 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
     //para el alert dialog
     val showDialog = remember { mutableStateOf(false) }
 
+    val textEmailSent = stringResource(R.string.reset_email_sent)
+
+
     //funcioanlidad de iniciar sesión y llevarnos a home
     LaunchedEffect(authState.value) {
         when (authState.value) {
@@ -84,7 +88,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
     }else{
-
+        val textErrorActivity = stringResource(id = R.string.no_activity_error)
         //código visual
         Column(modifier = modifier) {
             Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
@@ -94,7 +98,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ){
-                    Text(text = "Iniciar sesión:",
+                    Text(text =  stringResource(R.string.login),
                         style = MaterialTheme.typography.headlineSmall,
                         modifier = Modifier
                             .padding(start = BiblioSphereTheme.dimens.paddingNormal,
@@ -135,7 +139,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                         isValidPassword = isValidPassword,
                         modifier = Modifier
                             .fillMaxWidth(),
-                        text = "Contraseña"
+                        text = stringResource(R.string.password),
 
                     )
 
@@ -164,7 +168,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                                 if (activity != null) {
                                     authViewModel.signInWithGoogle(activity)
                                 }else {
-                                    Toast.makeText(context, "No se pudo obtener la actividad", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, textErrorActivity, Toast.LENGTH_SHORT).show()
                                 }
                             } catch (e: Exception) {
                                 Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -185,13 +189,13 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
 
     //alert dialog de olvidar contraseña
     if(showDialog.value){
-        val titleText = "No te preocupes, te enviaremos un enlace de recuperación"
+        val titleText = stringResource(R.string.forgotten_password)
         ForgottenPasswordDialog(
             onDismissRequest = { showDialog.value = false },
             onResetPassword = {emailToSend ->
                 authViewModel.resetPassword(emailToSend)
                 showDialog.value = false
-                Toast.makeText(context,"Correo enviado, revisa tu bandeja de entrada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,textEmailSent, Toast.LENGTH_SHORT).show()
             },
             dialogTitle = titleText
         )
@@ -209,7 +213,7 @@ fun RowNoAccount(onClick: () -> Unit) {
     ) {
         TextButton(onClick = onClick) {
             Text(
-                text = "¿Aún no tienes una cuenta? Regístrate",
+                text = stringResource(R.string.no_account),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -241,7 +245,7 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
             )
 
             Text(
-                text = "O inicia sesión con",
+                text = stringResource(R.string.login_with),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 color = colorScheme.primary
@@ -260,7 +264,7 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
 
         IconPrimaryButton(
             icon =  painterResource(id = R.drawable.google_icon),
-            text = "Google",
+            text = stringResource(R.string.google),
             onClick = onGoogleClick,
             textColor = Color.White,
             buttonColor = colorScheme.primary,
@@ -278,7 +282,7 @@ fun RowForgottenPassword(onClick: () -> Unit) {
     ) {
         TextButton(onClick = onClick) {
             Text(
-                text = "¿Olvidaste tu contraseña?",
+                text = stringResource(R.string.forgot_password),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -311,12 +315,12 @@ fun ForgottenPasswordDialog(
             TextButton(onClick = { onResetPassword(email) },
                 enabled = isValidEmail
             ){
-                Text("Enviar")
+                Text(stringResource(R.string.send))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismissRequest){
-                Text("Cancelar")
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -335,7 +339,8 @@ fun RowButtonLogin(
             .padding(BiblioSphereTheme.dimens.paddingNormal),
         horizontalArrangement = Arrangement.Center){
 
-        PrimaryButton("Entrar",
+        PrimaryButton(
+            stringResource(R.string.enter),
             onClick = onLoginSelected,
             enabled = loginEnable)
     }
