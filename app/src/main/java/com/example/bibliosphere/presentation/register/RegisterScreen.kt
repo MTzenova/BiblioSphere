@@ -18,7 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,6 +34,7 @@ import com.example.bibliosphere.presentation.components.textField.DatePickerFiel
 import com.example.bibliosphere.presentation.components.textField.EmailTextField
 import com.example.bibliosphere.presentation.components.textField.PasswordTextField
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
+import java.util.*
 
 @Composable
 fun RegisterScreen(
@@ -43,7 +47,7 @@ fun RegisterScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.onSecondary)
+            .background(colorScheme.background)
     ){
         Register(
             Modifier.align(Alignment.Center),
@@ -96,12 +100,12 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
             ){
-                Text(text = stringResource(id = R.string.register_title),
-                    style = MaterialTheme.typography.headlineSmall,
+                Text(text = stringResource(id = R.string.register_title).uppercase(Locale.ROOT),
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .padding(start = BiblioSphereTheme.dimens.paddingNormal,
                             top = BiblioSphereTheme.dimens.paddingNormal),
-                    color = colorScheme.primary
+                    color = colorScheme.onBackground
                 )
             }
 
@@ -219,7 +223,9 @@ fun RowButtonRegister(
         PrimaryButton(
             stringResource(R.string.register_button),
             onClick = { onRegisterSelected() },
-            enabled = registerEnable)
+            enabled = registerEnable,
+            buttonColor = ButtonDefaults.buttonColors()
+        )
     }
 }
 
@@ -256,7 +262,10 @@ fun UserName(
                 focusedLabelColor = Color.Red,
                 focusedBorderColor = Color.Red
             )
-        }
+        },
+        textStyle = TextStyle(
+            textAlign = TextAlign.Start,
+        )
     )
 }
 

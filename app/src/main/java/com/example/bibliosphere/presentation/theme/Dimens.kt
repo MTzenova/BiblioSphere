@@ -15,12 +15,13 @@ data class Dimens(
     val roundedShapeNormal: Dp = 8.dp,
     val roundedShapeMedium: Dp = 12.dp,
     val roundedShapeLarge: Dp = 16.dp,
+    val roundedShapeExtraLarge: Dp = 20.dp,
     val spacerSmall: Dp = 4.dp,
     val spacerNormal: Dp = 8.dp,
     val spacerMedium: Dp = 16.dp,
     val spacerLarge: Dp = 40.dp,
-
-)
+    val cardElevation: Dp = 4.dp,
+    )
 
 val DefaultDimens = Dimens()
 
@@ -35,8 +36,10 @@ val TabletDimens = Dimens(
     roundedShapeNormal = 16.dp,
     roundedShapeMedium = 20.dp,
     roundedShapeLarge = 24.dp,
+    roundedShapeExtraLarge = 28.dp,
     spacerSmall = 8.dp,
     spacerNormal = 16.dp,
     spacerMedium = 24.dp,
     spacerLarge = 56.dp,
+    cardElevation = 16.dp,
 )

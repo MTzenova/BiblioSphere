@@ -9,9 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
 fun EmailTextField(
@@ -28,7 +31,7 @@ fun EmailTextField(
         maxLines = 1,
         singleLine = true,
         modifier = modifier,
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeExtraLarge),
         placeholder = { Text(stringResource(id = R.string.email_placeholder)) },
         colors = if (isValidEmail) {
             OutlinedTextFieldDefaults.colors(
@@ -40,6 +43,9 @@ fun EmailTextField(
                 focusedLabelColor = Color.Red,
                 focusedBorderColor = Color.Red
             )
-        }
+        },
+        textStyle = TextStyle(
+            textAlign = TextAlign.Start,
+        )
     )
 }

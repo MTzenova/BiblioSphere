@@ -10,11 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
 fun PasswordTextField(
@@ -33,7 +36,7 @@ fun PasswordTextField(
         maxLines = 1,
         modifier = modifier,
         label = { Text(text) },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeExtraLarge),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
             val icon = if (isPasswordVisible) {
@@ -53,6 +56,9 @@ fun PasswordTextField(
         } else {
             PasswordVisualTransformation()
         },
+        textStyle = TextStyle(
+            textAlign = TextAlign.Start,
+        ),
         colors = if (isValidPassword) {
             OutlinedTextFieldDefaults.colors(
                 focusedLabelColor = Color.Green,
@@ -63,6 +69,6 @@ fun PasswordTextField(
                 focusedLabelColor = Color.Red,
                 focusedBorderColor = Color.Red
             )
-        }
+        },
     )
 }

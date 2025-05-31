@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,23 +95,30 @@ fun DatePickerFieldToModal(
     OutlinedTextField(
         value = birthDate,
         onValueChange = { },
-        label = { Text(stringResource(R.string.dob_label), color = MaterialTheme.colorScheme.onPrimary) },
+        label = { Text(text = stringResource(R.string.dob_label), color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Start) },
         readOnly = true,
         enabled = enabled,
         placeholder = { Text(stringResource(R.string.dob_placeholder)) },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeExtraLarge),
         leadingIcon = {
-            if (isProfile==true) {
-                leadingIcon?.let { icon ->
-                    Icon(icon, contentDescription =  stringResource(R.string.icon), tint = MaterialTheme.colorScheme.onPrimary)
-                }
+            IconButton(
+                onClick = {
+                    if (enabled) showModal = true
+                },
+                enabled = enabled
+            ) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = stringResource(R.string.select_date),
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
             }
         },
-        trailingIcon = {
-            if(isProfile != true){
-                Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.select_date))
-            }
-        },
+//        trailingIcon = {
+//            if(isProfile != true){
+//                Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.select_date))
+//            }
+//        },
         textStyle = LocalTextStyle.current.copy(
             textAlign = TextAlign.Start,
             color = MaterialTheme.colorScheme.onPrimary

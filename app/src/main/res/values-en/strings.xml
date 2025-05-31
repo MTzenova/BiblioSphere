@@ -121,10 +121,10 @@
     <string name="welcome">Welcome %1$s!</string>
     <string name="library_stats">Your library stats</string>
     <string name="books_status">Current status of your %1$d books:</string>
-    <string name="books_read">Read: You have %1$d books.</string>
-    <string name="books_reading">Reading: You have %1$d books.</string>
-    <string name="books_pending">Pending: You have %1$d books.</string>
-    <string name="books_favorites">Favorites: You have %1$d books.</string>
+    <string name="books_read">Read: %1$d</string>
+    <string name="books_reading">Reading: %1$d</string>
+    <string name="books_pending">Pending: %1$d</string>
+    <string name="books_favorites">Favorites: %1$d</string>
 
     <!-- ExploreLibrariesScreen -->
     <string name="user_books">Books: %1$d</string>

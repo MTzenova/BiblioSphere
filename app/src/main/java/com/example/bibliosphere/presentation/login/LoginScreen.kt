@@ -4,6 +4,7 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,6 +27,9 @@ import com.example.bibliosphere.presentation.components.textField.EmailTextField
 import com.example.bibliosphere.presentation.components.textField.PasswordTextField
 import kotlinx.coroutines.launch
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import java.util.*
 
 @Composable
 fun LoginScreen(
@@ -36,7 +40,7 @@ fun LoginScreen(
 ) {
     Box(Modifier
         .fillMaxSize()
-        .background(MaterialTheme.colorScheme.onSecondary)) {
+        .background(colorScheme.background)) {
         Login(
             Modifier.align(Alignment.Center),
             viewModel,
@@ -49,17 +53,23 @@ fun LoginScreen(
 
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: () -> Unit, authViewModel: AuthViewModel, navigateToRegister: () -> Unit) {
+fun Login(
+    modifier: Modifier,
+    viewModel: LoginScreenViewModel,
+    navigateToHome: () -> Unit,
+    authViewModel: AuthViewModel,
+    navigateToRegister: () -> Unit
+) {
 
     //definir variables
-    val email:String by viewModel.email.observeAsState(initial="")
+    val email: String by viewModel.email.observeAsState(initial = "")
     val isValidEmail by viewModel.isValidEmail.observeAsState(false)
-    val password:String by viewModel.password.observeAsState(initial="")
-    val passwordVisible by viewModel.passwordVisible.observeAsState(initial=false)
+    val password: String by viewModel.password.observeAsState(initial = "")
+    val passwordVisible by viewModel.passwordVisible.observeAsState(initial = false)
     val isValidPassword by viewModel.isValidPassword.observeAsState(false)
-    val loginEnable:Boolean by viewModel.loginEnable.observeAsState(initial = false)
+    val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
 
-    val isLoading:Boolean by viewModel.isLoading.observeAsState(initial = false)
+    val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     val coroutineScope = rememberCoroutineScope()
 
     val context = LocalContext.current
@@ -78,16 +88,21 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
     LaunchedEffect(authState.value) {
         when (authState.value) {
             is AuthState.Authenticated -> navigateToHome()
-            is AuthState.Error -> Toast.makeText(context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            is AuthState.Error -> Toast.makeText(
+                context,
+                (authState.value as AuthState.Error).message,
+                Toast.LENGTH_SHORT
+            ).show()
+
             else -> Unit
         }
     }
 
-    if(isLoading){
+    if (isLoading) {
         Box(Modifier.fillMaxSize()) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
-    }else{
+    } else {
         val textErrorActivity = stringResource(id = R.string.no_activity_error)
         //código visual
         Column(modifier = modifier) {
@@ -97,13 +112,16 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
-                ){
-                    Text(text =  stringResource(R.string.login),
-                        style = MaterialTheme.typography.headlineSmall,
+                ) {
+                    Text(
+                        text = stringResource(R.string.login).uppercase(Locale.ROOT),
+                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                         modifier = Modifier
-                            .padding(start = BiblioSphereTheme.dimens.paddingNormal,
-                                top = BiblioSphereTheme.dimens.paddingNormal),
-                        color = colorScheme.primary
+                            .padding(
+                                start = BiblioSphereTheme.dimens.paddingNormal,
+                                top = BiblioSphereTheme.dimens.paddingNormal
+                            ),
+                        color = colorScheme.onBackground
                     )
                 }
 
@@ -116,10 +134,10 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                             end = BiblioSphereTheme.dimens.paddingNormal
                         ),
                     horizontalArrangement = Arrangement.Center
-                ){
+                ) {
                     EmailTextField(
                         value = email,
-                        onValueChange = {viewModel.onLoginChanged(it,password)},
+                        onValueChange = { viewModel.onLoginChanged(it, password) },
                         isValidEmail = isValidEmail,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -130,7 +148,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                         .fillMaxWidth()
                         .padding(BiblioSphereTheme.dimens.paddingNormal),
                     horizontalArrangement = Arrangement.Center
-                ){
+                ) {
                     PasswordTextField(
                         value = password,
                         onValueChange = { viewModel.onLoginChanged(email, it) },
@@ -139,18 +157,15 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                         isValidPassword = isValidPassword,
                         modifier = Modifier
                             .fillMaxWidth(),
-                        text = stringResource(R.string.password),
-
+                        text = stringResource(R.string.password)
                     )
-
                 }
 
-
-                RowForgottenPassword{
+                RowForgottenPassword {
                     showDialog.value = true
                 }
 
-                RowButtonLogin(loginEnable){
+                RowButtonLogin(loginEnable) {
                     coroutineScope.launch {
 //                        viewModel.onLoginSelected()
 //                        navigateToHome()
@@ -167,7 +182,7 @@ fun Login(modifier: Modifier, viewModel: LoginScreenViewModel, navigateToHome: (
                             try {
                                 if (activity != null) {
                                     authViewModel.signInWithGoogle(activity)
-                                }else {
+                                } else {
                                     Toast.makeText(context, textErrorActivity, Toast.LENGTH_SHORT).show()
                                 }
                             } catch (e: Exception) {
@@ -214,8 +229,9 @@ fun RowNoAccount(onClick: () -> Unit) {
         TextButton(onClick = onClick) {
             Text(
                 text = stringResource(R.string.no_account),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                color = colorScheme.onBackground,
+                textDecoration = TextDecoration.Underline
             )
         }
     }
@@ -239,22 +255,22 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
             HorizontalDivider(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp),
+                    .padding(end = BiblioSphereTheme.dimens.paddingNormal),
                 thickness = 1.dp,
                 color = Color.Gray
             )
 
             Text(
                 text = stringResource(R.string.login_with),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(horizontal = 8.dp),
-                color = colorScheme.primary
+                modifier = Modifier.padding(horizontal = BiblioSphereTheme.dimens.paddingNormal),
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                color = colorScheme.onBackground
             )
 
             HorizontalDivider(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 8.dp),
+                    .padding(start = BiblioSphereTheme.dimens.paddingNormal),
                 thickness = 1.dp,
                 color = Color.Gray
             )
@@ -266,8 +282,8 @@ fun RowLoginWith(onGoogleClick: () -> Unit) {
             icon =  painterResource(id = R.drawable.google_icon),
             text = stringResource(R.string.google),
             onClick = onGoogleClick,
-            textColor = Color.White,
-            buttonColor = colorScheme.primary,
+            textColor = colorScheme.surface,
+            buttonColor = colorScheme.onSurface,
         )
     }
 }
@@ -283,8 +299,9 @@ fun RowForgottenPassword(onClick: () -> Unit) {
         TextButton(onClick = onClick) {
             Text(
                 text = stringResource(R.string.forgot_password),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                color = colorScheme.onBackground,
+                textDecoration = TextDecoration.Underline
             )
         }
     }
@@ -299,7 +316,14 @@ fun ForgottenPasswordDialog(
     var email by remember { mutableStateOf("") }
     val isValidEmail = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     AlertDialog(
-        title = { Text(text = dialogTitle, style = MaterialTheme.typography.bodyLarge) },
+        title = {
+            Text(
+                text = dialogTitle,
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = BiblioSphereTheme.dimens.paddingNormal),
+                color = colorScheme.onSurface
+            )
+        },
         text = {
             Column{
                 EmailTextField(
@@ -311,6 +335,8 @@ fun ForgottenPasswordDialog(
             }
         },
         onDismissRequest = onDismissRequest,
+        shape = RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeExtraLarge),
+        tonalElevation = BiblioSphereTheme.dimens.cardElevation,
         confirmButton = {
             TextButton(onClick = { onResetPassword(email) },
                 enabled = isValidEmail
@@ -322,7 +348,7 @@ fun ForgottenPasswordDialog(
             TextButton(onClick = onDismissRequest){
                 Text(stringResource(R.string.cancel))
             }
-        }
+        },
     )
 }
 
@@ -342,7 +368,12 @@ fun RowButtonLogin(
         PrimaryButton(
             stringResource(R.string.enter),
             onClick = onLoginSelected,
-            enabled = loginEnable)
+            enabled = loginEnable,
+            buttonColor = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.onBackground,
+                contentColor = colorScheme.background
+            ),
+        )
     }
 
 }

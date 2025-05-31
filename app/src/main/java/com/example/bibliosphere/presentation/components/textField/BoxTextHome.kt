@@ -15,18 +15,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.presentation.components.RatingBooks
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import com.example.bibliosphere.R
+import java.util.*
 
 @Composable
-fun TextStats(text:String){
+fun TextStats(text: String){
     Text(
         text = text,
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Start,
+        color = MaterialTheme.colorScheme.onPrimary,
+    )
+}
+
+@Composable
+fun TextTitleStats(text:String){
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Start,
         color = MaterialTheme.colorScheme.onPrimary,
@@ -38,15 +51,14 @@ fun BoxTopFive(topFiveBooks: List<Map<String, Any>>, onClickBook: (String) -> Un
     Column(
         modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
     ) {
-
-        TextStats(
-            text = stringResource(R.string.top_five_books)
+        TextTitleStats(
+            text = stringResource(R.string.top_five_books).uppercase(Locale.ROOT),
         )
-
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingSmall))
         LazyHorizontalGrid(
             rows = GridCells.Fixed(1),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerMedium),
+            verticalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerMedium),
             modifier = Modifier.height(180.dp)
         ) {
             items(topFiveBooks) { item ->
@@ -68,13 +80,13 @@ fun BoxTopFive(topFiveBooks: List<Map<String, Any>>, onClickBook: (String) -> Un
                         contentDescription = stringResource(R.string.book_cover),
                         modifier = Modifier
                             .size(98.dp, 145.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeNormal))
                             .background(MaterialTheme.colorScheme.background)
-                            .padding(8.dp)
+                            .padding(BiblioSphereTheme.dimens.paddingNormal),
 
 
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerSmall))
                     RatingBooks(ratingBook, 5)
                 }
 
@@ -89,17 +101,18 @@ fun BoxRandomBooks(randomBooks: List<Map<String, Any>>, onClickBook: (String) ->
         modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
     ){
 
-        TextStats(
-            text = stringResource(R.string.recommendations)
+        TextTitleStats(
+            text = stringResource(R.string.recommendations).uppercase(Locale.ROOT),
         )
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingSmall))
         TextStats(
-            text = stringResource(R.string.random_books)
+            text = stringResource(R.string.random_books),
         )
 
         LazyHorizontalGrid(
             rows = GridCells.Fixed(1),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerMedium),
+            verticalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerMedium),
             modifier = Modifier.height(180.dp)
         ){
             items(randomBooks) { itemRandom ->
@@ -122,11 +135,11 @@ fun BoxRandomBooks(randomBooks: List<Map<String, Any>>, onClickBook: (String) ->
                         contentDescription = stringResource(R.string.book_cover),
                         modifier = Modifier
                             .size(98.dp, 145.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeNormal))
                             .background(MaterialTheme.colorScheme.background)
-                            .padding(8.dp)
+                            .padding(BiblioSphereTheme.dimens.paddingNormal)
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingSmall))
                     RatingBooks(ratingBook, 5)
                 }
 

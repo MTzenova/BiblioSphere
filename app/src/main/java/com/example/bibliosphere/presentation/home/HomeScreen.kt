@@ -12,16 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bibliosphere.R
 import com.example.bibliosphere.core.navigation.BookDetail
-import com.example.bibliosphere.presentation.components.textField.BoxRandomBooks
-import com.example.bibliosphere.presentation.components.textField.BoxTopFive
-import com.example.bibliosphere.presentation.components.textField.TextStats
+import com.example.bibliosphere.presentation.components.textField.*
 import com.example.bibliosphere.presentation.firebase.BookStatusFS
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import com.google.firebase.auth.FirebaseAuth
+import java.util.*
 
 @Composable
 fun HomeScreen(navController: NavController,viewModel: HomeScreenViewModel = HomeScreenViewModel()){
@@ -58,7 +59,7 @@ fun ScreenContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp),
+            .padding(top = BiblioSphereTheme.dimens.paddingMedium),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
@@ -72,11 +73,11 @@ fun ScreenContent(
         items(nItems) { index ->
             Box(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = BiblioSphereTheme.dimens.paddingMedium)
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(16.dp)
+                    .clip(RoundedCornerShape(BiblioSphereTheme.dimens.roundedShapeExtraLarge))
+                    .background(MaterialTheme.colorScheme.secondary)
+                    .padding(BiblioSphereTheme.dimens.paddingMedium)
             ) {
                 when (index) {
                     0 -> { //metemos info en el cuadro 1
@@ -108,6 +109,7 @@ private fun RandomBooks(randomBooks: List<Map<String, Any>>, onClickBook: (Strin
 
 @Composable
 private fun TopFive(topFiveBooks: List<Map<String, Any>>, onClickBook: (String) -> Unit) {
+
     BoxTopFive(topFiveBooks, onClickBook)
 }
 
@@ -122,26 +124,26 @@ private fun Stats(
     Column(
         modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
     ) {
-        TextStats(
-            text = stringResource(R.string.library_stats),
+        TextTitleStats(
+            text = stringResource(R.string.library_stats).uppercase(Locale.ROOT),
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextStats(
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
+        TextTitleStats(
             text = stringResource(R.string.books_status, totalBooks),
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerMedium))
         TextStats(
             text = stringResource(R.string.books_read, readedStatus),
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerSmall))
         TextStats(
             text = stringResource(R.string.books_reading, readingStatus),
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerSmall))
         TextStats(
             text = stringResource(R.string.books_pending, pendingStatus),
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerSmall))
         TextStats(
             text = stringResource(R.string.books_favorites, favoriteStatus),
         )
@@ -154,9 +156,9 @@ private fun Welcome(userName: String?) {
         modifier = Modifier.padding(BiblioSphereTheme.dimens.paddingNormal)
     ) {
         Text(
-            text = stringResource(R.string.welcome, userName ?: ""),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onPrimary
+            text = stringResource(R.string.welcome, userName ?: "").uppercase(Locale.ROOT),
+            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onPrimary,
         )
     }
 }

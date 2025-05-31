@@ -56,7 +56,9 @@ fun SearchScreen(viewModel: SearchScreenViewModel, navController: NavController)
         )
 
         if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
         }else{
             LazyColumn { //cambié el de Item por BookUI porque no me actualizaba bien la lista
                 items(booksState) { itemBookUI ->

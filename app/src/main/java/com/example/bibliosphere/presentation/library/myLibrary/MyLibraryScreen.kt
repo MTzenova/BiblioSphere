@@ -24,6 +24,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.components.BookShelfSeparator
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
 fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navController: NavController) {
@@ -35,16 +36,6 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
         viewModel.getUserBooks(userId)
     }
 
-//    if(books.isEmpty()) {
-//        Box(
-//            modifier = Modifier.fillMaxSize(),
-//            contentAlignment = Alignment.Center
-//        ){
-//            Text(text = "Aún no has añadido ningún libro a tu biblioteca")
-//        }
-//    }else{
-//
-//    }
     //poner un loading
     if(isLoading) { //lo malo es que al vovler atrás vuelve a ponerse a cargar
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -74,9 +65,9 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
             LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
                 columns = GridCells.Fixed(3),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerNormal),
+                verticalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerNormal),
+                contentPadding = PaddingValues(BiblioSphereTheme.dimens.paddingMedium),
             ){
                 items(books) { book ->
                     BookCover(book = book, onClick = {
