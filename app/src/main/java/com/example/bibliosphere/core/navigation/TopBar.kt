@@ -7,6 +7,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
@@ -31,7 +33,9 @@ fun TopBar(
         title = {
 
             val userName by authViewModel.userNameLibrary.observeAsState()
-            var titleScreen = getScreenTitle(currentBackStackEntry?.destination?.route)
+            val context = LocalContext.current
+            val titleId = getScreenTitle(currentBackStackEntry?.destination?.route)
+            var titleScreen = stringResource(id = titleId)
 
             if (currentRoute?.startsWith(UserLibrary.route) == true) {
                 val userId = currentBackStackEntry?.arguments?.getString("userId")
@@ -42,7 +46,7 @@ fun TopBar(
                     }
                 }
 
-                titleScreen = "Biblioteca de $userName"
+                titleScreen = "Biblioteca de ${userName ?: ""}"
             }
 
             Text(

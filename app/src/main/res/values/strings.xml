@@ -1,5 +1,26 @@
 <resources>
-    <string name="app_name">BiblioSphere</string>
+    <string name="app_name">BiblioSphere</string>  <!-- No tiene traducción -->
     <string name="web_client_id">1014965920233-aev08ptsiaamhpr6q75te2vl75ken914.apps.googleusercontent.com</string>
+    <!-- BottomBar, Screens -->
+    <string name="icon">Icono</string>
+    <string name="back">Atrás</string>
+    <string name="home">Inicio</string>
+    <string name="library">Biblioteca</string>
+    <string name="search">Buscar</string>
+    <!-- NavigationDrawer items, NavigationDrawerItem -->
+    <string name="profile">Perfil</string>
+    <string name="about">Acerca de nosotros</string>
+    <string name="exit">Salir</string>
+    <!-- NavigationDrawer ModalNavigationDrawer-->
+    <string name="user_profile_picture">Imagen de perfil de usuario</string>
+    <!-- NavigationDrawer ModalNavigationDrawer, Screen-->
+    <string name="explore">Explorar bibliotecas</string>
+    <!-- Screens -->
+    <string name="register">Registro</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="search_books">Buscar libros</string>
+    <string name="book_detail">Detalles del libro</string>
+    <string name="user_library">Biblioteca del usuario</string>
 
-</resources>
+
+  </resources>

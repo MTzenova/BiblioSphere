@@ -1,8 +1,10 @@
 package com.example.bibliosphere.data.model
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data class DrawerItems(
-    val title: String,
+    @StringRes val title: Int,
+    val route: String,
     val icon: ImageVector
 )

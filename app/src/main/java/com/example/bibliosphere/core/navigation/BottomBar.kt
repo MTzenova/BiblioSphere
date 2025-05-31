@@ -8,8 +8,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.bibliosphere.R
 import com.example.bibliosphere.data.model.DrawerItems
 
 
@@ -39,10 +41,10 @@ fun BottomBar(
                     }
                 },
                 icon = {
-                    Icon(imageVector = navItem.icon, contentDescription = "Icon")
+                    Icon(imageVector = navItem.icon, contentDescription = stringResource(id = navItem.title))
                 },
                 label = {
-                    Text(text = navItem.title)
+                    Text(text = stringResource(id = navItem.title))
                 },
             )
         }
@@ -51,9 +53,9 @@ fun BottomBar(
 
 object NavItemList{
     val navItemList = listOf(
-        DrawerItems("Atrás", Icons.AutoMirrored.Filled.ArrowBack),
-        DrawerItems("Inicio",Icons.Default.Home),
-        DrawerItems("Biblioteca",Icons.Default.Book),
-        DrawerItems("Buscar",Icons.Default.Search),
+        DrawerItems(R.string.back,"back", Icons.AutoMirrored.Filled.ArrowBack),
+        DrawerItems(R.string.home,"home",Icons.Default.Home),
+        DrawerItems(R.string.library,"library",Icons.Default.Book),
+        DrawerItems(R.string.search,"search",Icons.Default.Search),
     )
 }

@@ -1,5 +1,6 @@
 package com.example.bibliosphere.core.navigation
 
+import com.example.bibliosphere.R
 import kotlinx.serialization.Serializable
 
 //se definen todas las vistas
@@ -40,16 +41,16 @@ object Profile
 object About
 
 //función para obtener el título según la pantalla
-fun getScreenTitle(route: String?): String = when (route) {
-    Home::class.qualifiedName -> "Inicio"
-    Register::class.qualifiedName -> "Registro"
-    Login::class.qualifiedName -> "Login"
-    Search::class.qualifiedName -> "Search books"
-    BookDetail::class.qualifiedName -> "Book detail"
-    Library::class.qualifiedName -> "Library"
-    UserLibrary::class.qualifiedName -> "User Library"
-    Profile::class.qualifiedName -> "Profile"
-    Explore::class.qualifiedName -> "Explore libraries"
-    About::class.qualifiedName -> "About us"
-    else -> "BiblioSphere"
+fun getScreenTitle(route: String?): Int = when (route) {
+    Home::class.qualifiedName -> R.string.home
+    Register::class.qualifiedName -> R.string.register
+    Login::class.qualifiedName -> R.string.login
+    Search::class.qualifiedName -> R.string.search_books
+    BookDetail::class.qualifiedName -> R.string.book_detail
+    Library::class.qualifiedName -> R.string.library
+    UserLibrary::class.qualifiedName -> R.string.user_library
+    Profile::class.qualifiedName -> R.string.profile
+    Explore::class.qualifiedName -> R.string.explore
+    About::class.qualifiedName -> R.string.about
+    else -> R.string.app_name
 }

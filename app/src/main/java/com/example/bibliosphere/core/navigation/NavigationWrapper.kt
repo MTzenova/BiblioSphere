@@ -20,6 +20,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -30,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.bibliosphere.R
 import com.example.bibliosphere.data.model.DrawerItems
 import com.example.bibliosphere.data.model.TabDestination
 import com.example.bibliosphere.presentation.bookDetail.BookDetailScreen
@@ -90,9 +92,9 @@ fun NavigationWrapper() {
 
 
     val items = listOf(
-        DrawerItems("Perfil", Icons.Default.AccountBox),
-        DrawerItems("Acerca de nosotros", Icons.Filled.Info),
-        DrawerItems("Salir", Icons.AutoMirrored.Filled.Logout),
+        DrawerItems(R.string.profile, "profile", Icons.Default.AccountBox),
+        DrawerItems(R.string.about, "about",Icons.Filled.Info),
+        DrawerItems(R.string.exit, "exit",Icons.AutoMirrored.Filled.Logout),
 
     )
 
@@ -159,7 +161,7 @@ fun DetailedDrawer(
                 ) {
                     Spacer(Modifier.height(12.dp))
 
-                    Text("BiblioSphere", style = MaterialTheme.typography.headlineLarge)
+                    Text(stringResource(id = R.string.app_name), style = MaterialTheme.typography.headlineLarge)
                     HorizontalDivider()
                     Spacer(Modifier.height(12.dp))
                     Column(
@@ -171,7 +173,7 @@ fun DetailedDrawer(
                                 key(imageRes){
                                     AsyncImage(
                                         model = imageRes,
-                                        contentDescription = "User profile picture",
+                                        contentDescription = stringResource(R.string.user_profile_picture),
                                         modifier = Modifier
                                             .size(94.dp)
                                             .clip(RoundedCornerShape(62.dp)),
@@ -191,23 +193,23 @@ fun DetailedDrawer(
                     HorizontalDivider()
                     items.forEach { item ->
                         NavigationDrawerItem(
-                            label = { Text(item.title) },
+                            label = { Text(stringResource(id = item.title)) },
                             icon = { Icon(item.icon, contentDescription = null) },
-                            selected = currentRoute == item.title.lowercase(),
+                            selected = currentRoute == item.route,
                             onClick = {
                                 scope.launch {
                                     drawerState.close()
-                                    if (item.title.lowercase() == "salir") {
-                                        authViewModel.signout()
-                                    }
-                                    else if(item.title.lowercase() == "perfil"){
-                                        navController.navigate(Profile)
-                                    }
-                                    else if(item.title.lowercase() == "acerca de nosotros"){
-                                        navController.navigate(About)
-                                    }
-                                    else {
-                                        navController.navigate(item.title.lowercase()) {
+                                    when(item.route){
+                                        "profile" -> {
+                                            navController.navigate(Profile)
+                                        }
+                                        "about" -> {
+                                            navController.navigate(About)
+                                        }
+                                        "exit" -> {
+                                            navController.navigate(Login)
+                                        }
+                                        else -> navController.navigate(item.route) {
                                             launchSingleTop = true
                                         }
                                     }
@@ -241,8 +243,8 @@ fun Screen(
 
 
     val tabDestinations = listOf(
-        TabDestination(Library,"Library"),
-        TabDestination(Explore,"Explore libraries"),
+        TabDestination(Library, stringResource(R.string.library)),
+        TabDestination(Explore, stringResource(R.string.explore)),
     )
 
     val showTabs = currentRoute in listOf(Library::class.qualifiedName, Explore::class.qualifiedName)
