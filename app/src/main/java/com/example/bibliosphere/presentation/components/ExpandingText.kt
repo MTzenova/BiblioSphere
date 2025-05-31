@@ -13,8 +13,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextDecoration
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
 fun ExpandingText(
@@ -56,10 +57,11 @@ fun ExpandingText(
                 } else{
                     stringResource(R.string.read_more)
                 },
-                style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary),
+                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.secondary),
+                textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .clickable{expanded = !expanded}
-                    .padding(top = 4.dp)
+                    .padding(top = BiblioSphereTheme.dimens.paddingSmall)
             )
         }
     }

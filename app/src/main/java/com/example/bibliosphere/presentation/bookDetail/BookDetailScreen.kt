@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.components.BookDescription
@@ -68,7 +69,7 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
                     },
                     averageRating = it.volumeInfo?.averageRating?:0f,
                 )
-                Text(text = stringResource(R.string.description), modifier = Modifier.padding(horizontal = 15.dp))
+                Text(text = stringResource(R.string.description), modifier = Modifier.padding(horizontal = 15.dp), style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
                 Spacer(modifier = Modifier.height(10.dp))
                 BookDescription(
                     description =  it.volumeInfo?.description ?: stringResource(R.string.no_description)
@@ -78,8 +79,8 @@ fun BookDetailScreen(bookId: String, viewModel: BookDetailScreenViewModel) {
                     text = stringResource(R.string.show_comments),
                     onTap = { showBottomSheet = !showBottomSheet },
                     modifier = Modifier.padding(horizontal = 15.dp),
-                    textColor = MaterialTheme.colorScheme.onPrimary,
-                    buttonColor = MaterialTheme.colorScheme.primary,
+                    textColor = MaterialTheme.colorScheme.background,
+                    buttonColor = MaterialTheme.colorScheme.onBackground,
                 )
                 //Text(text = "Mostrar comentarios", modifier = Modifier.padding(horizontal = 15.dp).clickable { showBottomSheet = !showBottomSheet })
             }

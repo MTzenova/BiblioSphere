@@ -18,6 +18,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.example.bibliosphere.presentation.components.buttons.BookStateButtons
 import com.example.bibliosphere.R
+import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
 fun BookDetailCard(
@@ -36,12 +37,12 @@ fun BookDetailCard(
                 .padding(start = 20.dp, end = 20.dp, top = 40.dp, bottom = 15.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.primary),
+                .background(MaterialTheme.colorScheme.secondary),
             contentAlignment = Alignment.TopCenter
         ){
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 20.dp, bottom = 20.dp, start = 16.dp, end = 16.dp),
+                .padding(top = 20.dp, bottom = 20.dp, start = BiblioSphereTheme.dimens.paddingMedium, end = BiblioSphereTheme.dimens.paddingMedium,),
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
                 //imagen
@@ -54,30 +55,30 @@ fun BookDetailCard(
                     //.clip(RoundedCornerShape(20.dp))
                 )
                 RatingBooks(averageRating = averageRating)
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingNormal))
                 //contenido
                 Text(
                     text = author,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.surface,
                     textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingNormal))
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.surface,
                     textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.paddingNormal))
                 ChipView(type = type)
             }
         }
         Column(
             modifier = Modifier
-                .padding(bottom = 20.dp, start = 16.dp, end = 16.dp)
+                .padding(bottom = 20.dp, start =  BiblioSphereTheme.dimens.paddingMedium, end = BiblioSphereTheme.dimens.paddingMedium)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape( BiblioSphereTheme.dimens.paddingMedium))
                 .background(MaterialTheme.colorScheme.onBackground),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
@@ -101,6 +102,9 @@ fun BookDescription(description: String) {
     ExpandingText(
         description = description,
         modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+        textStyle = MaterialTheme.typography.bodyLarge.copy(
+            textAlign = TextAlign.Start
+        )
     )
 }
 

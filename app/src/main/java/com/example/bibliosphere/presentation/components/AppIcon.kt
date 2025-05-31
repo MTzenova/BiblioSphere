@@ -41,3 +41,33 @@ fun AppIcon(
     }
 
 }
+
+@Composable
+fun AppIconAboutUs(
+    modifier: Modifier = Modifier,
+    lightLogo: Int = R.drawable.logo_bibliosphere,
+    darkLogo: Int = R.drawable.logo_biblioshpere_oscuro,
+    width: Dp,
+    contentDescription: String = stringResource(R.string.logo),
+){
+    val isDarkTheme = isSystemInDarkTheme()
+    //si está en modo oscuro o claro
+    val logo = if(isDarkTheme){
+        R.drawable.logo_biblioshpere_oscuro //logo para modo osucor
+    }else{
+        R.drawable.logo_bibliosphere //logo para modo claro
+    }
+
+    Row(Modifier
+        .fillMaxWidth()
+        .padding(BiblioSphereTheme.dimens.paddingNormal),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Image(
+            modifier = Modifier.width(100.dp),
+            painter = painterResource(id= logo),
+            contentDescription = stringResource(R.string.login_image),
+        )
+    }
+
+}
