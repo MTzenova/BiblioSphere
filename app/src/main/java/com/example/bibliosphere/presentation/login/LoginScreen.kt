@@ -4,7 +4,9 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -62,6 +64,7 @@ fun Login(
 ) {
 
     //definir variables
+    val scrollState = rememberScrollState()
     val email: String by viewModel.email.observeAsState(initial = "")
     val isValidEmail by viewModel.isValidEmail.observeAsState(false)
     val password: String by viewModel.password.observeAsState(initial = "")
@@ -106,7 +109,7 @@ fun Login(
         val textErrorActivity = stringResource(id = R.string.no_activity_error)
         //código visual
         Column(modifier = modifier) {
-            Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
+            Column(Modifier.verticalScroll(scrollState).padding(BiblioSphereTheme.dimens.paddingMedium)) {
                 AppIcon(width = 180.dp)
                 Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
                 Row(

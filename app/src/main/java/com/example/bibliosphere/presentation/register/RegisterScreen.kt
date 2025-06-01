@@ -4,8 +4,10 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
@@ -93,8 +95,7 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
         }
     }
 
-    Column(modifier = modifier) {
-        Column(Modifier.padding(BiblioSphereTheme.dimens.paddingMedium)) {
+        Column(Modifier.verticalScroll(rememberScrollState()).padding(BiblioSphereTheme.dimens.paddingMedium)) {
             AppIcon(width = 180.dp)
             Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
             Row(
@@ -187,7 +188,7 @@ fun Register(modifier: Modifier, viewModel: RegisterScreenViewModel, navigateToH
                 navigateToLogin()
             }
         }
-    }
+
 
 
 }

@@ -257,6 +257,7 @@ class AuthViewModel: ViewModel()  {
 
 
                             } else {
+                                Log.e("GoogleSignIn", "Error al autenticar con Google", task.exception)
                                 _authState.value =
                                     AuthState.Error(task.exception?.message ?: "Error al autenticar con Google")
                             }
@@ -269,7 +270,8 @@ class AuthViewModel: ViewModel()  {
             }
 
         } catch (e: Exception) {
-            _authState.value = AuthState.Error("Error en la autenticación con Google: ${e.message}")
+            Log.e("SignInWithGoogle", "Error en la autenticación con Google", e)
+            _authState.value = AuthState.Error("Error en la autenticación con Google: ${e.message}") //SALTA EL ERROR AQUI
         }
     }
 

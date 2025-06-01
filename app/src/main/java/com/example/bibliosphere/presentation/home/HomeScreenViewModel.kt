@@ -115,7 +115,7 @@ class HomeScreenViewModel : ViewModel(){
             try{
                 val document = doc.get().await()
 
-                if(document.exists()){ //buscamos si ya hay libros random
+                if(document.exists()){ //buscamos si ya hay libros random en firestore
                     val docBooks = document.get("books")  as? List<Map<String, Any>>
                     _randomBooks.value = docBooks ?:emptyList()
                     println("Random: datos recogidos de firestore.")
@@ -151,7 +151,8 @@ class HomeScreenViewModel : ViewModel(){
                             println("Exception HomeScreenViewModel: $e")
                         }
                     }
-                    doc.set(mapOf("books" to bookListRandom)).await()
+                    doc.set(
+                        mapOf("books" to bookListRandom)).await() //guardar en firestore si no estaba ya (con fecha actual)
                     _randomBooks.value = bookListRandom
                 }
             }catch (e:Exception){
