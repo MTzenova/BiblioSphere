@@ -25,6 +25,9 @@
     <string name="book_detail">Book details</string>
     <string name="user_library">User library</string>
 
+    <!-- Screens -->
+    <string name="library_another_user">%1$s\'s library</string>
+
     <!-- BookDetailScreen -->
     <string name="unknown_author">Unknown author</string>
     <string name="unknown_title">Untitled</string>

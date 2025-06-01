@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
+import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.firebase.AuthViewModel
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +47,7 @@ fun TopBar(
                     }
                 }
 
-                titleScreen = "Biblioteca de ${userName ?: ""}"
+                titleScreen = stringResource(R.string.library_another_user, userName ?: "")
             }
 
             Text(
