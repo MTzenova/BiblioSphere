@@ -24,11 +24,11 @@ class ExploreLibrariesScreenViewModel: ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
 
-            val ids = repository.getAllUsersId() // obtiene todos los userId
+            val ids = repository.getAllUsersId()
 
             val users = ids.mapNotNull { id ->
                 val user = repository.getUserData(id)
-                println("Usuario obtenido: $user") // para debug
+                println("Usuario obtenido: $user")
                 user
             }
 

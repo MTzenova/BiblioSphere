@@ -98,7 +98,7 @@
     <string name="welcome">¡Bienvenido/a, %1$s!</string>
     <string name="library_stats">Estado de tu biblioteca</string>
     <string name="books_status">Estado actual de tus %1$d libro(s):</string>
-    <string name="books_read">Leídos: %1$ds</string>
+    <string name="books_read">Leídos: %1$d</string>
     <string name="books_reading">Leyendo: %1$d</string>
     <string name="books_pending">Pendientes: %1$d</string>
     <string name="books_favorites">Favoritos: %1$d</string>

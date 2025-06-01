@@ -40,12 +40,18 @@ fun LoginScreen(
     navigateToHome: () -> Unit,
     navigateToRegister: () -> Unit
 ) {
-    Box(Modifier
-        .fillMaxSize()
-        .background(colorScheme.background)) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .background(colorScheme.background)
+            .padding(BiblioSphereTheme.dimens.paddingMedium),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally) {
         Login(
-            Modifier.align(Alignment.Center),
-            viewModel,
+            modifier = Modifier.fillMaxWidth(),
+            viewModel = viewModel,
             authViewModel = authViewModel,
             navigateToHome = navigateToHome,
             navigateToRegister = navigateToRegister
@@ -64,7 +70,6 @@ fun Login(
 ) {
 
     //definir variables
-    val scrollState = rememberScrollState()
     val email: String by viewModel.email.observeAsState(initial = "")
     val isValidEmail by viewModel.isValidEmail.observeAsState(false)
     val password: String by viewModel.password.observeAsState(initial = "")
@@ -102,14 +107,19 @@ fun Login(
     }
 
     if (isLoading) {
-        Box(Modifier.fillMaxSize()) {
+        Box(Modifier.fillMaxWidth().height(400.dp)) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
     } else {
         val textErrorActivity = stringResource(id = R.string.no_activity_error)
         //código visual
-        Column(modifier = modifier) {
-            Column(Modifier.verticalScroll(scrollState).padding(BiblioSphereTheme.dimens.paddingMedium)) {
+
+        Column(Modifier
+            .fillMaxWidth()
+            .padding(BiblioSphereTheme.dimens.paddingMedium),
+            ) {
+
+
                 AppIcon(width = 180.dp)
                 Spacer(modifier = Modifier.height(BiblioSphereTheme.dimens.spacerNormal))
                 Row(
@@ -202,7 +212,7 @@ fun Login(
                     //Toast.makeText(context, "Función no implementada aún", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+
     }
 
     //alert dialog de olvidar contraseña
