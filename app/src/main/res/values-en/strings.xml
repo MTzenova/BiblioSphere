@@ -83,6 +83,7 @@
     <string name="bookshelf_separator">Shelf separator</string>
 
     <!-- ExpandingText -->
+    <string name="filter_status">Filter by status</string>
     <string name="read_more">Read more</string>
     <string name="read_less">Read less</string>
 

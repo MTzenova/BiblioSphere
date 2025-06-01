@@ -24,6 +24,8 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bibliosphere.R
 import com.example.bibliosphere.presentation.components.BookShelfSeparator
+import com.example.bibliosphere.presentation.components.BookStatusFilter
+import com.example.bibliosphere.presentation.components.buttons.BookState
 import com.example.bibliosphere.presentation.theme.BiblioSphereTheme
 
 @Composable
@@ -31,6 +33,7 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
 
     val books by viewModel.books.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    var filterSelected by remember  { mutableStateOf<BookState?>(null) }
 
     LaunchedEffect(userId) {
         viewModel.getUserBooks(userId)
@@ -62,21 +65,40 @@ fun MyLibraryScreen(userId: String, viewModel: MyLibraryScreenViewModel, navCont
             modifier = Modifier.fillMaxSize()
         )
 
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(),
-                columns = GridCells.Fixed(3),
-                horizontalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerNormal),
-                verticalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerNormal),
-                contentPadding = PaddingValues(BiblioSphereTheme.dimens.paddingMedium),
-            ){
-                items(books) { book ->
-                    BookCover(book = book, onClick = {
-                        book.id.let { id ->
-                            navController.navigate(BookDetail.bookRoute(id))
+            Column{
+
+                BookStatusFilter(
+                    statusSelected = filterSelected?.name,
+                    onSatusSelected = { status ->
+                        filterSelected = BookState.entries.find { it.name == status }
+                        if(status != null){
+                            viewModel.filterStatusBooks(filterSelected,userId)
+                        }else{
+                            viewModel.getUserBooks(userId)
                         }
-                    })
+
+                    }
+                )
+
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxSize(),
+                    columns = GridCells.Fixed(3),
+                    horizontalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerNormal),
+                    verticalArrangement = Arrangement.spacedBy(BiblioSphereTheme.dimens.spacerNormal),
+                    contentPadding = PaddingValues(BiblioSphereTheme.dimens.paddingMedium),
+                ){
+                    items(books) { book ->
+                        BookCover(book = book, onClick = {
+                            book.id.let { id ->
+                                navController.navigate(BookDetail.bookRoute(id))
+                            }
+                        })
+                    }
                 }
             }
+
+
+
         }
     }
 }

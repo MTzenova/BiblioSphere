@@ -66,6 +66,7 @@
     <!-- Components: BookShelf -->
     <string name="book_image">Imagen del libro</string>
     <string name="bookshelf_separator">Separador de estantería</string>
+    <string name="filter_status">Filtrar por estado</string>
     <!-- Components: ExpandingText -->
     <string name="read_more">Leer más</string>
     <string name="read_less">Leer menos</string>
